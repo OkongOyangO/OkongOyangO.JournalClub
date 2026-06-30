@@ -96,11 +96,22 @@ session table's **Link** row if you want it visible above the fold.
 
 ## Build & deploy
 
+This site is served by **GitHub Pages directly from the committed `docs/` folder** on the
+`main` branch (no Actions workflow). So you must **rebuild `docs/` and commit it** as part of
+every update:
+
 ```bash
 cd OkongOyangO.JournalClub
-rm -rf public/ && hugo --gc --minify    # clean build (always after config changes)
-git add . && git commit -m "Add lecture: <topic>" && git push
+rm -rf docs/ && hugo --gc --minify -d docs   # build the site INTO docs/
+git add -A && git commit -m "Add lecture: <topic>" && git push
 ```
 
-Pushing to `main` triggers the GitHub Actions workflow (`.github/workflows/hugo.yaml`),
-which rebuilds and deploys to GitHub Pages (~1–2 min).
+GitHub Pages picks up the new `docs/` and republishes in ~1 min. The live site is
+`https://OkongOyangO.github.io/OkongOyangO.JournalClub/`.
+
+> **Don't date a post in the future.** Hugo drops future-dated posts from the build. Use the
+> meeting date with a past time of day. (If you ever must build a future-dated post, add
+> `--buildFuture` to the `hugo` command.)
+>
+> `docs/.nojekyll` must exist (it tells Pages not to run Jekyll on the Hugo output). It's
+> already committed — don't delete it.

@@ -27,7 +27,15 @@ same subdirectory-deployment layout overrides, but is a **separate site / separa
   - **`taxonomy/term.html`** — maps the theme's legacy single-term template to Hugo's modern
     `term` kind so individual `/tags/<tag>/` pages render (see Key Decisions).
 - Config: `hugo.toml` (single language, `[menu]` not `[languages.*.menu]`).
-- Build: `rm -rf public/ && hugo --gc --minify` then `git add . && git commit && git push`.
+- **Deploy model: GitHub Pages serves the committed `docs/` folder** on `main`
+  (Pages `build_type: legacy`, source `main` `/docs`). There is **no Actions workflow** — the
+  `gh` token lacked the `workflow` scope, so `.github/workflows/hugo.yaml` is untracked
+  (gitignored, kept on disk for reference). Every update must rebuild and commit `docs/`:
+  `rm -rf docs/ && hugo --gc --minify -d docs` then `git add -A && git commit && git push`.
+  `docs/.nojekyll` is committed and required. (To switch to auto-deploy later: run
+  `gh auth refresh -s workflow`, un-gitignore the workflow, set Pages `build_type=workflow`.)
+- **Never future-date a post** — Hugo drops future-dated content; use a past time of day
+  (or build with `--buildFuture`).
 
 ## Critical Rules
 
@@ -49,8 +57,9 @@ same subdirectory-deployment layout overrides, but is a **separate site / separa
   `found no layout file ... for kind "term"`). The override is a copy of the theme's
   `taxonomy/list.html`. **The sister `OkongOyangO.Notes` site has the same latent bug and
   could take the same fix.**
-- Theme is vendored (not a submodule) for clone-and-go simplicity. The deploy workflow still
-  does `submodules: recursive`, which is a harmless no-op.
+- Theme is vendored (not a submodule) for clone-and-go simplicity. The theme's `exampleSite/`
+  was deleted — it contained a placeholder Mapbox token that GitHub secret-scanning blocked on
+  push, and it isn't needed to build. It's gitignored so it can't return.
 
 ## Adding a lecture note
 
