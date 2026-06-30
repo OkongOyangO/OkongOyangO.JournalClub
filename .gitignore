@@ -1,0 +1,10 @@
+public/
+resources/
+.hugo_build.lock
+.DS_Store
+
+# Theme demo site (contains placeholder tokens flagged by secret scanning)
+themes/LoveIt/exampleSite/
+
+# Not used in the branch-deploy model (kept on disk for reference)
+.github/workflows/

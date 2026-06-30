@@ -1,0 +1,40 @@
+// ==============================
+// Custom style
+// 自定义样式
+// ==============================
+
+// PDF lecture-note shortcode (download button + inline viewer)
+.pdf-note {
+    margin: 1.2rem 0;
+}
+
+.pdf-download {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    color: #fff !important;
+    background-color: #d23f31;
+    text-decoration: none !important;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+
+    &:hover {
+        background-color: #b6281b;
+        transform: translateY(-1px);
+    }
+}
+
+.pdf-embed {
+    display: block;
+    width: 100%;
+    margin-top: 0.9rem;
+    border: 1px solid #e4e4e4;
+    border-radius: 6px;
+    background-color: #f5f5f5;
+}
+
+[theme="dark"] .pdf-embed {
+    border-color: #2b2b2b;
+    background-color: #1d1f21;
+}

@@ -1,0 +1,129 @@
+# -----------------------------------------------------------------------------
+# Core Configuration
+# -----------------------------------------------------------------------------
+baseURL = "https://OkongOyangO.github.io/OkongOyangO.JournalClub/"
+defaultContentLanguage = "en"
+languageCode = "en"
+title = "Condensed Matter Journal Club"
+theme = "LoveIt"
+
+# -----------------------------------------------------------------------------
+# Menu (English only)
+# -----------------------------------------------------------------------------
+[menu]
+  [[menu.main]]
+    identifier = "lectures"
+    pre = "<i class='fas fa-chalkboard-teacher fa-fw'></i>"
+    name = "Lectures"
+    pageRef = "/posts"
+    weight = 1
+  [[menu.main]]
+    identifier = "tags"
+    pre = "<i class='fas fa-tags fa-fw'></i>"
+    name = "Tags"
+    pageRef = "/tags"
+    weight = 2
+
+# -----------------------------------------------------------------------------
+# LoveIt Specifics
+# -----------------------------------------------------------------------------
+[params]
+  version = "0.3.X"
+  defaultTheme = "auto"
+  description = "Lecture notes from the condensed matter theory journal club organized by Yiyang Jiang at Penn State."
+
+  [params.author]
+    name = "Yiyang Jiang"
+    email = "yzj5306@psu.edu"
+    link = ""
+
+  # Header Configuration
+  [params.header]
+    desktopMode = "fixed"
+    mobileMode = "auto"
+    [params.header.title]
+      logo = ""
+      name = "Journal Club"
+      type = "it"
+
+  # Footer Configuration
+  [params.footer]
+    enable = true
+    copyright = true
+    author = true
+    since = 2026
+
+  # Search Configuration (Built-in Lunr.js)
+  [params.search]
+    enable = true
+    type = "lunr"
+    contentLength = 4000
+    placeholder = "Search lectures..."
+
+  # Home Page Configuration
+  [params.home]
+    [params.home.profile]
+      enable = true
+      gravatarEmail = ""
+      avatarURL = "/OkongOyangO.JournalClub/images/profile.png"
+      title = "Condensed Matter Journal Club"
+      subtitle = "Lecture notes & paper discussions"
+      social = true
+
+  # Social Links
+  [params.social]
+    x = "OkongOyangO"
+    email = "yzj5306@psu.edu"
+
+  # Page Configuration
+  [params.page]
+    [params.page.math]
+      enable = true
+
+  # Math Configuration (KaTeX)
+  [params.math]
+    enable = true
+    blockLeftDelimiter = "$$"
+    blockRightDelimiter = "$$"
+    inlineLeftDelimiter = "$"
+    inlineRightDelimiter = "$"
+    copyTex = true
+    mhchem = true
+
+# -----------------------------------------------------------------------------
+# Markup Configuration
+# -----------------------------------------------------------------------------
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+    [markup.goldmark.extensions]
+      definitionList = true
+      footnote = true
+      linkify = true
+      strikethrough = true
+      table = true
+      taskList = true
+      typographer = true
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [["$$", "$$"], ["\\[", "\\]"]]
+          inline = [["$", "$"], ["\\(", "\\)"]]
+  [markup.highlight]
+    codeFences = true
+    lineNos = false
+    lineNumbersInTable = true
+    noClasses = true
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 6
+
+# -----------------------------------------------------------------------------
+# Output Configuration
+# -----------------------------------------------------------------------------
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  page = ["HTML"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]

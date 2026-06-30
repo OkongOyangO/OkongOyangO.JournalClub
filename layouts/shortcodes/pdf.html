@@ -1,0 +1,39 @@
+{{- /*
+  PDF lecture-note shortcode: a download button plus an optional inline viewer.
+
+  Usage (do NOT mix positional and named params in one call):
+    {{< pdf "my-note.pdf" >}}                            -> resolves to /pdfs/my-note.pdf
+    {{< pdf src="my-note.pdf" >}}                         -> same, named form
+    {{< pdf src="my-note.pdf" title="Slides (PDF)" >}}    -> custom button label
+    {{< pdf src="/files/my-note.pdf" >}}                  -> explicit path under static/
+    {{< pdf src="https://example.com/x.pdf" >}}           -> external URL (used as-is)
+    {{< pdf src="my-note.pdf" embed="false" >}}           -> download button only
+    {{< pdf src="my-note.pdf" height="500px" >}}          -> set viewer height
+
+  A bare filename (no "/") is looked up under static/pdfs/. Any other path is taken
+  relative to static/. relURL adds the site's subdirectory prefix automatically.
+*/ -}}
+{{- $src := .Get "src" | default (.Get 0) -}}
+{{- if not $src -}}
+  {{- errorf "pdf shortcode: missing 'src' (page %q)" .Page.Path -}}
+{{- end -}}
+{{- $url := $src -}}
+{{- if not (or (hasPrefix $src "http://") (hasPrefix $src "https://")) -}}
+  {{- $path := cond (strings.Contains $src "/") (strings.TrimPrefix "/" $src) (printf "pdfs/%s" $src) -}}
+  {{- $url = $path | relURL -}}
+{{- end -}}
+{{- $title := .Get "title" | default "Download lecture note (PDF)" -}}
+{{- $embed := .Get "embed" | default "true" -}}
+{{- $height := .Get "height" | default "680px" -}}
+<div class="pdf-note">
+    <a class="pdf-download" href="{{ $url }}" download target="_blank" rel="noopener noreferrer">
+        <i class="fas fa-file-pdf fa-fw" aria-hidden="true"></i>&nbsp;{{ $title }}
+    </a>
+    {{- if eq $embed "true" -}}
+    <object class="pdf-embed" data="{{ $url }}" type="application/pdf" style="height:{{ $height }}">
+        <iframe src="{{ $url }}" style="width:100%;height:{{ $height }};border:0" loading="lazy" title="{{ $title }}">
+            <p>Your browser cannot display this PDF inline. <a href="{{ $url }}">Download it here</a>.</p>
+        </iframe>
+    </object>
+    {{- end -}}
+</div>

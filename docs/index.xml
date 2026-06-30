@@ -1,0 +1,30 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Condensed Matter Journal Club</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/</link><description>Lecture notes from the condensed matter theory journal club organized by Yiyang Jiang at Penn State.</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>yzj5306@psu.edu (Yiyang Jiang)</managingEditor><webMaster>yzj5306@psu.edu (Yiyang Jiang)</webMaster><lastBuildDate>Tue, 30 Jun 2026 12:00:00 -0400</lastBuildDate><atom:link href="https://OkongOyangO.github.io/OkongOyangO.JournalClub/index.xml" rel="self" type="application/rss+xml"/><item><title>Topological Insulators and the Bulk–Boundary Correspondence</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-06-topological-insulators-bulk-boundary-correspondence/</link><pubDate>Tue, 30 Jun 2026 12:00:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-06-topological-insulators-bulk-boundary-correspondence/</guid><description><![CDATA[<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Presenter</strong></td>
+          <td>Yiyang Jiang</td>
+      </tr>
+      <tr>
+          <td><strong>Date</strong></td>
+          <td>June 30, 2026</td>
+      </tr>
+      <tr>
+          <td><strong>Venue</strong></td>
+          <td>Topology Seminar</td>
+      </tr>
+      <tr>
+          <td><strong>Notes</strong></td>
+          <td>Typeset &amp; handwritten versions below</td>
+      </tr>
+  </tbody>
+</table>
+<p>These notes build the <strong>bulk–boundary correspondence</strong> of topological band insulators
+from the ground up — from the modern theory of polarization to the protected edge spectrum
+and the wider topological zoo. Both the typeset write-up and the original handwritten notes
+are attached below.</p>]]></description></item></channel></rss>
