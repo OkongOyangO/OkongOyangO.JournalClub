@@ -38,3 +38,13 @@
     border-color: #2b2b2b;
     background-color: #1d1f21;
 }
+
+// Home-page previews: show the FULL manual summary (the session-info table + intro
+// paragraph before <!--more-->) instead of LoveIt's default 3-line clamp, which slices
+// the table. Scoped to the home list only — full post pages are unaffected.
+.page.home .summary .content {
+    display: block;            // undo the theme's -webkit-box
+    -webkit-line-clamp: unset; // remove the 3-line limit
+    overflow: visible;
+    max-height: none;
+}
