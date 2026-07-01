@@ -65,7 +65,7 @@ theme = "LoveIt"
     [params.home.profile]
       enable = true
       gravatarEmail = ""
-      avatarURL = "/OkongOyangO.JournalClub/images/profile.png"
+      avatarURL = "/OkongOyangO.JournalClub/images/profile.gif"
       title = "Condensed Matter🍩 + AI🤖 Journal Club🎓"
       subtitle = "Lecture notes & paper discussions"
       social = true

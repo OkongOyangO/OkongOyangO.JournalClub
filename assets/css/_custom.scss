@@ -39,6 +39,11 @@
     background-color: #1d1f21;
 }
 
+// Larger home avatar / cover image (theme default is 8rem).
+.page.home .home-profile .home-avatar img {
+    width: 12rem;
+}
+
 // Home-page previews: show the FULL manual summary (the session-info table + intro
 // paragraph before <!--more-->) instead of LoveIt's default 3-line clamp, which slices
 // the table. Scoped to the home list only — full post pages are unaffected.
