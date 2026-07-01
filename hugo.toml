@@ -4,7 +4,7 @@
 baseURL = "https://OkongOyangO.github.io/OkongOyangO.JournalClub/"
 defaultContentLanguage = "en"
 languageCode = "en"
-title = "Condensed Matter Journal Club"
+title = "Condensed Matter🍩 + AI🤖 Journal Club🎓"
 theme = "LoveIt"
 
 # -----------------------------------------------------------------------------
@@ -43,7 +43,7 @@ theme = "LoveIt"
     mobileMode = "auto"
     [params.header.title]
       logo = ""
-      name = "Journal Club"
+      name = "Condensed Matter🍩 + AI🤖 Journal Club🎓"
       type = "it"
 
   # Footer Configuration
@@ -66,7 +66,7 @@ theme = "LoveIt"
       enable = true
       gravatarEmail = ""
       avatarURL = "/OkongOyangO.JournalClub/images/profile.png"
-      title = "Condensed Matter Journal Club"
+      title = "Condensed Matter🍩 + AI🤖 Journal Club🎓"
       subtitle = "Lecture notes & paper discussions"
       social = true
 
