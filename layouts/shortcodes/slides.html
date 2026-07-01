@@ -1,0 +1,25 @@
+{{- /*
+  Slide-deck download shortcode (PPTX/KEY/ODP — download only, no inline viewer).
+
+  Usage:
+    {{< slides src="talk.pptx" >}}                    -> resolves to /slides/talk.pptx
+    {{< slides src="talk.pptx" title="Slides (PPTX)" >}}
+
+  A bare filename (no "/") resolves under static/slides/. Any other path is taken
+  relative to static/. relURL adds the site's subdirectory prefix automatically.
+*/ -}}
+{{- $src := .Get "src" | default (.Get 0) -}}
+{{- if not $src -}}
+  {{- errorf "slides shortcode: missing 'src' (page %q)" .Page.Path -}}
+{{- end -}}
+{{- $url := $src -}}
+{{- if not (or (hasPrefix $src "http://") (hasPrefix $src "https://")) -}}
+  {{- $path := cond (strings.Contains $src "/") (strings.TrimPrefix "/" $src) (printf "slides/%s" $src) -}}
+  {{- $url = $path | relURL -}}
+{{- end -}}
+{{- $title := .Get "title" | default "Download slides (PPTX)" -}}
+<div class="pdf-note">
+    <a class="pdf-download slides-download" href="{{ $url }}" download target="_blank" rel="noopener noreferrer">
+        <i class="fas fa-file-powerpoint fa-fw" aria-hidden="true"></i>&nbsp;{{ $title }}
+    </a>
+</div>

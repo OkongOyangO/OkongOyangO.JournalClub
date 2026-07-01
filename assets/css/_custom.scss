@@ -39,6 +39,15 @@
     background-color: #1d1f21;
 }
 
+// Slide-deck (PPTX) download button — PowerPoint brand orange
+.slides-download {
+    background-color: #d24726;
+
+    &:hover {
+        background-color: #b0381b;
+    }
+}
+
 // Larger home avatar / cover image (theme default is 8rem).
 .page.home .home-profile .home-avatar img {
     width: 12rem;
