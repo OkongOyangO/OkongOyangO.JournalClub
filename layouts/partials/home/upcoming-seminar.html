@@ -1,0 +1,155 @@
+{{- /*
+  Upcoming Seminar widget — live-synced from the Journal Club Google Sheet.
+
+  Data source: the sheet's gviz CSV endpoint, which (unlike /export?format=csv)
+  answers 200 directly with `Access-Control-Allow-Origin`, so a browser fetch()
+  works cross-origin. The sheet is public (anyone-with-link can view).
+
+  The sheet is edited live and its columns change (it has grown Affiliation/Advisor
+  columns), so the script maps columns BY HEADER NAME, not by fixed position, and is
+  tolerant of extra/reordered columns. It renders the next upcoming seminar: the
+  earliest row dated today-or-later whose Speaker is a real name (blank / "N/A" rows,
+  e.g. summer-school break weeks, are skipped).
+
+  The markup below is a STATIC FALLBACK rendered at build time; the script replaces
+  #us-body on a successful fetch. If the fetch fails (offline, sheet made private, JS
+  off) the fallback simply remains — keep it in sync with the sheet's next real talk
+  when rebuilding so a no-JS visitor still sees something current.
+*/ -}}
+{{- $sheetCSV := "https://docs.google.com/spreadsheets/d/1qyJctJWwThQQqEfSTpArsCFfoyeAas9ttr16yNbRVP4/gviz/tq?tqx=out:csv" -}}
+{{- $sheetView := "https://docs.google.com/spreadsheets/d/1qyJctJWwThQQqEfSTpArsCFfoyeAas9ttr16yNbRVP4/edit?usp=sharing" -}}
+<aside id="upcoming-seminar" class="upcoming-seminar" aria-label="Upcoming seminar">
+    <div class="us-head">
+        <i class="fas fa-calendar-day fa-fw" aria-hidden="true"></i>
+        <span>Upcoming Seminar</span>
+    </div>
+    <div class="us-body" id="us-body">
+        <div class="us-date"><span class="us-day">6 July</span><span class="us-dow">Mon</span></div>
+        <div class="us-time">4:30pm &ndash; 6:00pm</div>
+        <div class="us-speaker">Yiyang Jiang <span class="us-affil">&middot; PSU</span></div>
+        <div class="us-topic">AI workflow and Vibe Researching</div>
+    </div>
+    <a class="us-schedule" href="{{ $sheetView }}" target="_blank" rel="noopener noreferrer">Full schedule <i class="fas fa-external-link-alt fa-fw" aria-hidden="true"></i></a>
+</aside>
+<script>
+(function () {
+    "use strict";
+    var SHEET_CSV = "{{ $sheetCSV }}";
+    var MONTHS = { january:0, february:1, march:2, april:3, may:4, june:5, july:6, august:7, september:8, october:9, november:10, december:11,
+                   jan:0, feb:1, mar:2, apr:3, jun:5, jul:6, aug:7, sep:8, sept:8, oct:9, nov:10, dec:11 };
+    var DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+    // Minimal RFC-4180-ish CSV parser: handles quoted fields, quoted commas,
+    // "" escapes and CRLF. gviz quotes every field, so this is required.
+    function parseCSV(text) {
+        var rows = [], row = [], field = "", inQ = false, c;
+        for (var i = 0; i < text.length; i++) {
+            c = text.charAt(i);
+            if (inQ) {
+                if (c === '"') {
+                    if (text.charAt(i + 1) === '"') { field += '"'; i++; }
+                    else { inQ = false; }
+                } else { field += c; }
+            } else if (c === '"') { inQ = true; }
+            else if (c === ",") { row.push(field); field = ""; }
+            else if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; }
+            else if (c === "\r") { /* ignore */ }
+            else { field += c; }
+        }
+        if (field.length || row.length) { row.push(field); rows.push(row); }
+        return rows;
+    }
+
+    function norm(s) { return String(s == null ? "" : s).trim().toLowerCase(); }
+
+    // Map columns by header label so added/reordered columns don't break us.
+    function resolveCols(header) {
+        var idx = { date: -1, time: -1, speaker: -1, affiliation: -1, topic: -1 };
+        for (var i = 0; i < header.length; i++) {
+            var h = norm(header[i]);
+            if (h === "date" && idx.date < 0) { idx.date = i; }
+            else if (h === "time" && idx.time < 0) { idx.time = i; } // sheet header is "TIme"
+            else if (h === "speaker" && idx.speaker < 0) { idx.speaker = i; }
+            else if (h === "affiliation" && idx.affiliation < 0) { idx.affiliation = i; }
+            else if (h === "topic" && idx.topic < 0) { idx.topic = i; }
+        }
+        if (idx.date < 0) { idx.date = 0; }
+        if (idx.time < 0) { idx.time = 1; }
+        if (idx.speaker < 0) { idx.speaker = 2; }
+        if (idx.topic < 0) { idx.topic = header.length - 1; } // topic is normally the last column
+        return idx;
+    }
+
+    // "6 July" -> Date. No year in the sheet, so assume the current year and roll
+    // forward when the date is clearly in the past (handles the Dec -> Jan wrap).
+    function parseDate(s, now) {
+        var m = String(s == null ? "" : s).trim().match(/^(\d{1,2})\s+([A-Za-z]+)/);
+        if (!m) { return null; }
+        var day = parseInt(m[1], 10);
+        var mon = MONTHS[m[2].toLowerCase()];
+        if (mon == null || !(day >= 1 && day <= 31)) { return null; }
+        var today0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        var d = new Date(now.getFullYear(), mon, day);
+        if (d < today0 && (today0 - d) > 200 * 864e5) { d = new Date(now.getFullYear() + 1, mon, day); }
+        return d;
+    }
+
+    function cell(cells, i) { return (i >= 0 && i < cells.length) ? (cells[i] || "").trim() : ""; }
+
+    function pickNext(rows, now) {
+        if (!rows.length) { return null; }
+        var col = resolveCols(rows[0]);
+        var today0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        var best = null;
+        for (var r = 1; r < rows.length; r++) { // row 0 is the header
+            var cells = rows[r];
+            if (!cells) { continue; }
+            var speaker = cell(cells, col.speaker);
+            if (!speaker || speaker.toUpperCase() === "N/A") { continue; } // break week, not a talk
+            var d = parseDate(cell(cells, col.date), now);
+            if (!d || d < today0) { continue; }
+            if (!best || d < best.date) {
+                best = { date: d, dateStr: cell(cells, col.date), time: cell(cells, col.time),
+                         speaker: speaker, affiliation: cell(cells, col.affiliation), topic: cell(cells, col.topic) };
+            }
+        }
+        return best;
+    }
+
+    function esc(t) { var e = document.createElement("div"); e.textContent = t == null ? "" : t; return e.innerHTML; }
+
+    function render(sem) {
+        var body = document.getElementById("us-body");
+        if (!body) { return; }
+        if (!sem) {
+            body.innerHTML = '<div class="us-none">No upcoming seminar scheduled &mdash; see the full schedule.</div>';
+            return;
+        }
+        var time = esc(sem.time).replace(/\s*-\s*/, " &ndash; ");
+        var speaker = esc(sem.speaker);
+        if (sem.affiliation && sem.affiliation.toUpperCase() !== "N/A") {
+            speaker += ' <span class="us-affil">&middot; ' + esc(sem.affiliation) + '</span>';
+        }
+        var topic = sem.topic
+            ? '<div class="us-topic">' + esc(sem.topic) + '</div>'
+            : '<div class="us-topic us-tba">Topic to be announced</div>';
+        body.innerHTML =
+            '<div class="us-date"><span class="us-day">' + esc(sem.dateStr) + '</span>'
+                + '<span class="us-dow">' + DOW[sem.date.getDay()] + '</span></div>'
+            + (sem.time ? '<div class="us-time">' + time + '</div>' : '')
+            + '<div class="us-speaker">' + speaker + '</div>'
+            + topic;
+    }
+
+    function load() {
+        if (!window.fetch) { return; } // keep static fallback on very old browsers
+        fetch(SHEET_CSV, { credentials: "omit" })
+            .then(function (res) { if (!res.ok) { throw new Error("HTTP " + res.status); } return res.text(); })
+            .then(function (text) { render(pickNext(parseCSV(text), new Date())); })
+            .catch(function () { /* leave the static fallback in place */ });
+    }
+
+    if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", load); }
+    else { load(); }
+})();
+</script>

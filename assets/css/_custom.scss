@@ -62,3 +62,123 @@
     overflow: visible;
     max-height: none;
 }
+
+// ── Upcoming Seminar widget ───────────────────────────────────────────────────
+// Live-synced from the Journal Club Google Sheet (see partials/home/upcoming-seminar.html).
+// In-flow card under the profile by default (always visible, never overlaps content);
+// promoted to a fixed widget in the right gutter on ultra-wide screens, where the .page
+// column (max-width 1080px) finally leaves enough margin to hold it clear of the content.
+.upcoming-seminar {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 22rem;
+    margin: 1.6rem auto 0;
+    align-self: center; // in case .page.home is a flex column
+    padding: 1rem 1.15rem 1.05rem;
+    text-align: left;
+    border: 1px solid $global-border-color;
+    border-top: 3px solid $single-link-color;
+    border-radius: 8px;
+    background-color: $global-background-color;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    font-size: 0.9rem;
+    line-height: 1.45;
+
+    .us-head {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.7rem;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: $single-link-color;
+
+        i { margin-right: 0.45rem; }
+    }
+
+    .us-date {
+        display: flex;
+        align-items: baseline;
+        margin-bottom: 0.1rem;
+    }
+
+    .us-day {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: $global-font-color;
+    }
+
+    .us-dow {
+        margin-left: 0.5rem;
+        font-size: 0.8rem;
+        color: $global-font-secondary-color;
+    }
+
+    .us-time {
+        margin-bottom: 0.55rem;
+        font-size: 0.85rem;
+        color: $global-font-secondary-color;
+    }
+
+    .us-speaker {
+        font-weight: 600;
+        color: $global-font-color;
+    }
+
+    .us-affil {
+        font-weight: 400;
+        font-size: 0.85rem;
+        color: $global-font-secondary-color;
+    }
+
+    .us-topic {
+        margin-top: 0.1rem;
+        color: $global-font-color;
+    }
+
+    .us-none,
+    .us-tba {
+        color: $global-font-secondary-color;
+        font-style: italic;
+    }
+
+    .us-schedule {
+        display: inline-block;
+        margin-top: 0.85rem;
+        font-size: 0.78rem;
+        color: $single-link-color;
+        text-decoration: none;
+
+        i { margin-left: 0.15rem; font-size: 0.72rem; }
+        &:hover { text-decoration: underline; }
+    }
+}
+
+// Ultra-wide: float the card into the right gutter beside the centered profile.
+// 14rem card + 1.5rem gap fits clear of the 1080px column once the viewport ≥ 1600px.
+@media only screen and (min-width: 1600px) {
+    .page.home .upcoming-seminar {
+        position: fixed;
+        top: 50%;
+        right: 1.5rem;
+        transform: translateY(-50%);
+        width: 14rem;
+        max-width: 14rem;
+        margin: 0;
+        z-index: 12;
+    }
+}
+
+// Dark theme (LoveIt sets theme="dark" on <body>).
+[theme="dark"] .upcoming-seminar {
+    border-color: $global-border-color-dark;
+    border-top-color: $single-link-color-dark;
+    background-color: lighten($global-background-color-dark, 3%);
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+
+    .us-head { color: $single-link-color-dark; }
+    .us-day, .us-speaker, .us-topic { color: $global-font-color-dark; }
+    .us-dow, .us-time, .us-none, .us-affil, .us-tba { color: darken($global-font-color-dark, 18%); }
+    .us-schedule { color: $single-link-color-dark; }
+}

@@ -16,13 +16,23 @@ same subdirectory-deployment layout overrides, but is a **separate site / separa
 - Layout overrides in `layouts/` (copied from the Notes site):
   - `partials/head/link.html` — favicon paths via `relURL` for subdirectory deployment
   - `partials/header.html` — text labels on Search/Theme buttons
-  - `partials/home/profile.html` — animated subtitle + GitHub star link (journal-club text)
+  - `partials/home/profile.html` — animated subtitle + GitHub star link (journal-club text);
+    also includes the `home/upcoming-seminar.html` partial
+  - `partials/home/upcoming-seminar.html` — "Upcoming Seminar" card, **live-synced** from the
+    Journal Club Google Sheet via its **gviz CSV** endpoint
+    (`/gviz/tq?tqx=out:csv` — the only endpoint that answers a browser `fetch` with CORS;
+    `/export?format=csv` 307-redirects and drops the CORS header). Client-side JS maps columns
+    **by header name** (the sheet is edited live and has grown Affiliation/Advisor columns), picks
+    the next row dated today-or-later with a real speaker (blank / `N/A` break weeks skipped), and
+    replaces a build-time **static fallback**. In-flow card under the profile; promoted to a fixed
+    right-gutter widget on screens ≥ 1600px (the 1080px `.page` column leaves no gutter below that).
   - `partials/extend_head.html` — inherited from the Notes site; **dead code** (LoveIt never
     references `extend_head.html`, so its MathJax block does not load — math works via LoveIt's
     native KaTeX). Do NOT add CSS/JS here expecting it to load; use the hooks below.
   - `shortcodes/pdf.html` — the `{{< pdf >}}` shortcode (download button + inline PDF viewer)
   - `assets/css/_custom.scss` — custom CSS hook the theme actually compiles (`style.scss`
-    does `@import "_custom"`). PDF-button/viewer styling lives here.
+    does `@import "_custom"`). PDF-button/viewer styling and the Upcoming Seminar card styling
+    (theme SCSS vars for light/dark) live here.
   - `404.html` — links back to this subsite
   - **`taxonomy/term.html`** — maps the theme's legacy single-term template to Hugo's modern
     `term` kind so individual `/tags/<tag>/` pages render (see Key Decisions).
