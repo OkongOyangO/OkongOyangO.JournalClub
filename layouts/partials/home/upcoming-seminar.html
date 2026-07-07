@@ -1,5 +1,5 @@
 {{- /*
-  Upcoming Seminar widget — live-synced from the Journal Club Google Sheet.
+  Upcoming Seminars widget — live-synced from the Journal Club Google Sheet.
 
   Data source: the sheet's gviz CSV endpoint, which (unlike /export?format=csv)
   answers 200 directly with `Access-Control-Allow-Origin`, so a browser fetch()
@@ -7,27 +7,46 @@
 
   The sheet is edited live and its columns change (it has grown Affiliation/Advisor
   columns), so the script maps columns BY HEADER NAME, not by fixed position, and is
-  tolerant of extra/reordered columns. It renders the next upcoming seminar: the
-  earliest row dated today-or-later whose Speaker is a real name (blank / "N/A" rows,
-  e.g. summer-school break weeks, are skipped).
+  tolerant of extra/reordered columns. It lists every upcoming seminar (rows dated
+  today-or-later whose Speaker is a real name; blank / "N/A" break weeks are skipped),
+  soonest first, in a scrollable list with the next one tagged. Every populated column
+  is shown: Date/Time/Speaker/Affiliation/Topic get bespoke styling, and anything else
+  (Advisor, or any column added later) renders as a "Label: value" line.
 
   The markup below is a STATIC FALLBACK rendered at build time; the script replaces
-  #us-body on a successful fetch. If the fetch fails (offline, sheet made private, JS
-  off) the fallback simply remains — keep it in sync with the sheet's next real talk
-  when rebuilding so a no-JS visitor still sees something current.
+  #us-list on a successful fetch. If the fetch fails (offline, sheet made private, JS
+  off) the fallback simply remains — keep it roughly in sync with the sheet's next
+  talks when rebuilding so a no-JS visitor still sees something current.
 */ -}}
 {{- $sheetCSV := "https://docs.google.com/spreadsheets/d/1qyJctJWwThQQqEfSTpArsCFfoyeAas9ttr16yNbRVP4/gviz/tq?tqx=out:csv" -}}
 {{- $sheetView := "https://docs.google.com/spreadsheets/d/1qyJctJWwThQQqEfSTpArsCFfoyeAas9ttr16yNbRVP4/edit?usp=sharing" -}}
-<aside id="upcoming-seminar" class="upcoming-seminar" aria-label="Upcoming seminar">
+<aside id="upcoming-seminar" class="upcoming-seminar" aria-label="Upcoming seminars">
     <div class="us-head">
         <i class="fas fa-calendar-day fa-fw" aria-hidden="true"></i>
-        <span>Upcoming Seminar</span>
+        <span>Upcoming Seminars</span>
     </div>
-    <div class="us-body" id="us-body">
-        <div class="us-date"><span class="us-day">6 July</span><span class="us-dow">Mon</span></div>
-        <div class="us-time">4:30pm &ndash; 6:00pm</div>
-        <div class="us-speaker">Yiyang Jiang <span class="us-affil">&middot; PSU</span></div>
-        <div class="us-topic">AI workflow and Vibe Researching</div>
+    <div class="us-list" id="us-list">
+        <div class="us-item us-next">
+            <div class="us-date"><span class="us-day">6 July</span><span class="us-dow">Mon</span><span class="us-tag">Next</span></div>
+            <div class="us-time">4:30pm &ndash; 6:00pm</div>
+            <div class="us-speaker">Yiyang Jiang <span class="us-affil">&middot; PSU</span></div>
+            <div class="us-extra"><span class="us-label">Advisor:</span> Binghai Yan</div>
+            <div class="us-topic">AI workflow and Vibe Researching</div>
+        </div>
+        <div class="us-item">
+            <div class="us-date"><span class="us-day">15 July</span><span class="us-dow">Wed</span></div>
+            <div class="us-time">4:30pm &ndash; 6:00pm</div>
+            <div class="us-speaker">Xiao Wang <span class="us-affil">&middot; Cornell</span></div>
+            <div class="us-extra"><span class="us-label">Advisor:</span> Eun-Ah Kim</div>
+            <div class="us-topic">Nonequilibrium Dynamics</div>
+        </div>
+        <div class="us-item">
+            <div class="us-date"><span class="us-day">27 July</span><span class="us-dow">Mon</span></div>
+            <div class="us-time">4:30pm &ndash; 6:00pm</div>
+            <div class="us-speaker">Pu Xiao <span class="us-affil">&middot; PSU</span></div>
+            <div class="us-extra"><span class="us-label">Advisor:</span> Cuizu Chang</div>
+            <div class="us-topic">Experimental Realization of Topological Insulator</div>
+        </div>
     </div>
     <a class="us-schedule" href="{{ $sheetView }}" target="_blank" rel="noopener noreferrer">Full schedule <i class="fas fa-external-link-alt fa-fw" aria-hidden="true"></i></a>
 </aside>
@@ -35,6 +54,7 @@
 (function () {
     "use strict";
     var SHEET_CSV = "{{ $sheetCSV }}";
+    var MAX_ITEMS = 12;
     var MONTHS = { january:0, february:1, march:2, april:3, may:4, june:5, july:6, august:7, september:8, october:9, november:10, december:11,
                    jan:0, feb:1, mar:2, apr:3, jun:5, jul:6, aug:7, sep:8, sept:8, oct:9, nov:10, dec:11 };
     var DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -96,11 +116,35 @@
 
     function cell(cells, i) { return (i >= 0 && i < cells.length) ? (cells[i] || "").trim() : ""; }
 
-    function pickNext(rows, now) {
-        if (!rows.length) { return null; }
-        var col = resolveCols(rows[0]);
+    // Columns rendered explicitly (see itemHTML); everything else in the sheet
+    // becomes a generic "Label: value" line so no information is dropped.
+    function handledCols(col) {
+        var h = {};
+        ["date", "time", "speaker", "affiliation", "topic"].forEach(function (k) { if (col[k] >= 0) { h[col[k]] = true; } });
+        return h;
+    }
+
+    // Any non-handled, non-empty column (Advisor today, or anything added later),
+    // in sheet order, as label/value pairs.
+    function extraFields(header, cells, handled) {
+        var out = [];
+        for (var k = 0; k < cells.length; k++) {
+            if (handled[k]) { continue; }
+            var v = (cells[k] || "").trim();
+            if (!v || v.toUpperCase() === "N/A") { continue; }
+            out.push({ label: (k < header.length ? String(header[k] || "").trim() : ""), value: v });
+        }
+        return out;
+    }
+
+    // Every upcoming seminar (today-or-later, real speaker), soonest first.
+    function collectUpcoming(rows, now) {
+        if (!rows.length) { return []; }
+        var header = rows[0];
+        var col = resolveCols(header);
+        var handled = handledCols(col);
         var today0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        var best = null;
+        var out = [];
         for (var r = 1; r < rows.length; r++) { // row 0 is the header
             var cells = rows[r];
             if (!cells) { continue; }
@@ -108,44 +152,60 @@
             if (!speaker || speaker.toUpperCase() === "N/A") { continue; } // break week, not a talk
             var d = parseDate(cell(cells, col.date), now);
             if (!d || d < today0) { continue; }
-            if (!best || d < best.date) {
-                best = { date: d, dateStr: cell(cells, col.date), time: cell(cells, col.time),
-                         speaker: speaker, affiliation: cell(cells, col.affiliation), topic: cell(cells, col.topic) };
-            }
+            out.push({ date: d, dateStr: cell(cells, col.date), time: cell(cells, col.time),
+                       speaker: speaker, affiliation: cell(cells, col.affiliation), topic: cell(cells, col.topic),
+                       extras: extraFields(header, cells, handled) });
         }
-        return best;
+        out.sort(function (a, b) { return a.date - b.date; });
+        return out.slice(0, MAX_ITEMS);
     }
 
     function esc(t) { var e = document.createElement("div"); e.textContent = t == null ? "" : t; return e.innerHTML; }
 
-    function render(sem) {
-        var body = document.getElementById("us-body");
-        if (!body) { return; }
-        if (!sem) {
-            body.innerHTML = '<div class="us-none">No upcoming seminar scheduled &mdash; see the full schedule.</div>';
-            return;
-        }
+    function itemHTML(sem, isNext) {
         var time = esc(sem.time).replace(/\s*-\s*/, " &ndash; ");
         var speaker = esc(sem.speaker);
         if (sem.affiliation && sem.affiliation.toUpperCase() !== "N/A") {
             speaker += ' <span class="us-affil">&middot; ' + esc(sem.affiliation) + '</span>';
         }
+        var extras = "";
+        if (sem.extras) {
+            for (var e = 0; e < sem.extras.length; e++) {
+                var f = sem.extras[e];
+                extras += '<div class="us-extra">'
+                    + (f.label ? '<span class="us-label">' + esc(f.label) + ':</span> ' : '')
+                    + esc(f.value) + '</div>';
+            }
+        }
         var topic = sem.topic
             ? '<div class="us-topic">' + esc(sem.topic) + '</div>'
             : '<div class="us-topic us-tba">Topic to be announced</div>';
-        body.innerHTML =
-            '<div class="us-date"><span class="us-day">' + esc(sem.dateStr) + '</span>'
-                + '<span class="us-dow">' + DOW[sem.date.getDay()] + '</span></div>'
+        return '<div class="us-item' + (isNext ? ' us-next' : '') + '">'
+            + '<div class="us-date"><span class="us-day">' + esc(sem.dateStr) + '</span>'
+                + '<span class="us-dow">' + DOW[sem.date.getDay()] + '</span>'
+                + (isNext ? '<span class="us-tag">Next</span>' : '') + '</div>'
             + (sem.time ? '<div class="us-time">' + time + '</div>' : '')
             + '<div class="us-speaker">' + speaker + '</div>'
-            + topic;
+            + extras
+            + topic
+            + '</div>';
+    }
+
+    function render(list) {
+        var box = document.getElementById("us-list");
+        if (!box) { return; }
+        if (!list.length) {
+            box.innerHTML = '<div class="us-none">No upcoming seminars scheduled &mdash; see the full schedule.</div>';
+            return;
+        }
+        box.innerHTML = list.map(function (sem, i) { return itemHTML(sem, i === 0); }).join("");
     }
 
     function load() {
         if (!window.fetch) { return; } // keep static fallback on very old browsers
         fetch(SHEET_CSV, { credentials: "omit" })
             .then(function (res) { if (!res.ok) { throw new Error("HTTP " + res.status); } return res.text(); })
-            .then(function (text) { render(pickNext(parseCSV(text), new Date())); })
+            .then(function (text) { render(collectUpcoming(parseCSV(text), new Date())); })
             .catch(function () { /* leave the static fallback in place */ });
     }
 

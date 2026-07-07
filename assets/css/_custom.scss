@@ -56,11 +56,23 @@
 // Home-page previews: show the FULL manual summary (the session-info table + intro
 // paragraph before <!--more-->) instead of LoveIt's default 3-line clamp, which slices
 // the table. Scoped to the home list only — full post pages are unaffected.
+// Also un-greys the body: the theme paints the summary content (and its bold labels)
+// with the muted secondary colour; bump it to the post-title colour so the abstract
+// table + intro read as clearly as the title. Applies in both light and dark themes.
 .page.home .summary .content {
     display: block;            // undo the theme's -webkit-box
     -webkit-line-clamp: unset; // remove the 3-line limit
     overflow: visible;
     max-height: none;
+    color: $global-font-color; // match the title (theme uses $global-font-secondary-color)
+
+    b, strong { color: $global-font-color; } // theme greys these too — override
+}
+
+[theme="dark"] .page.home .summary .content {
+    color: $global-font-color-dark;
+
+    b, strong { color: $global-font-color-dark; }
 }
 
 // ── Upcoming Seminar widget ───────────────────────────────────────────────────
@@ -97,6 +109,42 @@
         i { margin-right: 0.45rem; }
     }
 
+    // Scrollable list of upcoming talks — shows a few, scrolls the rest.
+    .us-list {
+        max-height: 13rem;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        margin-right: -0.45rem;   // room for the scrollbar without shifting text
+        padding-right: 0.45rem;
+
+        &::-webkit-scrollbar { width: 6px; }
+        &::-webkit-scrollbar-thumb { background: $global-border-color; border-radius: 3px; }
+        &::-webkit-scrollbar-track { background: transparent; }
+    }
+
+    .us-item {
+        padding: 0.65rem 0;
+        border-top: 1px solid $global-border-color;
+
+        &:first-child { border-top: 0; padding-top: 0.15rem; }
+        &:last-child { padding-bottom: 0.15rem; }
+    }
+
+    // "Next" pill on the soonest talk.
+    .us-tag {
+        margin-left: 0.5rem;
+        padding: 0.04rem 0.4rem;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: #fff;
+        background-color: $single-link-color;
+        border-radius: 10px;
+        line-height: 1.5;
+    }
+
     .us-date {
         display: flex;
         align-items: baseline;
@@ -116,7 +164,7 @@
     }
 
     .us-time {
-        margin-bottom: 0.55rem;
+        margin-bottom: 0.4rem;
         font-size: 0.85rem;
         color: $global-font-secondary-color;
     }
@@ -129,6 +177,18 @@
     .us-affil {
         font-weight: 400;
         font-size: 0.85rem;
+        color: $global-font-secondary-color;
+    }
+
+    // Generic extra columns (Advisor, etc.) — label muted, value in body colour.
+    .us-extra {
+        margin-top: 0.12rem;
+        font-size: 0.82rem;
+        color: $global-font-color;
+    }
+
+    .us-label {
+        font-weight: 600;
         color: $global-font-secondary-color;
     }
 
@@ -178,7 +238,11 @@
     box-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
 
     .us-head { color: $single-link-color-dark; }
-    .us-day, .us-speaker, .us-topic { color: $global-font-color-dark; }
-    .us-dow, .us-time, .us-none, .us-affil, .us-tba { color: darken($global-font-color-dark, 18%); }
+    .us-day, .us-speaker, .us-topic, .us-extra { color: $global-font-color-dark; }
+    .us-dow, .us-time, .us-none, .us-affil, .us-tba, .us-label { color: darken($global-font-color-dark, 18%); }
     .us-schedule { color: $single-link-color-dark; }
+
+    .us-item { border-top-color: $global-border-color-dark; }
+    .us-list::-webkit-scrollbar-thumb { background: $global-border-color-dark; }
+    .us-tag { background-color: $single-link-color-dark; color: #16181a; }
 }
