@@ -1,4 +1,35 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Condensed Matter🍩 + AI🤖 Journal Club🎓</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/</link><description>Lecture notes from the condensed matter theory journal club organized by Yiyang Jiang at Penn State.</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>yzj5306@psu.edu (Yiyang Jiang)</managingEditor><webMaster>yzj5306@psu.edu (Yiyang Jiang)</webMaster><lastBuildDate>Wed, 15 Jul 2026 14:00:00 -0400</lastBuildDate><atom:link href="https://OkongOyangO.github.io/OkongOyangO.JournalClub/index.xml" rel="self" type="application/rss+xml"/><item><title>Dynamical Phase Transition in Droplet Dynamics</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-07-droplet-dynamics-dynamical-phase-transition/</link><pubDate>Wed, 15 Jul 2026 14:00:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-07-droplet-dynamics-dynamical-phase-transition/</guid><description><![CDATA[<table>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Condensed Matter🍩 + AI🤖 Journal Club🎓</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/</link><description>Lecture notes from the condensed matter theory journal club organized by Yiyang Jiang at Penn State.</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>yzj5306@psu.edu (Yiyang Jiang)</managingEditor><webMaster>yzj5306@psu.edu (Yiyang Jiang)</webMaster><lastBuildDate>Mon, 03 Aug 2026 16:30:00 -0400</lastBuildDate><atom:link href="https://OkongOyangO.github.io/OkongOyangO.JournalClub/index.xml" rel="self" type="application/rss+xml"/><item><title>Neural Networks for Physicists: From One Neuron to Attention</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-neural-networks-for-physicists/</link><pubDate>Mon, 03 Aug 2026 16:30:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-neural-networks-for-physicists/</guid><description><![CDATA[<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Presenter</strong></td>
+          <td>Mu-Yang Chen (Prof. Chao-Xing Liu&rsquo;s group, Penn State)</td>
+      </tr>
+      <tr>
+          <td><strong>Date</strong></td>
+          <td>August 3, 2026 · 4:30–6:00 PM</td>
+      </tr>
+      <tr>
+          <td><strong>Location</strong></td>
+          <td>Davey 339</td>
+      </tr>
+      <tr>
+          <td><strong>Topic</strong></td>
+          <td>Neural networks for physicists — from one neuron to attention</td>
+      </tr>
+  </tbody>
+</table>
+<p>A three-part pedagogical tour: what a neural network actually is and how it is trained,
+what attention adds once the data are sequences, and how both are being used right now in
+many-body physics — neural-network wavefunction ansätze optimised by variational Monte
+Carlo, and reduced density matrices learned without the wavefunction at all. The organising
+claim: a network is a very flexible fitting function, and the physics lives entirely in the
+details of how much of it you build in by hand.</p>]]></description></item><item><title>Dynamical Phase Transition in Droplet Dynamics</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-07-droplet-dynamics-dynamical-phase-transition/</link><pubDate>Wed, 15 Jul 2026 14:00:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-07-droplet-dynamics-dynamical-phase-transition/</guid><description><![CDATA[<table>
   <thead>
       <tr>
           <th></th>

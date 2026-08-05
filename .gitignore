@@ -3,6 +3,9 @@ resources/
 .hugo_build.lock
 .DS_Store
 
+# Local Claude Code preview config (hugo server launch settings)
+.claude/
+
 # Theme demo site (contains placeholder tokens flagged by secret scanning)
 themes/LoveIt/exampleSite/
 
