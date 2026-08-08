@@ -1,0 +1,40 @@
+{{- /*
+  Sign-up call to action for /signup/.
+
+  Usage:  {{< signup-cta >}}
+
+  Reads [params.signup] from hugo.toml and renders one of two states:
+    * formURL set (and enable not false) -> "Open the sign-up form in a new tab" button
+                                            plus params.signup.note underneath
+    * otherwise                          -> a mailto fallback, so the page is never a
+                                            dead end before the Google Form exists
+
+  This lives in a shortcode rather than inline in content/signup.md because Hugo does
+  NOT evaluate bare {{ ... }} Go template actions inside Markdown — only shortcodes.
+  The `with` guard is required: site.Params.signup is nil when the block is absent.
+*/ -}}
+{{- $enabled := false -}}
+{{- $url := "" -}}
+{{- $note := "" -}}
+{{- with site.Params.signup -}}
+  {{- if and (ne .enable false) .formURL -}}
+    {{- $enabled = true -}}
+    {{- $url = .formURL -}}
+    {{- $note = .note -}}
+  {{- end -}}
+{{- end -}}
+{{- $email := site.Params.author.email | default "yzj5306@psu.edu" -}}
+{{- if $enabled -}}
+<p><a class="signup-btn" href="{{ $url | safeURL }}" target="_blank" rel="noopener noreferrer"><i class="fas fa-user-plus fa-fw" aria-hidden="true"></i>&nbsp;Open the sign-up form in a new tab</a></p>
+{{- with $note -}}
+<p class="signup-note">{{ . }}</p>
+{{- end -}}
+{{- else -}}
+{{- /*
+  Fallback state. Deliberately a NORMAL paragraph rather than .signup-note: the page
+  above this point walks through a four-step process built around a form, so a small
+  grey aside reads as a footnote where the form should be. This has to carry the weight
+  of the "Request a slot" heading it sits under, and say what to do instead.
+*/ -}}
+<p>The online sign-up form is still being set up. Until it&rsquo;s live, email <a href="mailto:{{ $email }}">{{ $email }}</a> with the date you&rsquo;d like and what you want to present, and Yiyang will add you to the schedule by hand.</p>
+{{- end -}}

@@ -1,12 +1,21 @@
 {{- /*
   Upcoming Seminars widget — live-synced from the Journal Club Google Sheet.
 
-  Data source: the sheet's gviz CSV endpoint, which (unlike /export?format=csv)
-  answers 200 directly with `Access-Control-Allow-Origin`, so a browser fetch()
-  works cross-origin. The sheet is public (anyone-with-link can view).
+  Data source: the sheet's gviz **JSON** endpoint (`?tqx=out:json`). Like the CSV
+  endpoint it answers 200 cross-origin with `Access-Control-Allow-Origin` (unlike
+  /export?format=csv, which 307-redirects and drops the CORS header) — but unlike CSV
+  it carries the REAL YEAR of every date cell as `{"v":"Date(2026,8,14)","f":"14 September"}`.
+  That matters: the sheet's Date column is formatted "d mmmm" with no year, and the old
+  CSV parser had to guess the year from the display string. Its ">200 days in the past
+  means next year" heuristic mis-dated every row in the window [today-200d, today] — on
+  2026-08-08 that was 8 of 39 rows (25 January … 15 March 2027, all resolved to 2026 and
+  then dropped by the past filter). Free slots today, so nothing looked broken — but the
+  moment a speaker is booked into one of those rows the talk would silently not appear.
+  The JSON endpoint removes that whole class of bug: `v` gives the true year, `f` gives
+  the "14 September" string the card renders.
 
   The sheet is edited live and its columns change (it has grown Affiliation/Advisor
-  columns), so the script maps columns BY HEADER NAME, not by fixed position, and is
+  columns), so the script maps columns BY HEADER LABEL, not by fixed position, and is
   tolerant of extra/reordered columns. It lists every upcoming seminar (rows dated
   today-or-later whose Speaker is a real name; blank / "N/A" break weeks are skipped),
   soonest first, in a scrollable list with the next one tagged. Every populated column
@@ -17,9 +26,15 @@
   #us-list on a successful fetch. If the fetch fails (offline, sheet made private, JS
   off) the fallback simply remains — keep it roughly in sync with the sheet's next
   talks when rebuilding so a no-JS visitor still sees something current.
+
+  The card also carries the sign-up CTA, which renders only when [params.signup] has a
+  formURL. It lives INSIDE this <aside> on purpose: at >=1600px the card becomes
+  position:fixed in the right gutter (_custom.scss), so a sibling button placed after
+  the partial would be orphaned in the content column.
 */ -}}
-{{- $sheetCSV := "https://docs.google.com/spreadsheets/d/1qyJctJWwThQQqEfSTpArsCFfoyeAas9ttr16yNbRVP4/gviz/tq?tqx=out:csv" -}}
+{{- $sheetJSON := "https://docs.google.com/spreadsheets/d/1qyJctJWwThQQqEfSTpArsCFfoyeAas9ttr16yNbRVP4/gviz/tq?tqx=out:json" -}}
 {{- $sheetView := "https://docs.google.com/spreadsheets/d/1qyJctJWwThQQqEfSTpArsCFfoyeAas9ttr16yNbRVP4/edit?usp=sharing" -}}
+{{- $signupPage := "signup/" | relURL -}}
 <aside id="upcoming-seminar" class="upcoming-seminar" aria-label="Upcoming seminars">
     <div class="us-head">
         <i class="fas fa-calendar-day fa-fw" aria-hidden="true"></i>
@@ -29,51 +44,71 @@
         <div class="us-item us-next">
             <div class="us-date"><span class="us-day">17 August</span><span class="us-dow">Mon</span><span class="us-tag">Next</span></div>
             <div class="us-time">4:30pm &ndash; 6:00pm</div>
-            <div class="us-speaker">Yuting Bai <span class="us-affil">&middot; UIUC</span></div>
-            <div class="us-extra"><span class="us-label">Advisor:</span> Philip W. Phillips</div>
+            <div class="us-speaker">You-Chiuan Chen <span class="us-affil">&middot; PSU</span></div>
+            <div class="us-extra"><span class="us-label">Day of Week:</span> Monday</div>
             <div class="us-extra"><span class="us-label">Room:</span> Davey 339</div>
+            <div class="us-extra"><span class="us-label">Advisor:</span> Ribhu Kaul</div>
             <div class="us-topic us-tba">Topic to be announced</div>
         </div>
     </div>
-    <a class="us-schedule" href="{{ $sheetView }}" target="_blank" rel="noopener noreferrer">Full schedule <i class="fas fa-external-link-alt fa-fw" aria-hidden="true"></i></a>
+    <div class="us-actions">
+        {{- with .Site.Params.signup -}}
+        {{- if and (ne .enable false) .formURL -}}
+        <a class="us-signup" href="{{ $signupPage }}"><i class="fas fa-user-plus fa-fw" aria-hidden="true"></i>&nbsp;{{ .label | default "Sign up to present" }}</a>
+        {{- end -}}
+        {{- end -}}
+        <a class="us-schedule" href="{{ $sheetView }}" target="_blank" rel="noopener noreferrer">Full schedule <i class="fas fa-external-link-alt fa-fw" aria-hidden="true"></i></a>
+    </div>
 </aside>
 <script>
 (function () {
     "use strict";
-    var SHEET_CSV = "{{ $sheetCSV }}";
+    var SHEET_JSON = "{{ $sheetJSON }}";
     var MAX_ITEMS = 12;
-    var MONTHS = { january:0, february:1, march:2, april:3, may:4, june:5, july:6, august:7, september:8, october:9, november:10, december:11,
-                   jan:0, feb:1, mar:2, apr:3, jun:5, jul:6, aug:7, sep:8, sept:8, oct:9, nov:10, dec:11 };
     var DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-    // Minimal RFC-4180-ish CSV parser: handles quoted fields, quoted commas,
-    // "" escapes and CRLF. gviz quotes every field, so this is required.
-    function parseCSV(text) {
-        var rows = [], row = [], field = "", inQ = false, c;
-        for (var i = 0; i < text.length; i++) {
-            c = text.charAt(i);
-            if (inQ) {
-                if (c === '"') {
-                    if (text.charAt(i + 1) === '"') { field += '"'; i++; }
-                    else { inQ = false; }
-                } else { field += c; }
-            } else if (c === '"') { inQ = true; }
-            else if (c === ",") { row.push(field); field = ""; }
-            else if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; }
-            else if (c === "\r") { /* ignore */ }
-            else { field += c; }
-        }
-        if (field.length || row.length) { row.push(field); rows.push(row); }
-        return rows;
+    // gviz JSON is served as `/*O_o*/ google.visualization.Query.setResponse({...});`
+    // Slice between the first "(" and the last ")" to get the JSON payload.
+    function parseGviz(text) {
+        var s = text.indexOf("("), e = text.lastIndexOf(")");
+        if (s < 0 || e <= s) { return null; }
+        var d;
+        try { d = JSON.parse(text.slice(s + 1, e)); } catch (err) { return null; }
+        if (!d || !d.table || !d.table.cols) { return null; }
+        var cols = d.table.cols.map(function (c) { return String((c && c.label) || ""); });
+        var rows = (d.table.rows || []).map(function (r) {
+            var c = (r && r.c) || [], out = [];
+            for (var i = 0; i < cols.length; i++) {
+                var cell = c[i];
+                out.push(cell && cell.v != null ? cell : null); // empty cells are null OR {"v":null}
+            }
+            return out;
+        });
+        return { cols: cols, rows: rows };
+    }
+
+    // Date cells arrive as {"v":"Date(2026,8,14)","f":"14 September"} — month is ALREADY 0-based.
+    var DATE_RE = /^Date\((\d+),(\d+),(\d+)/;
+    function cellDate(cell) {
+        if (!cell) { return null; }
+        var m = DATE_RE.exec(String(cell.v));
+        return m ? new Date(+m[1], +m[2], +m[3]) : null;
+    }
+
+    // Prefer the formatted string ("14 September") so the card renders exactly what the sheet shows.
+    function cellText(cell) {
+        if (!cell) { return ""; }
+        if (cell.f != null) { return String(cell.f).trim(); }
+        return cell.v == null ? "" : String(cell.v).trim();
     }
 
     function norm(s) { return String(s == null ? "" : s).trim().toLowerCase(); }
 
     // Map columns by header label so added/reordered columns don't break us.
-    function resolveCols(header) {
+    function resolveCols(cols) {
         var idx = { date: -1, time: -1, speaker: -1, affiliation: -1, topic: -1 };
-        for (var i = 0; i < header.length; i++) {
-            var h = norm(header[i]);
+        for (var i = 0; i < cols.length; i++) {
+            var h = norm(cols[i]);
             if (h === "date" && idx.date < 0) { idx.date = i; }
             else if (h === "time" && idx.time < 0) { idx.time = i; } // sheet header is "TIme"
             else if (h === "speaker" && idx.speaker < 0) { idx.speaker = i; }
@@ -83,25 +118,11 @@
         if (idx.date < 0) { idx.date = 0; }
         if (idx.time < 0) { idx.time = 1; }
         if (idx.speaker < 0) { idx.speaker = 2; }
-        if (idx.topic < 0) { idx.topic = header.length - 1; } // topic is normally the last column
+        if (idx.topic < 0) { idx.topic = cols.length - 1; } // topic is normally the last column
         return idx;
     }
 
-    // "6 July" -> Date. No year in the sheet, so assume the current year and roll
-    // forward when the date is clearly in the past (handles the Dec -> Jan wrap).
-    function parseDate(s, now) {
-        var m = String(s == null ? "" : s).trim().match(/^(\d{1,2})\s+([A-Za-z]+)/);
-        if (!m) { return null; }
-        var day = parseInt(m[1], 10);
-        var mon = MONTHS[m[2].toLowerCase()];
-        if (mon == null || !(day >= 1 && day <= 31)) { return null; }
-        var today0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        var d = new Date(now.getFullYear(), mon, day);
-        if (d < today0 && (today0 - d) > 200 * 864e5) { d = new Date(now.getFullYear() + 1, mon, day); }
-        return d;
-    }
-
-    function cell(cells, i) { return (i >= 0 && i < cells.length) ? (cells[i] || "").trim() : ""; }
+    function cell(cells, i) { return (i >= 0 && i < cells.length) ? cells[i] : null; }
 
     // Columns rendered explicitly (see itemHTML); everything else in the sheet
     // becomes a generic "Label: value" line so no information is dropped.
@@ -111,37 +132,38 @@
         return h;
     }
 
-    // Any non-handled, non-empty column (Advisor today, or anything added later),
+    // Any non-handled, non-empty column (Room/Advisor today, or anything added later),
     // in sheet order, as label/value pairs.
-    function extraFields(header, cells, handled) {
+    function extraFields(cols, cells, handled) {
         var out = [];
         for (var k = 0; k < cells.length; k++) {
             if (handled[k]) { continue; }
-            var v = (cells[k] || "").trim();
+            var v = cellText(cells[k]);
             if (!v || v.toUpperCase() === "N/A") { continue; }
-            out.push({ label: (k < header.length ? String(header[k] || "").trim() : ""), value: v });
+            out.push({ label: (k < cols.length ? String(cols[k] || "").trim() : ""), value: v });
         }
         return out;
     }
 
     // Every upcoming seminar (strictly future, real speaker), soonest first.
-    function collectUpcoming(rows, now) {
-        if (!rows.length) { return []; }
-        var header = rows[0];
-        var col = resolveCols(header);
+    // parsedNumHeaders is 1, so table.rows already EXCLUDES the header — start at r = 0.
+    function collectUpcoming(parsed, now) {
+        if (!parsed) { return []; }
+        var cols = parsed.cols;
+        var col = resolveCols(cols);
         var handled = handledCols(col);
         var today0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
         var out = [];
-        for (var r = 1; r < rows.length; r++) { // row 0 is the header
-            var cells = rows[r];
+        for (var r = 0; r < parsed.rows.length; r++) {
+            var cells = parsed.rows[r];
             if (!cells) { continue; }
-            var speaker = cell(cells, col.speaker);
+            var speaker = cellText(cell(cells, col.speaker));
             if (!speaker || speaker.toUpperCase() === "N/A") { continue; } // break week, not a talk
-            var d = parseDate(cell(cells, col.date), now);
+            var d = cellDate(cell(cells, col.date));
             if (!d || d <= today0) { continue; }
-            out.push({ date: d, dateStr: cell(cells, col.date), time: cell(cells, col.time),
-                       speaker: speaker, affiliation: cell(cells, col.affiliation), topic: cell(cells, col.topic),
-                       extras: extraFields(header, cells, handled) });
+            out.push({ date: d, dateStr: cellText(cell(cells, col.date)), time: cellText(cell(cells, col.time)),
+                       speaker: speaker, affiliation: cellText(cell(cells, col.affiliation)), topic: cellText(cell(cells, col.topic)),
+                       extras: extraFields(cols, cells, handled) });
         }
         out.sort(function (a, b) { return a.date - b.date; });
         return out.slice(0, MAX_ITEMS);
@@ -190,9 +212,13 @@
 
     function load() {
         if (!window.fetch) { return; } // keep static fallback on very old browsers
-        fetch(SHEET_CSV, { credentials: "omit" })
+        fetch(SHEET_JSON, { credentials: "omit" })
             .then(function (res) { if (!res.ok) { throw new Error("HTTP " + res.status); } return res.text(); })
-            .then(function (text) { render(collectUpcoming(parseCSV(text), new Date())); })
+            .then(function (text) {
+                var parsed = parseGviz(text);
+                if (!parsed) { return; } // unparseable — leave the static fallback in place
+                render(collectUpcoming(parsed, new Date()));
+            })
             .catch(function () { /* leave the static fallback in place */ });
     }
 

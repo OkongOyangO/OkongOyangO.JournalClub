@@ -23,6 +23,14 @@ theme = "LoveIt"
     name = "Tags"
     pageRef = "/tags"
     weight = 2
+  # Ships unconditionally: menu entries cannot read [params.*], and /signup/ degrades
+  # to an "email Yiyang directly" notice until params.signup.formURL is filled in.
+  [[menu.main]]
+    identifier = "signup"
+    pre = "<i class='fas fa-user-plus fa-fw'></i>"
+    name = "Sign Up"
+    pageRef = "/signup"
+    weight = 3
 
 # -----------------------------------------------------------------------------
 # LoveIt Specifics
@@ -74,6 +82,19 @@ theme = "LoveIt"
   [params.social]
     x = "OkongOyangO"
     email = "yzj5306@psu.edu"
+
+  # Speaker sign-up (approval-gated Google Form -> Apps Script -> schedule sheet).
+  # The CTA button and the embedded form render ONLY once formURL / embedURL are set,
+  # so this block can ship before the Google Form exists. Leave them "" until then:
+  # the home-page card shows no button and /signup/ shows a mailto fallback.
+  #   formURL  = the published responder link,     https://forms.gle/XXXXXXXX
+  #   embedURL = the same form's embed link,       https://docs.google.com/forms/d/e/1FAIpQLS.../viewform?embedded=true
+  [params.signup]
+    enable   = true
+    formURL  = ""
+    embedURL = ""
+    label    = "Sign up to present"
+    note     = "Requests are reviewed before they appear on the schedule."
 
   # Page Configuration
   [params.page]

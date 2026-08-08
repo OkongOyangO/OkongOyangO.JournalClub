@@ -1,0 +1,28 @@
+{{- /*
+  Embedded Google Form (speaker sign-up).
+
+  Usage:
+    {{< gform >}}                                  -> uses site.Params.signup.embedURL
+    {{< gform src="https://docs.google.com/forms/d/e/1FAIpQLS.../viewform?embedded=true" >}}
+    {{< gform height="1500px" >}}                  -> taller frame
+
+  Renders NOTHING when no URL is available, so the page stays clean before the Form
+  exists. Google Forms iframes do NOT auto-resize (no postMessage height handshake and
+  cross-origin blocks measuring), so the pixel height is authoritative; if it is short
+  the form scrolls inside its own frame.
+
+  The `with` guard around site.Params.signup is required: that map is nil when the
+  [params.signup] block is absent, and reading .embedURL off nil errors the build.
+*/ -}}
+{{- $src := .Get "src" -}}
+{{- if not $src -}}
+  {{- with site.Params.signup -}}
+    {{- if ne .enable false -}}{{- $src = .embedURL -}}{{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $height := .Get "height" | default "1200px" -}}
+{{- with $src -}}
+<div class="gform-embed">
+    <iframe src="{{ . | safeURL }}" height="{{ $height }}" loading="lazy" frameborder="0" marginheight="0" marginwidth="0" title="Journal Club speaker sign-up form">Loading the sign-up form&hellip;</iframe>
+</div>
+{{- end -}}

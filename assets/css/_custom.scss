@@ -203,9 +203,44 @@
         font-style: italic;
     }
 
+    // Footer of the card: the sign-up CTA (only when params.signup.formURL is set)
+    // stacked above the "Full schedule" link. Column flex + gap, so when the CTA is
+    // absent this collapses to exactly the old single-link layout.
+    .us-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.55rem;
+        margin-top: 0.85rem;
+    }
+
+    .us-signup {
+        display: inline-flex;
+        align-items: center;
+        // min-height, not just padding: this is the primary discovery path for a
+        // would-be speaker on a phone, and the padded height alone came out at 30px
+        // — above the 24x24 WCAG 2.5.8 floor but well under the 44px iOS / 48px
+        // Material guideline. The 1600px fixed card is 224px wide with ~69px of
+        // horizontal slack, so nothing else has to move.
+        min-height: 40px;
+        padding: 0.38rem 0.85rem;
+        border-radius: 6px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #fff;
+        background-color: $single-link-color;
+        text-decoration: none;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+
+        &:hover {
+            background-color: $single-link-hover-color;
+            transform: translateY(-1px);
+        }
+    }
+
     .us-schedule {
         display: inline-block;
-        margin-top: 0.85rem;
+        margin-top: 0;   // spacing now lives on .us-actions
         font-size: 0.78rem;
         color: $single-link-color;
         text-decoration: none;
@@ -245,4 +280,72 @@
     .us-item { border-top-color: $global-border-color-dark; }
     .us-list::-webkit-scrollbar-thumb { background: $global-border-color-dark; }
     .us-tag { background-color: $single-link-color-dark; color: #16181a; }
+
+    // $single-link-color-dark is a light blue (#55bde2) — white label on it fails
+    // contrast, so flip the text dark, exactly as .us-tag above does.
+    .us-signup { background-color: $single-link-color-dark; color: #16181a; }
+    .us-signup:hover { background-color: $single-link-hover-color-dark; color: #16181a; }
+}
+
+// ── Sign-up page (/signup/) ───────────────────────────────────────────────────
+// Embedded Google Form + the "open in a new tab" fallback button.
+.gform-embed {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin: 1.2rem 0;
+    border: 1px solid $global-border-color;
+    border-radius: 6px;
+    background-color: $code-background-color;
+
+    iframe {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        border: 0;
+    }
+}
+
+// Mirrors .pdf-download: the theme applies @include link(false, false) to every <a>
+// inside .content, so the colour and text-decoration need !important to survive.
+.signup-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.55rem 1.1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    color: #fff !important;
+    background-color: $single-link-color;
+    text-decoration: none !important;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+
+    &:hover {
+        background-color: $single-link-hover-color;
+        transform: translateY(-1px);
+    }
+}
+
+.signup-note {
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    color: $global-font-secondary-color;
+}
+
+// The theme right-aligns titles on _default/single.html pages
+// (themes/LoveIt/assets/css/_page/_special.scss). Posts use posts/single.html and are
+// unaffected, so this only straightens out standalone pages like /signup/.
+.page.single.special .single-title { text-align: left; }
+
+[theme="dark"] {
+    .gform-embed {
+        border-color: $global-border-color-dark;
+        background-color: $code-background-color-dark;
+    }
+
+    // Dark text on the light-blue dark-mode accent, same reason as .us-signup.
+    .signup-btn { background-color: $single-link-color-dark; color: #16181a !important; }
+    .signup-btn:hover { background-color: $single-link-hover-color-dark; color: #16181a !important; }
+
+    // NOT $global-font-secondary-color-dark (#5d5d5f) — near-invisible on #292a2d.
+    .signup-note { color: darken($global-font-color-dark, 18%); }
 }
