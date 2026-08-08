@@ -101,21 +101,28 @@ nightly, but the detection is a safety net, not permission to do it.)
 
 ## 2. Time budget
 
-| Part | What | Minutes |
-|---|---|---|
-| A | Create the Google Form | 20 |
-| B | Link responses to a new private spreadsheet | 5 |
-| C | Create the Apps Script project, paste the code | 5 |
-| D | Settings pass 1 | 10 |
-| E | Run the bootstrap, authorize | 5 |
-| F | Deploy the Web App | 5 |
-| G | Settings pass 2 — `EXEC_URL` | 2 |
-| H | Create the triggers | 2 |
-| I | Populate the date dropdown | 2 |
-| J | Health check | 3 |
-| K | **End-to-end test** | 15 |
-| L | Turn the sign-up button on on the website | 5 |
-| | **Total** | **~85** |
+Two routes. The fast path runs an installer that does Parts A, B and D for you.
+
+| Part | What | By hand | Fast path |
+|---|---|---|---|
+| 0 | Publish the website changes | 2 | ✅ already done |
+| C | Create the Apps Script project, paste the code | 5 | 5 |
+| ⚡ | Run `autoInstall()` — builds the Form, the private sheet, the settings | — | 5 |
+| A | Create the Google Form | 20 | skipped |
+| B | Link responses to a new private spreadsheet | 5 | skipped |
+| D | Settings pass 1 | 10 | skipped |
+| E | Run the bootstrap, authorize | 5 | 3 |
+| F | Deploy the Web App | 5 | 5 |
+| G | Settings pass 2 — `EXEC_URL` | 2 | 2 |
+| H | Create the triggers | 2 | 2 |
+| I | Populate the date dropdown | 2 | 2 |
+| J | Health check | 3 | 3 |
+| K | **End-to-end test** | 15 | 15 |
+| L | Turn the sign-up button on on the website | 5 | 5 |
+| | **Total** | **~85** | **~47** |
+
+The end-to-end test in Part K is the one part worth not rushing either way — it is what
+tells you the approval link genuinely does nothing until you confirm.
 
 ---
 
@@ -137,21 +144,54 @@ commit it. Two of the changes matter for the test in Part K:
 
 `docs/` has already been rebuilt for you. Publish it:
 
-```bash
-cd /Users/jiangyiyang/My_Academic_HomePage/OkongOyangO.JournalClub
-git status --short          # look it over
-ls docs/signup/index.html   # must exist
-ls docs/.nojekyll           # must exist
-git add -A && git commit -m "Add speaker sign-up page; fix Upcoming Seminars year bug" && git push
-```
-
-Wait ~1 minute, then check
-<https://OkongOyangO.github.io/OkongOyangO.JournalClub/signup/>. It should load and say
-sign-ups aren't open yet — that is correct; Part L turns them on.
+> ## ✅ ALREADY DONE — skip Part 0
+>
+> This was committed and pushed as `fd3cf7d`.
+> <https://OkongOyangO.github.io/OkongOyangO.JournalClub/signup/> is live and returns 200;
+> the home page is confirmed serving the fixed (`tqx=out:json`) widget. Start at the
+> fast path below.
 
 ---
 
-# Part A — Create the Google Form (20 min)
+# ⚡ Fast path — run the installer instead of Parts A, B and D (5 min)
+
+`apps-script/Setup.gs` builds the Form, the private responses spreadsheet, the link between
+them, and all nine Script Properties **for you**. It replaces roughly 35 minutes of clicking,
+and — more importantly — it generates the eight question titles from the same source
+`Code.gs` reads them by, so they cannot drift apart from a typo.
+
+1. Do **Part C** first (create the Apps Script project, paste `Code.gs` and
+   `appsscript.json`) — the installer is Apps Script, so it needs somewhere to live.
+2. Add one more file in the same project: **＋ next to "Files" → Script**, name it `Setup`,
+   and paste all of `apps-script/Setup.gs`.
+3. In the function dropdown at the top, choose **`autoInstall`**, click **Run**.
+4. Authorize when prompted — this is the "unverified app" screen described in **Part E**;
+   read that first if you want to know what you are granting.
+5. Read what it prints in the **Execution log**. It ends with the exact links you need and a
+   numbered list of what is left.
+
+Then continue at **Part F** (deploy the Web App). **Skip Parts A, B and D entirely.**
+
+Two things the installer may not manage on its own, and it will say so plainly if not:
+
+- **Publishing the form.** Since late 2024 a form is unreachable until published, and the
+  API for it is not available in every project. If the log says it could not publish, do
+  **Part A4** by hand — it is four clicks.
+- **Email collection mode.** It must end up on **Responder input**, not *Verified* —
+  *Verified* forces a Google sign-in and shuts out anyone whose `.edu` address isn't
+  Google-backed. If the log flags this, fix it under **Settings → Responses**.
+
+If a run goes wrong, run **`undoAutoInstall()`**. It clears the properties and prints links
+to the two files for you to delete from Drive, so you can re-run cleanly. (It won't delete
+them itself — that would need full read-write Drive access, and this project only asks for
+read-only on purpose.)
+
+> Prefer to do it by hand, or want to see exactly what is being created? Parts A, B and D
+> below are unchanged and still correct. The installer produces precisely what they describe.
+
+---
+
+# Part A — Create the Google Form (20 min) — *skipped if you used the fast path*
 
 ## A1. Create it
 
@@ -326,7 +366,7 @@ Paste that into your scratch note too — it becomes `embedURL` in **Part L**.
 
 ---
 
-# Part B — The private responses spreadsheet (5 min)
+# Part B — The private responses spreadsheet (5 min) — *skipped if you used the fast path*
 
 ## B1. Create it — as a NEW file
 
@@ -462,7 +502,7 @@ If you don't, the paste didn't take — re-paste and save again.
 
 ---
 
-# Part D — Settings, pass 1 (10 min)
+# Part D — Settings, pass 1 (10 min) — *skipped if you used the fast path*
 
 Everything the script needs at runtime comes from a settings table called Script Properties —
 **this table is the source of truth.** (`Code.gs` has a small `CONFIG` block near the top with
