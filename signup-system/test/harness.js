@@ -7,168 +7,19 @@
  * Node, against a snapshot of the actual Journal Club schedule.
  *
  * It works by stubbing the handful of Apps Script globals the pure logic touches
- * (SpreadsheetApp, Utilities, PropertiesService, Session) and loading Code.gs
- * unmodified into a vm context, so the code under test is the code that ships.
- * Nothing here talks to Google, sends mail, or writes anything.
+ * and loading Code.gs unmodified into a vm context, so the code under test is the
+ * code that ships. The stubs and the fixture loader live in ./lib.js, shared with
+ * the four attack suites.
  *
- *   TZ=America/New_York node test/harness.js
+ *   node test/harness.js          (host timezone independent — see lib.zonedMidnight)
  *
- * Regenerate the fixture with:
- *   curl -s "https://docs.google.com/spreadsheets/d/<ID>/gviz/tq?tqx=out:json" \
- *        -o test/fixture-schedule.json
+ * Run the whole suite with: node test/run-all.js
  */
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const vm = require('vm');
-
-const SCHEDULE_TZ = 'America/New_York';
-
-// ---------------------------------------------------------------------------
-// Fixture -> the 2-D array SpreadsheetApp's getValues() would hand back.
-// Date cells become real Date objects at midnight in the sheet's timezone,
-// which is exactly what Apps Script does; everything else becomes a string.
-// ---------------------------------------------------------------------------
-function loadFixture() {
-  const raw = fs.readFileSync(path.join(__dirname, 'fixture-schedule.json'), 'utf8');
-  const d = JSON.parse(raw.slice(raw.indexOf('(') + 1, raw.lastIndexOf(')')));
-  const cols = d.table.cols.map(c => String(c.label || ''));
-  const values = [cols];
-  const DATE_RE = /^Date\((\d+),(\d+),(\d+)/;
-  for (const r of d.table.rows) {
-    const cells = r.c || [];
-    const out = [];
-    for (let i = 0; i < cols.length; i++) {
-      const cell = cells[i];
-      if (!cell || cell.v === null || cell.v === undefined) { out.push(''); continue; }
-      const m = DATE_RE.exec(String(cell.v));
-      out.push(m ? new Date(+m[1], +m[2], +m[3]) : String(cell.v));
-    }
-    values.push(out);
-  }
-  return values;
-}
-
-// ---------------------------------------------------------------------------
-// Utilities.formatDate — the only stub with real behaviour to get right.
-// Supports exactly the six patterns Code.gs uses.
-// ---------------------------------------------------------------------------
-function formatDate(date, tz, pattern) {
-  const part = (opts, type) => {
-    const p = new Intl.DateTimeFormat('en-US', Object.assign({ timeZone: tz }, opts))
-      .formatToParts(date).find(x => x.type === type);
-    return p ? p.value : '';
-  };
-  const yyyy  = part({ year: 'numeric' }, 'year');
-  const MM    = part({ month: '2-digit' }, 'month');
-  const dd    = part({ day: '2-digit' }, 'day');
-  const d     = String(parseInt(dd, 10));
-  const MMMM  = part({ month: 'long' }, 'month');
-  const EEEE  = part({ weekday: 'long' }, 'weekday');
-  const EEE   = part({ weekday: 'short' }, 'weekday');
-
-  switch (pattern) {
-    case 'yyyy-MM-dd':        return `${yyyy}-${MM}-${dd}`;
-    case 'yyyy':              return yyyy;
-    case 'd MMMM':            return `${d} ${MMMM}`;
-    case 'EEEE d MMMM yyyy':  return `${EEEE} ${d} ${MMMM} ${yyyy}`;
-    case 'EEEE':              return EEEE;
-    case 'EEE':               return EEE;
-    default: throw new Error('harness: unsupported formatDate pattern ' + pattern);
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Stubs. Anything that would mutate throws loudly — if a "read-only" code path
-// under test ever reaches one, the test fails instead of quietly passing.
-// ---------------------------------------------------------------------------
-function buildSandbox(values) {
-  const forbid = name => () => { throw new Error('harness: unexpected mutation via ' + name); };
-
-  const fakeSheet = {
-    getSheetId: () => 0,
-    getName:    () => 'Schedule',
-    getDataRange: () => ({ getValues: () => values }),
-    getRange:   () => ({ setValue: forbid('Range.setValue'),
-                         setValues: forbid('Range.setValues'),
-                         setNumberFormat: forbid('Range.setNumberFormat'),
-                         getValue: () => '', getValues: () => [[]] }),
-    getMaxRows: () => values.length,
-    getLastRow: () => values.length,
-  };
-  const fakeSS = {
-    getSheets: () => [fakeSheet],
-    getSheetByName: () => fakeSheet,
-    getSpreadsheetTimeZone: () => SCHEDULE_TZ,
-    getId: () => 'FAKE_SCHEDULE_ID',
-  };
-
-  const props = {
-    SCHEDULE_SS_ID: 'FAKE_SCHEDULE_ID',
-    SCHEDULE_TAB_GID: '0',
-    RESPONSES_SS_ID: 'FAKE_RESPONSES_ID',
-    RESPONSES_TAB_NAME: 'Form Responses 1',
-    FORM_EDIT_ID: 'FAKE_FORM_ID',
-    NOTIFY_EMAIL: 'test@example.com',
-    DEFAULT_ROOM: 'Davey 339',
-    LEAD_DAYS: '7',
-    MAX_CHOICES: '30',
-    EXEC_URL: 'https://script.google.com/macros/s/FAKE/exec',
-    HMAC_SECRET: 'dGVzdC1zZWNyZXQtZm9yLXRoZS1oYXJuZXNz',
-  };
-
-  return {
-    SpreadsheetApp: {
-      openById: () => fakeSS,
-      flush: () => {},
-    },
-    PropertiesService: {
-      getScriptProperties: () => ({
-        getProperty: k => (k in props ? props[k] : null),
-        setProperty: forbid('Properties.setProperty'),
-        setProperties: forbid('Properties.setProperties'),
-        deleteProperty: forbid('Properties.deleteProperty'),
-      }),
-    },
-    Session: { getScriptTimeZone: () => SCHEDULE_TZ },
-    Utilities: {
-      formatDate,
-      getUuid: () => '00000000-0000-4000-8000-000000000000',
-      base64Encode: s => Buffer.from(String(s)).toString('base64'),
-      base64EncodeWebSafe: s => Buffer.from(String(s)).toString('base64url'),
-      computeHmacSha256Signature: () => [1, 2, 3],
-      computeDigest: () => [1, 2, 3],
-      DigestAlgorithm: { SHA_256: 'SHA_256' },
-      MacAlgorithm: { HMAC_SHA_256: 'HMAC_SHA_256' },
-      sleep: () => {},
-    },
-    LockService: { getScriptLock: () => ({ waitLock: () => {}, releaseLock: () => {} }) },
-    MailApp:     { sendEmail: forbid('MailApp.sendEmail'), getRemainingDailyQuota: () => 100 },
-    GmailApp:    { createDraft: forbid('GmailApp.createDraft') },
-    FormApp:     { openById: () => { throw new Error('harness: FormApp not stubbed'); },
-                   DestinationType: { SPREADSHEET: 'SPREADSHEET' } },
-    HtmlService: { createHtmlOutput: h => ({ setTitle: () => ({ getContent: () => h }),
-                                             getContent: () => h }) },
-    ScriptApp:   { newTrigger: forbid('ScriptApp.newTrigger'), getProjectTriggers: () => [] },
-    CacheService:{ getScriptCache: () => ({ get: () => null, put: () => {} }) },
-    DriveApp:    { getFileById: () => { throw new Error('harness: DriveApp not stubbed'); } },
-    UrlFetchApp: { fetch: () => { throw new Error('harness: UrlFetchApp not stubbed'); } },
-    Logger:      { log: () => {} },
-    console,
-    Date, Math, JSON, String, Number, Object, Array, RegExp, Error, isNaN, parseInt, parseFloat,
-  };
-}
-
-// ---------------------------------------------------------------------------
-function load() {
-  const src = fs.readFileSync(path.join(__dirname, '..', 'apps-script', 'Code.gs'), 'utf8');
-  const values = loadFixture();
-  const sandbox = buildSandbox(values);
-  vm.createContext(sandbox);
-  vm.runInContext(src, sandbox, { filename: 'Code.gs' });
-  return { g: sandbox, values };
-}
+const L = require('./lib');
+const { SCHEDULE_TZ, zonedMidnight, loadFixture } = L;
+const load = () => L.load();
 
 // ---------------------------------------------------------------------------
 let pass = 0, fail = 0;
@@ -183,7 +34,9 @@ function note(name, value) { console.log(`  · ${name}: ${JSON.stringify(value)}
 // ---------------------------------------------------------------------------
 const { g, values } = load();
 const ctx = g.openSchedule_();
-const NOW = new Date(2026, 7, 8); // 2026-08-08, the day this fixture was taken
+// Midnight 2026-08-08 IN THE SHEET'S TZ (the day this fixture was taken), not in
+// whatever timezone this process runs in — see zonedMidnight.
+const NOW = zonedMidnight(2026, 7, 8, SCHEDULE_TZ);
 
 console.log('\n=== schedule parsed ===');
 note('rows (incl header)', values.length);
@@ -244,7 +97,7 @@ check('truncates to maxLen', g.sanitizeForSheet_('x'.repeat(200), 80).length <= 
 
 console.log('\n=== normalizeDateKey_ (accepts Date or string) ===');
 check('from ISO string', g.normalizeDateKey_('2026-08-24', SCHEDULE_TZ), '2026-08-24');
-check('from Date object', g.normalizeDateKey_(new Date(2026, 7, 24), SCHEDULE_TZ), '2026-08-24');
+check('from Date object', g.normalizeDateKey_(zonedMidnight(2026, 7, 24, SCHEDULE_TZ), SCHEDULE_TZ), '2026-08-24');
 check('from empty', g.normalizeDateKey_('', SCHEDULE_TZ), '');
 
 // ---------------------------------------------------------------------------

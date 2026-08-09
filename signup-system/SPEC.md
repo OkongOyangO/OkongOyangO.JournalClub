@@ -334,9 +334,13 @@ notification email and in A3. This shrinks the blast radius of a leaked token.
 4. **Inside the lock**, re-read the A3 row by token. Not found → unknown page.
    `JC Status ≠ PENDING` → already-processed page. **No mutation.**
 5. **REJECT:** set `JC Status=REJECTED`, `JC Decided At`, `JC Decision Note="rejected by
-   organizer"`. `SpreadsheetApp.flush()`. Render the reject page, which includes a
-   `mailto:` link pre-filled with a polite draft to the submitter. **No automated rejection
-   email is sent** — a canned rejection is wrong for a ten-person journal club.
+   organizer"`. `SpreadsheetApp.flush()`. Render the reject page, which points Yiyang at the
+   submitter's row in the private log and suggests wording. **No automated rejection email is
+   sent** — a canned rejection is wrong for a ten-person journal club. **The page must not
+   contain the submitter's address**, in a `mailto:` href or anywhere else: the review page
+   deliberately withholds it (§9 threat model), and an outcome page that hands it back defeats
+   that in one anonymous POST. `pageBlocked_` is worse still — it is reachable with no state
+   change at all, so an address there could be harvested without a trace in the log.
 6. **APPROVE:**
    1. `resolveScheduleCols_()` — by header name, **no positional fallback**. Missing `date` or
       `speaker` → set `JC Status=ERROR` + note, render schema-drift page, alert Yiyang.
@@ -414,8 +418,9 @@ pathological submission cannot make the public sheet unreadable.
 `PENDING`; Yiyang has two emails. He approves Alice: lock → row found → Speaker `""` → free →
 write → `APPROVED`. He then opens Bob's link: `doGet` already shows the banner *"This slot is
 now taken by Alice Chen."* If he clicks confirm anyway, `doPost` re-checks under the lock,
-finds `Speaker = "Alice Chen"`, writes nothing, leaves Bob `PENDING`, and renders §8.5 with a
-mailto draft offering Bob the alternates he listed in Q7. **No silent overwrite is possible.**
+finds `Speaker = "Alice Chen"`, writes nothing, leaves Bob `PENDING`, and renders §8.5, which
+shows the alternates Bob listed in Q7 and points at his row in the private log. **No silent
+overwrite is possible.**
 
 ---
 
@@ -486,15 +491,37 @@ function resolveScheduleCols_(headerRow) {
 }
 ```
 
-The site's read-only JS falls back to fixed positions (`date→0, time→1, speaker→2, topic→last`).
-That is harmless for rendering and **catastrophic for writing** — a drifted schema would put a
-speaker's name in the Advisor column. The script hard-fails and alerts instead.
+The site's read-only JS used to fall back to fixed positions (`date→0, time→1, speaker→2,
+topic→last`). That is **not** harmless even for rendering: index 2 in this sheet is `TIme`, so
+renaming the `Speaker` header made the home page announce that every future week was booked by a
+speaker named `4:30pm - 6:00pm`, break weeks included, while the form went on offering six of
+those dates. The widget now fails closed on a missing `date` or `speaker` header exactly as the
+script does — it renders nothing and the build-time static fallback survives. `time` and `topic`
+keep their positional fallbacks; they are decoration.
 
-`coerceDate_` reads the real `Date` object. It retains a *text* fallback only for the case
-where someone retypes a cell as text; that fallback picks the year in `{y-1, y, y+1}` whose
-weekday matches the row's own `Day of Week` cell (verified to disambiguate uniquely: 2026
-matches 28/39 rows, 2027 matches the remaining 11), falling back to the year minimising
-`|candidate − now|`. It must **not** use the site's `>200 days` rule.
+`coerceDate_` reads the real `Date` object. It retains a *text* fallback only for the case where
+someone retypes a cell as text, and that fallback is built on three rules:
+
+- **Every Date is constructed in the SPREADSHEET's timezone** (`dateInTz_`), never with
+  `new Date(y, m, d)`, which is midnight in the *script* project's timezone — a different
+  setting. With the script east of the sheet, the whole text-typed column keyed one day early:
+  the row reading `2026-09-14` answered to `2026-09-13`, the dropdown option's ISO prefix
+  disagreed with its own human half, and the speaker was emailed the wrong day.
+- **Impossible dates return `null`.** `dateInTz_` round-trips through `dayKey_`, so `2026-02-29`
+  no longer rolls over to 1 March and then answers to a request key for a week it is not.
+- **A year-less `24 August` needs the row's own `Day of Week` cell** to pick the year in
+  `{y-1, y, y+1}` (verified to disambiguate uniquely: 2026 matches 28/39 rows, 2027 the other
+  11). Without a usable weekday hint it returns **`null` rather than guessing**. Every tie-break
+  was measurably wrong on the real sheet — nearest-year resolved 6 of 39 rows into the past,
+  prefer-future was wrong for the 7 rows that really are past — and a wrong guess writes a
+  speaker onto the wrong week. It must **not** use the site's `>200 days` rule either.
+
+Because "unreadable" is now a real outcome, `unreadableDateRows_(ctx)` walks the sheet and names
+every row whose Date cell is non-empty but unreadable. `refreshFormDates_` and `verifySetup_`
+both surface that list. This closes the case the free-slot count cannot see: retyping the WHOLE
+column drops the open count to zero and everything shouts, but retyping three cells leaves the
+count healthy while those weeks silently stop being offered and an already-submitted request for
+one of them is refused as "not in the schedule".
 
 ### 6.3 `findRowByDate_(isoKey, sheet, col, tz)`
 
@@ -539,14 +566,27 @@ problems into a list. **It emails Yiyang only if the list is non-empty.** Subjec
 ### 7.1 `refreshFormDates()`
 
 1. Open A1, resolve columns, read all values.
-2. Collect rows where `isFreeSlot_(row) && (date − now) ≥ LEAD_DAYS × 86400000`.
-3. Sort ascending; cap at `MAX_CHOICES` (30).
-4. Build choice strings per §2.3.
-5. Locate the dropdown: `DATE_ITEM_ID` from properties; if absent, find the item whose title
+2. Collect rows where `isFreeSlot_(row)` and the row's day key is at least `LEAD_DAYS`
+   **calendar days** past today, both keys taken in the spreadsheet's timezone
+   (`dayKey_(date) >= shiftDayKey_(dayKey_(now), LEAD_DAYS)`). This is deliberately not
+   `date − now ≥ LEAD_DAYS × 86400000`: the nightly trigger fires at 04:00 and slots are
+   midnight, so a millisecond window is four hours short and `LEAD_DAYS = 7` silently
+   behaved as 8; a spring-forward week is 23 hours shorter again, which removed the
+   schedule's last free slot and replaced the whole dropdown with the placeholder.
+3. Sort ascending. **De-duplicate by day key**: a date on two rows is refused by
+   `findRowByDate_` as `AMBIGUOUS`, so offering it would advertise a slot no approval can
+   complete. Such dates are withheld and named in `problems`.
+4. Cap at `MAX_CHOICES` (30), clamped to a minimum of 1 on read — `MAX_CHOICES <= 0`
+   otherwise truncated the list to nothing and was indistinguishable from a full schedule.
+   The placeholder branch below is decided on the count **before** truncation.
+5. Build choice strings per §2.3. Time and Room go through `cellText_`, which FORMATS a
+   Date-typed cell rather than stringifying it — a time-typed `TIme` cell otherwise put
+   `Sat Dec 30 1899 16:30:00 GMT-0500` into the dropdown and into the speaker's email.
+6. Locate the dropdown: `DATE_ITEM_ID` from properties; if absent, find the item whose title
    normalizes to `preferred date`, assert `getType() === FormApp.ItemType.LIST`, and store its
    id. Item not found or wrong type → record a problem, do not throw.
-6. `item.asListItem().setChoiceValues(choices)`.
-7. **Zero-free-slot guard:** `setChoiceValues([])` **throws**. If `choices.length === 0`, set
+7. `item.asListItem().setChoiceValues(choices)`.
+8. **Zero-free-slot guard:** `setChoiceValues([])` **throws**. If `choices.length === 0`, set
    `["(no open dates at the moment — please email yzj5306@psu.edu)"]` and record a problem —
    but only alert once, using the `NO_SLOTS_ALERTED` property as a dedupe flag, cleared as soon
    as slots reappear. Without this the job starts crashing exactly when the last slot fills,
@@ -684,8 +724,8 @@ re-validates, letting him try is harmless and avoids a dead end when the sheet h
 
 Same table, then:
 
-> Rejecting records the decision privately. **No email is sent to Jane** — you'll get a
-> pre-filled draft to write her yourself.
+> Rejecting records the decision privately. **No email is sent to Jane** — the outcome page
+> points you at her row in the private log and suggests wording, so you write to her yourself.
 >
 > `[ Confirm rejection ]`
 >
@@ -702,6 +742,12 @@ Same table, then:
 > *Open the schedule* → (link to A1) · *Open the private log* → (link to A3)
 >
 > To undo: clear Speaker / Affiliation / Advisor / Topic in row 15 by hand.
+
+If the approval **replaced** text that was already in Affiliation / Advisor / Topic — a free row
+can carry hand-written notes, because `isFreeSlot_` looks only at Speaker — both the review page
+(before the click) and this page (after it) list the old value beside the new one, and
+`JC Decision Note` records it permanently as `REPLACED topic: "…"`. Room is never overwritten at
+all, so it never appears in that list.
 
 ### 8.4 Already processed (idempotent — the replay page)
 
@@ -721,8 +767,10 @@ Same table, then:
 >
 > Jane said she could also do: *"any Monday in October"*
 >
-> `[ Email Jane about another date ]` (mailto: with a pre-filled draft)
+> To offer Jane another date, open the private log — her address is on row 7.
 > `[ Reject this request ]`
+>
+> (No `mailto:` and no address in the HTML — see §7 step 5.)
 
 Break-week variant: *"14 September is marked N/A — an intentional break week. Nothing was
 written."* Not-found variant: *"14 September is not in the schedule sheet. The schedule
@@ -1054,6 +1102,20 @@ script writes a speaker into `1 March`, the homepage widget will silently not di
 approved talk — approval will appear to have done nothing.** The bad window is
 `[today − 200 days, today]` and it widens as the year advances.
 
+> **Status: done, plus three further hardenings found by executing the widget's own
+> classification code against the same fixture Code.gs is tested on (`test/attack-agreement.js`).**
+>
+> 1. `resolveCols` no longer falls back to a fixed index for `date` or `speaker`. Index 2 in this
+>    sheet is `TIme`, so a single header rename (`Speaker` → `Presenter`) made the card announce
+>    that all 31 future weeks were booked by a speaker named `4:30pm - 6:00pm` — break weeks and
+>    all 26 free slots included — while the form kept offering six of those dates. Code.gs throws
+>    on the same edit; the widget now returns `[]` so the build-time static fallback survives.
+> 2. `cellDate` gained the same text fallback `coerceDate_` has (ISO, then `d MMMM` disambiguated
+>    by the row's `Day of Week`, refusing rather than guessing). Retyping one Date cell used to
+>    delete a **booked** talk from the card with no error, silently promoting the next week.
+> 3. "Today" is now the seminar's day in `America/New_York`, not the visitor's. A reader in
+>    London/Tokyo/Auckland at 21:00 ET lost that evening's talk from the card ~19 hours early.
+
 **Fix: switch the widget from the gviz CSV endpoint to the gviz JSON endpoint**, which carries
 the real years. Verified this session: with an `Origin` header the JSON endpoint returns
 `access-control-allow-origin: https://okongoyango.github.io`, and the payload is
@@ -1328,8 +1390,10 @@ Ordered roughly by how much damage a wrong answer does.
     *which* date, roughly doubling `doPost`'s branches.
 11. **`DEFAULT_ROOM = "Davey 339"` written only into an empty Room cell is helpful, not
     presumptuous.** Set the property to `""` to disable.
-12. **`LEAD_DAYS = 7`** — dates fewer than 7 days out are not offered in the dropdown, but
-    *are* approvable if Yiyang wants. Challenge the number, not the asymmetry.
+12. **`LEAD_DAYS = 7`** — dates fewer than 7 **calendar** days out are not offered in the
+    dropdown, but *are* approvable if Yiyang wants. Challenge the number, not the asymmetry.
+    The window is measured in calendar days in the sheet's timezone, so it does not move with
+    the trigger hour or with a DST transition.
 13. **A leading `-` IS stripped, alongside `=`, `+` and `@`.** Reversed from the earlier
     position. Two reasons, either sufficient: Sheets applies Lotus-style coercion to a leading
     `-` exactly as it does to `+` (typing `-1+1` gives 0, not text) and `setValue` uses
@@ -1351,3 +1415,47 @@ Ordered roughly by how much damage a wrong answer does.
     the sharing check into one nightly handler keeps the trigger count at 2 of 20 and the
     trigger-runtime well under the 90 min/day consumer cap, at the cost of one failing step
     being able to mask later ones — hence the per-step `try/catch`.
+
+---
+
+## 12. Tests
+
+```
+cd signup-system && node test/run-all.js        # or: npm test
+node test/run-all.js -v                         # stream every suite's full output
+```
+
+No dependencies, no network, nothing written anywhere. Each suite loads the **unmodified**
+`apps-script/Code.gs` into a Node `vm` context over a snapshot of the real schedule
+(`test/fixture-schedule.json`, taken 2026-08-08), so the code under test is the code that ships.
+Stubs that would mutate throw, so a read-only path that starts writing fails loudly rather than
+passing quietly.
+
+| File | What it holds down |
+|---|---|
+| `test/lib.js` | The shared instrument: fixture loader, `Utilities.formatDate` stub, Apps Script sandbox. **One module, four requires** — these used to be copied per suite and drifted. |
+| `test/harness.js` | Core read-only logic: `findRowByDate_`, `slotState_`, `isFreeSlot_`, `sanitizeForSheet_`, `normalizeDateKey_` against the real 39 rows. |
+| `test/attack-dates.js` | Dates end to end: both DST transitions, the 25- and 23-hour days, the 2026/2027 year boundary, the Wednesday one-off, the missing Monday, text-typed Date columns under five host timezones, impossible dates, duplicate rows, `LEAD_DAYS` swept over a year at three run hours. |
+| `test/attack-dropdown.js` | `refreshFormDates_`: the write/read contract (every generated choice round-trips through `parseIsoPrefix_` to the right key), truncation direction, the zero-slot placeholder, `MAX_CHOICES` misconfiguration, duplicate-date suppression, a missing or wrong-typed Form item. |
+| `test/attack-approval.js` | The mutating path, over an in-memory Sheets model with a real HMAC: `doGet` is byte-for-byte non-mutating, the write lands on the right row, the double-booking race, replay and reverse transitions, in-lock re-validation, `N/A` break weeks, formula injection, stored XSS, schema drift, mail-quota exhaustion, every degraded configuration. |
+| `test/attack-agreement.js` | The website widget's **real** classification code (lifted out of `layouts/partials/home/upcoming-seminar.html`) against Code.gs on the same rows: no date may be both offered by the dropdown and rendered as a talk, and no booked future talk may be missing from the card. |
+
+Two things about `run-all.js` are load-bearing:
+
+- **Every check is a regression guard.** Each attack suite began as a probe that found something.
+  When the defect was fixed the assertion was rewritten to demand the *fixed* behaviour, so the
+  suite now fails if the bug comes back. `attack-approval.js` additionally exits non-zero if its
+  `defects` list is non-empty.
+- **The host-timezone sweep is not decoration.** The whole system turns a spreadsheet cell into a
+  calendar day, and the script's timezone and the spreadsheet's are separate settings that are
+  equal only by convention. `test/lib.js` builds fixture dates at true midnight in the *sheet's*
+  timezone, so `harness.js` must give identical results under any host timezone; the sweep runs
+  it from `Pacific/Kiritimati` (UTC+14) to `Pacific/Midway` (UTC−11) to prove no new code has
+  started reading dates in the host's zone.
+
+Regenerate the fixture with:
+
+```
+curl -s "https://docs.google.com/spreadsheets/d/<SCHEDULE_ID>/gviz/tq?tqx=out:json" \
+     -o test/fixture-schedule.json
+```

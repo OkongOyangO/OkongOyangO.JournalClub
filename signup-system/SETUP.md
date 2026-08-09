@@ -232,7 +232,8 @@ Click the **Settings** tab at the top of the form (next to **Questions** and **R
   ```
 
   > The wording says "either way" on purpose. Approvals send an automatic confirmation;
-  > **rejections do not** — the system hands you a pre-filled draft to send yourself,
+  > **rejections do not** — the system points you at the submitter's row in the private log
+  > and suggests wording, so you write to them yourself,
   > because a canned rejection is the wrong tone for a ten-person journal club. If you
   > close that tab without sending it, the person never hears anything. The nightly job
   > nags you about requests left undecided for more than a week for the same reason.
@@ -542,9 +543,10 @@ refresh in Part I).
   the tab, use your name.
 - `DEFAULT_ROOM` is written into the schedule's Room cell **only when that cell is empty**. Set
   it to an empty value if you'd rather always fill Room in by hand.
-- `LEAD_DAYS = 7` means dates fewer than 7 days away aren't offered in the dropdown. You can
-  still approve a short-notice request manually — the restriction only applies to what the form
-  advertises.
+- `LEAD_DAYS = 7` means dates fewer than 7 **calendar days** away aren't offered in the
+  dropdown. You can still approve a short-notice request manually — the restriction only applies
+  to what the form advertises. (It is measured in calendar days in the spreadsheet's timezone, so
+  it doesn't drift with the nightly trigger's run hour or across a daylight-saving change.)
 
 ---
 
@@ -733,10 +735,10 @@ it.
 
 ## K1. Note the "before" state
 
-Open the schedule spreadsheet. Pick a free future Monday **at least 8 days away** — a row with
+Open the schedule spreadsheet. Pick a free future Monday **at least 7 days away** — a row with
 an **empty Speaker cell** — and write down its date and row number. Say `14 September`, row 15.
 
-> Why 8 days: `LEAD_DAYS = 7` (Part D) means dates closer than a week are deliberately **not
+> Why 7 days: `LEAD_DAYS = 7` (Part D) means dates closer than a week are deliberately **not
 > offered in the form's dropdown**. If you pick next Monday you simply won't find it in the
 > list at K2 and it will look like something is broken.
 

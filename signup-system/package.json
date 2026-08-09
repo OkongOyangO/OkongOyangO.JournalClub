@@ -1,0 +1,13 @@
+{
+  "name": "journal-club-signup-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tests for the Google Form -> Apps Script speaker sign-up system (apps-script/Code.gs). No dependencies: everything runs on Node's built-in vm and Intl.",
+  "scripts": {
+    "test": "node test/run-all.js",
+    "test:verbose": "node test/run-all.js -v"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

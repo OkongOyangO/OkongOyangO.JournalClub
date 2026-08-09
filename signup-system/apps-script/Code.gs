@@ -398,6 +398,59 @@ var MONTH_NAMES_ = {
   oct: 9, nov: 10, dec: 11
 };
 
+function pad2_(n) { return (n < 10 ? '0' : '') + n; }
+
+/**
+ * Build a Date that lands on the calendar day y/mon/day **in `tz`** — the
+ * SPREADSHEET's timezone, which is the only timezone this system keys dates in.
+ *
+ * WHY THIS EXISTS. `new Date(y, mon, day)` is midnight in the timezone of the
+ * host running the code — for Apps Script that is the SCRIPT project's tz, which
+ * is a different setting from the spreadsheet's and is NOT guaranteed to match
+ * (a project created outside the US defaults to something else entirely).
+ * `dayKey_` then formats the result in the SHEET's tz. If the script tz is east
+ * of the sheet's, script-midnight is still the PREVIOUS calendar day in the
+ * sheet's tz, and every text-typed schedule row keys one day early: the form
+ * offers a date whose ISO prefix and human half disagree, and the speaker is
+ * emailed the wrong day for their own talk. Verified: with the Date column
+ * retyped as text and the script on UTC, the row reading 2026-09-14 answered to
+ * the key 2026-09-13.
+ *
+ * The construction is anchored at UTC noon and then corrected by at most one
+ * day, which is exact for every real zone (offsets run −12h..+14h).
+ *
+ * It ALSO validates: JS rolls impossible components over silently, so
+ * `new Date(2026, 1, 29)` is 1 March. Here the round-trip through `dayKey_`
+ * cannot match, so 2026-02-29 returns null instead of quietly re-homing that
+ * cell onto a neighbouring real day that an approval could then be written into.
+ */
+function dateInTz_(y, mon, day, tz) {
+  if (!(y >= 1000 && y <= 9999) || !(mon >= 0 && mon <= 11) || !(day >= 1 && day <= 31)) {
+    return null;
+  }
+  var want = y + '-' + pad2_(mon + 1) + '-' + pad2_(day);
+  var d = new Date(Date.UTC(y, mon, day, 12, 0, 0));
+  var got = dayKey_(d, tz);
+  if (got !== want) {
+    // ISO keys compare correctly as strings, so this picks the right direction
+    // for zones both east and west of UTC.
+    d = new Date(d.getTime() + (got < want ? 86400000 : -86400000));
+    got = dayKey_(d, tz);
+  }
+  return got === want ? d : null;
+}
+
+/** Shift an ISO day key by whole CALENDAR days in `tz`. Anchoring on the noon
+ *  Date from dateInTz_ means a 23- or 25-hour DST day cannot slide the result
+ *  into the neighbouring day the way midnight + n*86400000 does. */
+function shiftDayKey_(isoKey, n, tz) {
+  var m = String(isoKey).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) { return String(isoKey); }
+  var base = dateInTz_(Number(m[1]), Number(m[2]) - 1, Number(m[3]), tz);
+  if (!base) { return String(isoKey); }
+  return dayKey_(new Date(base.getTime() + n * 86400000), tz);
+}
+
 /**
  * Turn a schedule Date cell into a real Date.
  *
@@ -405,12 +458,16 @@ var MONTH_NAMES_ = {
  * exists only for the case where somebody retypes a cell and Sheets stores a
  * string. In that branch there is genuinely no year, so we disambiguate using
  * the row's OWN "Day of Week" cell: across the live schedule that picks a unique
- * year (2026 matches 28 rows, 2027 the other 11). If the weekday is unusable we
- * fall back to the candidate year nearest to today.
+ * year (2026 matches 28 rows, 2027 the other 11). If the weekday is unusable the
+ * row is UNREADABLE and we return null — see the comment at that branch.
  *
  * We deliberately do NOT reuse the website widget's "more than 200 days in the
  * past means next year" rule — it is wrong for 8 of the 39 current rows, and
  * being wrong here means writing a speaker into the wrong week.
+ *
+ * Every Date here is built through dateInTz_, so it is anchored to the SHEET's
+ * timezone (see that function) and an impossible date returns null rather than
+ * silently rolling over onto a neighbouring real day.
  */
 function coerceDate_(v, tz, dowHint) {
   if (Object.prototype.toString.call(v) === '[object Date]') {
@@ -422,7 +479,7 @@ function coerceDate_(v, tz, dowHint) {
   // ISO first — unambiguous, and what our own JC Date Key column holds.
   var iso = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (iso) {
-    return new Date(Number(iso[1]), Number(iso[2]) - 1, Number(iso[3]));
+    return dateInTz_(Number(iso[1]), Number(iso[2]) - 1, Number(iso[3]), tz);
   }
 
   // "24 August" / "24 August 2026" / "24 Aug"
@@ -431,26 +488,42 @@ function coerceDate_(v, tz, dowHint) {
   var day = parseInt(m[1], 10);
   var mon = MONTH_NAMES_[m[2].toLowerCase()];
   if (mon === undefined || !(day >= 1 && day <= 31)) { return null; }
-  if (m[3]) { return new Date(Number(m[3]), mon, day); }
+  if (m[3]) { return dateInTz_(Number(m[3]), mon, day, tz); }
 
-  var nowYear = new Date().getFullYear();
+  // "This year" must also be read in the SHEET's tz, for the same reason
+  // dateInTz_ exists: on 31 December a script east of the sheet is already on
+  // next year, which would shift the whole candidate window.
+  var nowYear = Number(dayKey_(new Date(), tz).slice(0, 4));
   var candidates = [nowYear - 1, nowYear, nowYear + 1];
   var wanted = normHeader_(dowHint || '').slice(0, 3); // "monday" -> "mon"
   var i, cand;
   if (wanted) {
     for (i = 0; i < candidates.length; i++) {
-      cand = new Date(candidates[i], mon, day);
-      if (Utilities.formatDate(cand, tz, 'EEE').toLowerCase() === wanted) { return cand; }
+      cand = dateInTz_(candidates[i], mon, day, tz);
+      if (cand && Utilities.formatDate(cand, tz, 'EEE').toLowerCase() === wanted) {
+        return cand;
+      }
     }
   }
-  // No usable weekday hint: nearest candidate to today.
-  var best = null, bestDelta = Infinity, now = new Date();
-  for (i = 0; i < candidates.length; i++) {
-    cand = new Date(candidates[i], mon, day);
-    var delta = Math.abs(cand.getTime() - now.getTime());
-    if (delta < bestDelta) { bestDelta = delta; best = cand; }
-  }
-  return best;
+  // NO USABLE WEEKDAY HINT: REFUSE, do not guess.
+  //
+  // "24 August" with no year and no weekday is genuinely ambiguous, and every
+  // tie-break is wrong for a large slice of the real sheet. Measured against the
+  // 39 live rows on 2026-08-08: "nearest year in either direction" resolves 6
+  // rows into the PAST (|8 Feb 2026 - today| is 181 days, |8 Feb 2027 - today| is
+  // 184, so nearest picks the year that already happened) and those weeks then
+  // vanish from the form and become unapprovable; "prefer the next future year"
+  // is wrong for the 7 rows that really are past and would advertise a past row
+  // as a future date. There is no third heuristic that is right; the input does
+  // not contain the answer.
+  //
+  // So return null. A null Date is the system's existing "this row is not
+  // readable" signal: isFreeSlot_ drops it, findRowByDate_ skips it, and
+  // unreadableDateRows_ NAMES it in the nightly report and in verifySetup_. That
+  // turns an invisible wrong guess into a visible "row 21: I cannot read this
+  // Date cell", which a human fixes in ten seconds. Guessing here means writing a
+  // speaker onto the wrong week; refusing means telling someone to fix a cell.
+  return null;
 }
 
 /**
@@ -508,12 +581,11 @@ function safeEmail_(s) {
   return /^[^\s@,;:<>"'\\]+@[^\s@,;:<>"'\\]+\.[^\s@,;:<>"'\\]+$/.test(s) ? s : '';
 }
 
-/** Build a mailto: URL with a pre-filled draft. */
-function mailto_(to, subject, body) {
-  return 'mailto:' + to +
-    '?subject=' + encodeURIComponent(subject) +
-    '&body=' + encodeURIComponent(body);
-}
+// mailto_() was deleted on purpose. Its only two callers were doReject_ and
+// pageBlocked_, both of which rendered a submitter's address into a page served
+// to anyone holding the token — the exact thing the review page goes out of its
+// way not to do. Reintroducing the helper is the easy way to reintroduce the
+// leak, so the helper is gone rather than merely unused.
 
 /** Local ISO-8601 with offset, e.g. 2026-08-12T14:31:07-04:00. Readable in the
  *  sheet and unambiguous, unlike a bare local timestamp. */
@@ -692,6 +764,50 @@ function lastScheduledDate_(ctx) {
   return last;
 }
 
+/**
+ * Sheet rows whose Date cell holds something but coerceDate_ cannot read it.
+ *
+ * WHY THIS IS A DETECTOR AND NOT A PARSER. Every consumer treats "cannot read
+ * the date" as "not a scheduled row": isFreeSlot_ returns false, findRowByDate_
+ * skips it, lastScheduledDate_ ignores it. When the WHOLE column breaks, the
+ * free-slot count hits zero and both verifySetup_ and refreshFormDates_ shout.
+ * But retyping three cells — a paste from a doc, a fill-down gone wrong — leaves
+ * the count healthy, so nothing fires, those weeks silently stop being offered,
+ * and a request already submitted for one of them is refused as "not in the
+ * schedule" while the row sits visibly in the sheet. Silence was the defect;
+ * naming the rows is the fix.
+ */
+function unreadableDateRows_(ctx) {
+  var out = [];
+  var dowIdx = ctx.col['day of week'];
+  for (var r = 1; r < ctx.values.length; r++) {
+    var raw = ctx.values[r][ctx.col.date];
+    if (normCell_(raw) === '') { continue; }     // genuinely blank / spacer row
+    var d = coerceDate_(raw, ctx.tz, dowIdx !== undefined ? ctx.values[r][dowIdx] : '');
+    if (d === null) { out.push(r + 1); }         // +1: Sheets rows are 1-indexed
+  }
+  return out;
+}
+
+/**
+ * A schedule cell as display text.
+ *
+ * normCell_ deliberately returns Date objects unchanged, which is right for the
+ * date column and wrong everywhere else: typing a bare "4:30 PM" into the TIme
+ * column makes Sheets store a real time value, getValues() hands back a Date at
+ * the 1899-12-30 epoch, and a bare String() of that put
+ * "Sat Dec 30 1899 16:30:00 GMT-0500 (Eastern Standard Time)" into both the form
+ * dropdown and the speaker's confirmation email. Format in the SHEET's tz — the
+ * tz the value was interpreted in — so the clock time round-trips exactly.
+ */
+function cellText_(v, tz) {
+  var n = normCell_(v);
+  if (Object.prototype.toString.call(n) === '[object Date]') {
+    return isNaN(n.getTime()) ? '' : Utilities.formatDate(n, tz, 'h:mm a');
+  }
+  return String(n);
+}
+
 /** "Monday 14 September 2026" */
 function fmtLong_(d, tz) {
   return d ? Utilities.formatDate(d, tz, 'EEEE d MMMM yyyy') : '';
@@ -704,10 +820,10 @@ function fmtShort_(d, tz) {
 
 /** Time and room strings for a schedule row, as plain text (may be ''). */
 function rowTime_(ctx, row) {
-  return ctx.col.time !== undefined ? String(normCell_(row.values[ctx.col.time])) : '';
+  return ctx.col.time !== undefined ? cellText_(row.values[ctx.col.time], ctx.tz) : '';
 }
 function rowRoom_(ctx, row) {
-  return ctx.col.room !== undefined ? String(normCell_(row.values[ctx.col.room])) : '';
+  return ctx.col.room !== undefined ? cellText_(row.values[ctx.col.room], ctx.tz) : '';
 }
 
 
@@ -1665,6 +1781,19 @@ function pageReview_(row, token, action, dateKey, ctx, slot, schemaError) {
     body += '<p>Approving writes <strong>' + esc_(willWrite) + '</strong>' + rowNote +
       ', and emails the speaker a confirmation. Date, day and time are not changed.' +
       roomNote + '</p>';
+    // And exactly what it will DESTROY. The paragraph above enumerates what gets
+    // written but said nothing about what gets replaced, so a hand-written
+    // "HOLD - Prof. Kim, do not reassign" in Topic vanished on one click with no
+    // warning anywhere. Room is protected by a never-overwrite rule; these columns
+    // cannot be, so they get a warning instead.
+    var willReplace = plannedReplacements_(ctx, slot, row);
+    if (willReplace.length) {
+      body += '<div class="banner warn">⚠️ This will <strong>replace</strong> text ' +
+        'already in that row:<br>' + willReplace.map(function (x) {
+          return '<strong>' + esc_(x.column) + '</strong>: ' + esc_(x.from) +
+                 ' → ' + esc_(x.to);
+        }).join('<br>') + '</div>';
+    }
   } else {
     body += '<p>Rejecting records the decision privately. <strong>No email is sent to ' +
       esc_(speaker || 'the speaker') + '</strong> — you will get a pre-filled draft to ' +
@@ -1891,17 +2020,23 @@ function doReject_(row) {
   var speaker = getAnswer_(row, 'speaker');
   var email = safeEmail_(row.cols.email >= 0 ? row.display[row.cols.email] : '');
   var first = (speaker || '').split(/\s+/)[0] || 'there';
-  var draft = 'Hi ' + first + ',\n\n' +
-    'Thanks for offering to present at the journal club. Unfortunately that date ' +
-    "doesn't work out — could we find another one?\n\nBest,\nYiyang\n";
+
+  // NO mailto: HERE, AND NO ADDRESS IN THE HTML. The review page deliberately
+  // withholds the submitter's address so that a leaked token exposes a name and a
+  // talk title rather than a contactable .edu address (submittedFields_ says so
+  // explicitly). This page used to hand the address straight back inside a mailto
+  // href, undoing that property in one anonymous POST. The address lives in the
+  // private log, behind Google auth — point there instead. Losing one click is a
+  // fair price for a security property the code claims and now actually keeps.
 
   var body = '<h1>Rejection recorded</h1>' +
     '<p>' + esc_(speaker || 'The request') + '\u2019s request has been marked rejected in ' +
     'the private log. <strong>No email was sent to them.</strong></p>' +
     (email
-      ? '<p><a class="btn neutral" href="' +
-        esc_(mailto_(email, 'Journal club — about your requested date', draft)) +
-        '">Email ' + esc_(first) + ' about it</a></p>'
+      ? '<p>To write to ' + esc_(first) + ' yourself, open the private log below — their ' +
+        'address is on row ' + row.rowIndex + '. Suggested wording: <em>&ldquo;Thanks for ' +
+        'offering to present at the journal club. Unfortunately that date doesn&rsquo;t ' +
+        'work out &mdash; could we find another one?&rdquo;</em></p>'
       : '<div class="banner warn">No email address was captured for this submission, so ' +
         'there is nobody to write to.</div>') +
     '<p class="foot">Nothing was written to the public schedule. ' +
@@ -2012,10 +2147,12 @@ function doApprove_(row) {
   var sheetRow = schedRow.sheetRow;
   var wrote = [];
   var skipped = [];
-  writeIfPresent_(ctx, sheetRow, 'speaker', speakerValue, 80, wrote, true, skipped);
-  writeIfPresent_(ctx, sheetRow, 'affiliation', getAnswer_(row, 'affiliation'), 80, wrote, false, skipped);
-  writeIfPresent_(ctx, sheetRow, 'advisor', getAnswer_(row, 'advisor'), 80, wrote, false, skipped);
-  writeIfPresent_(ctx, sheetRow, 'topic', getAnswer_(row, 'title'), 200, wrote, false, skipped);
+  var replaced = [];   // hand-entered cells this approval is about to overwrite
+  var sv = schedRow.values;
+  writeIfPresent_(ctx, sheetRow, 'speaker', speakerValue, 80, wrote, true, skipped, sv, replaced);
+  writeIfPresent_(ctx, sheetRow, 'affiliation', getAnswer_(row, 'affiliation'), 80, wrote, false, skipped, sv, replaced);
+  writeIfPresent_(ctx, sheetRow, 'advisor', getAnswer_(row, 'advisor'), 80, wrote, false, skipped, sv, replaced);
+  writeIfPresent_(ctx, sheetRow, 'topic', getAnswer_(row, 'title'), 200, wrote, false, skipped, sv, replaced);
 
   // Room: only ever filled in when it is currently EMPTY. Never overwritten —
   // if Yiyang put something there, he meant it.
@@ -2044,8 +2181,14 @@ function doApprove_(row) {
     setAdmin_(row, 'STATUS', STATUS.APPROVED);
     setAdmin_(row, 'DECIDED_AT', nowStamp_());
     setAdmin_(row, 'SCHED_ROW', sheetRow);
+    // The replaced-values list goes into the PERMANENT note, not just the page:
+    // the page is seen once and closed, and this is the only record of what the
+    // approval destroyed that does not require the spreadsheet's version history.
     setAdmin_(row, 'NOTE', 'approved \u2192 schedule row ' + sheetRow +
-                           ' (' + wrote.join(', ') + ')');
+                           ' (' + wrote.join(', ') + ')' +
+                           (replaced.length ? '; REPLACED ' + replaced.map(function (x) {
+                             return x.column + ': "' + x.from + '"';
+                           }).join(', ') : ''));
     SpreadsheetApp.flush();
   } catch (bookErr) {
     var bookMsg = errText_(bookErr);
@@ -2074,7 +2217,7 @@ function doApprove_(row) {
   // The decision is now durable. Emailing the speaker and rendering the outcome
   // page both happen back in doPost, AFTER the lock has been released.
   return { approved: true, row: row, ctx: ctx, schedRow: schedRow,
-           wrote: wrote, skipped: skipped };
+           wrote: wrote, skipped: skipped, replaced: replaced };
 }
 
 /** Success page. Rendered outside the lock, once the speaker has been emailed
@@ -2094,6 +2237,15 @@ function pageApproved_(outcome, mailed) {
     '</p>' +
     '<p>Cells written: ' + esc_(outcome.wrote.join(', ') || 'none') + '. Date, day and ' +
     'time were not touched.</p>' +
+    ((outcome.replaced && outcome.replaced.length)
+      ? '<div class="banner warn">⚠️ This approval <strong>replaced</strong> values '
+        + 'that were already in row ' + sheetRow + '. The old text is not recoverable '
+        + 'from this page after you close it — it is also recorded in JC Decision Note:<br>' +
+        outcome.replaced.map(function (x) {
+          return '<strong>' + esc_(x.column) + '</strong>: ' + esc_(x.from) +
+                 ' → ' + esc_(x.to);
+        }).join('<br>') + '</div>'
+      : '') +
     ((outcome.skipped && outcome.skipped.length)
       ? '<div class="banner warn">⚠️ Some answers had nowhere to go — the schedule ' +
         'has no matching column, so they were <strong>not</strong> written and you will ' +
@@ -2121,7 +2273,8 @@ function pageApproved_(outcome, mailed) {
  *  is what a renamed `Topic` column used to do — reports full success while the
  *  site renders "Topic to be announced", and the only signal is a nightly note
  *  up to 24 hours later. */
-function writeIfPresent_(ctx, sheetRow, colName, value, maxLen, wroteList, always, skippedList) {
+function writeIfPresent_(ctx, sheetRow, colName, value, maxLen, wroteList, always,
+                        skippedList, rowValues, replacedList) {
   var idx = ctx.col[colName];
   var clean = sanitizeForSheet_(value, maxLen);
   if (idx === undefined) {
@@ -2131,8 +2284,48 @@ function writeIfPresent_(ctx, sheetRow, colName, value, maxLen, wroteList, alway
     return;
   }
   if (!clean && !always) { return; }
+  // RECORD WHAT IS LOST. isFreeSlot_ uses Speaker as the sole discriminator, so a
+  // row with an empty Speaker but a hand-written Topic ("HOLD — Prof. Kim, do not
+  // reassign") or a pre-filled Affiliation/Advisor is still "free". Room gets an
+  // explicit never-overwrite guard; these columns do not, and cannot get one
+  // without blocking legitimate corrections. So the write stands and the loss is
+  // surfaced instead — on the outcome page and in JC Decision Note, where an undo
+  // is possible without digging through the spreadsheet's version history.
+  if (rowValues && replacedList && idx < rowValues.length) {
+    var prior = String(normCell_(rowValues[idx]));
+    if (prior !== '' && prior !== clean) {
+      replacedList.push({ column: colName, from: prior, to: clean });
+    }
+  }
   ctx.sheet.getRange(sheetRow, idx + 1, 1, 1).setValue(clean);
   wroteList.push(colName.charAt(0).toUpperCase() + colName.slice(1));
+}
+
+/**
+ * What an approval would overwrite in the target schedule row, as
+ * [{column, from, to}]. Read-only preview for the review page; doApprove_
+ * computes the same list for real, inside the lock, from the values it is about
+ * to write. Kept in step with writeIfPresent_'s three overwritable columns —
+ * Speaker is excluded because a FREE row has an empty Speaker by definition, and
+ * Room is excluded because it is never overwritten at all.
+ */
+function plannedReplacements_(ctx, slot, row) {
+  var out = [];
+  if (!ctx || !slot || !slot.row || !slot.row.values) { return out; }
+  var plan = [['affiliation', getAnswer_(row, 'affiliation'), 80],
+              ['advisor',     getAnswer_(row, 'advisor'),     80],
+              ['topic',       getAnswer_(row, 'title'),       200]];
+  for (var i = 0; i < plan.length; i++) {
+    var idx = ctx.col[plan[i][0]];
+    if (idx === undefined || idx >= slot.row.values.length) { continue; }
+    var to = sanitizeForSheet_(plan[i][1], plan[i][2]);
+    if (!to) { continue; }                       // unanswered: nothing is written
+    var from = String(normCell_(slot.row.values[idx]));
+    if (from !== '' && from !== to) {
+      out.push({ column: plan[i][0], from: from, to: to });
+    }
+  }
+  return out;
 }
 
 /**
@@ -2147,11 +2340,10 @@ function pageBlocked_(row, headingHtml, explainHtml) {
   var email = safeEmail_(row.cols.email >= 0 ? row.display[row.cols.email] : '');
   var token = getAdmin_(row, 'TOKEN');
 
-  var draft = 'Hi ' + first + ',\n\n' +
-    'Thanks for signing up for the journal club. That date has just been taken — ' +
-    'could we look at another one?\n\n' +
-    (alternates ? 'You mentioned: ' + alternates + '\n\n' : '') +
-    'Best,\nYiyang\n';
+  // NO mailto: HERE — same reason as doReject_, and worse: this page is reachable
+  // with NO state change at all (a token holder just POSTs approve against a taken
+  // slot), so an address embedded here could be harvested without leaving a trace
+  // in the private log. The address stays behind Google auth.
 
   var body = headingHtml +
     '<div class="banner bad">' + explainHtml + '</div>' +
@@ -2161,9 +2353,8 @@ function pageBlocked_(row, headingHtml, explainHtml) {
       ? '<p>They said they could also do: <em>' + escMultiline_(alternates) + '</em></p>'
       : '') +
     (email
-      ? '<p><a class="btn neutral" href="' +
-        esc_(mailto_(email, 'Journal club — another date?', draft)) +
-        '">Email ' + esc_(first) + ' about another date</a></p>'
+      ? '<p>To offer ' + esc_(first) + ' another date, open the private log — their ' +
+        'address is on row ' + row.rowIndex + '.</p>'
       : '') +
     (token && reviewUrl_(token, 'reject')
       ? '<p><a class="alt" href="' + esc_(reviewUrl_(token, 'reject')) +
@@ -2253,19 +2444,64 @@ function refreshFormDates() {
 function refreshFormDates_(problems) {
   var ctx = openSchedule_();
   var now = new Date();
-  var leadMs = getNumProp_('LEAD_DAYS', 7) * 86400000;
-  var maxChoices = getNumProp_('MAX_CHOICES', 30);
+  // LEAD_DAYS is a number of CALENDAR days, not a span of milliseconds.
+  // Subtracting `now` (the trigger fires at 04:00) from slot MIDNIGHT is short by
+  // four hours, so a slot exactly LEAD_DAYS days out was dropped every single
+  // night \u2014 LEAD_DAYS=7 behaved as 8 \u2014 and a spring-forward week is 23 hours
+  // shorter still, which silently removed the schedule's last free slot and
+  // replaced the whole dropdown with the "no open dates" placeholder. Comparing
+  // day keys makes the window independent of the run hour and of DST.
+  var cutoffKey = shiftDayKey_(dayKey_(now, ctx.tz), getNumProp_('LEAD_DAYS', 7), ctx.tz);
+  // Clamp: MAX_CHOICES <= 0 used to slice the list to nothing, which is
+  // indistinguishable downstream from a genuinely full schedule \u2014 the nightly
+  // mail then said "add more rows" while 26 rows were free.
+  var maxChoices = Math.max(1, getNumProp_('MAX_CHOICES', 30));
 
   var open = [];
+  var unreadable = unreadableDateRows_(ctx);
   var dowIdx = ctx.col['day of week'];
   for (var r = 1; r < ctx.values.length; r++) {
     var vals = ctx.values[r];
     if (!isFreeSlot_(vals, ctx.col, ctx.tz, now)) { continue; }
     var d = coerceDate_(vals[ctx.col.date], ctx.tz, dowIdx !== undefined ? vals[dowIdx] : '');
-    if (d.getTime() - now.getTime() < leadMs) { continue; }   // LEAD_DAYS applies HERE only
-    open.push({ date: d, values: vals });
+    if (dayKey_(d, ctx.tz) < cutoffKey) { continue; }   // LEAD_DAYS applies HERE only
+    open.push({ date: d, values: vals, sheetRow: r + 1 });
   }
   open.sort(function (a, b) { return a.date.getTime() - b.date.getTime(); });
+
+  // De-duplicate by day key. findRowByDate_ resolves one row PER DATE and refuses
+  // a date that appears twice as AMBIGUOUS, so offering a duplicated date puts an
+  // option in the dropdown that no approval can ever complete: the speaker signs
+  // up, waits, and the approve link dead-ends on "remove the duplicate". Drop the
+  // date entirely and name it, rather than advertise something unapprovable.
+  var i, key;
+  var rowsByKey = {};                            // key -> [sheetRow, ...]
+  for (i = 0; i < open.length; i++) {
+    key = dayKey_(open[i].date, ctx.tz);
+    if (!rowsByKey[key]) { rowsByKey[key] = []; }
+    rowsByKey[key].push(open[i].sheetRow);
+  }
+  var deduped = [], dupList = [];
+  for (i = 0; i < open.length; i++) {
+    key = dayKey_(open[i].date, ctx.tz);
+    if (rowsByKey[key].length === 1) { deduped.push(open[i]); continue; }
+    if (open[i].sheetRow === rowsByKey[key][0]) {   // report each duplicated date once
+      dupList.push(key + ' (rows ' + rowsByKey[key].join(', ') + ')');
+    }
+  }
+  if (dupList.length && problems) {
+    problems.push('These dates appear on more than one schedule row, so an approval for ' +
+      'them would be refused as ambiguous. They were NOT offered on the form: ' +
+      dupList.join('; ') + '. Delete the duplicate row(s).');
+  }
+  if (unreadable.length && problems) {
+    problems.push(unreadable.length + ' schedule row(s) have a Date cell this script ' +
+      'cannot read, so those weeks are invisible to the form and to approvals: rows ' +
+      unreadable.join(', ') + '. Retype the Date cell as a real date (Format > Number > Date).');
+  }
+  open = deduped;
+
+  var openCount = open.length;                   // BEFORE truncation \u2014 see below
   if (open.length > maxChoices) { open = open.slice(0, maxChoices); }
 
   var choices = open.map(function (slot) {
@@ -2273,8 +2509,8 @@ function refreshFormDates_(problems) {
     var iso = dayKey_(slot.date, ctx.tz);
     var dow = dowIdx !== undefined ? String(normCell_(slot.values[dowIdx])) : '';
     if (!dow) { dow = Utilities.formatDate(slot.date, ctx.tz, 'EEEE'); }
-    var time = ctx.col.time !== undefined ? String(normCell_(slot.values[ctx.col.time])) : '';
-    var room = ctx.col.room !== undefined ? String(normCell_(slot.values[ctx.col.room])) : '';
+    var time = ctx.col.time !== undefined ? cellText_(slot.values[ctx.col.time], ctx.tz) : '';
+    var room = ctx.col.room !== undefined ? cellText_(slot.values[ctx.col.room], ctx.tz) : '';
     var s = iso + ' \u2014 ' + dow + ' ' + fmtShort_(slot.date, ctx.tz);
     if (time) { s += ', ' + time; }
     if (room && room.toUpperCase() !== 'N/A') { s += ', ' + room; }
@@ -2291,7 +2527,10 @@ function refreshFormDates_(problems) {
   }
 
   var props = getProps_();
-  if (choices.length === 0) {
+  // Decided on the count BEFORE truncation, so "no open slots" can only ever mean
+  // what it says. (maxChoices is clamped to >= 1, so the two counts agree today;
+  // keying off openCount keeps that true if the clamp is ever loosened.)
+  if (openCount === 0) {
     // setChoiceValues([]) THROWS. Without this guard the nightly job would start
     // crashing exactly when the last slot fills — i.e. precisely when nobody is
     // watching and the form silently keeps accepting requests.
@@ -2547,6 +2786,16 @@ function verifySetup_(problems) {
     if (openCount === 0) {
       problems.push('The schedule has no free future slots at all. Add rows before ' +
         'advertising the form.');
+    }
+    // A handful of retyped Date cells leaves openCount healthy, so the check
+    // above cannot see them — see unreadableDateRows_ for why silence there is
+    // the dangerous case.
+    var badDates = unreadableDateRows_(ctx);
+    if (badDates.length) {
+      problems.push(badDates.length + ' schedule row(s) have a Date cell that cannot be ' +
+        'read, so those weeks are invisible to the sign-up form and cannot be approved: ' +
+        'rows ' + badDates.join(', ') + '. Retype them as real dates ' +
+        '(Format > Number > Date), not as text.');
     }
   }
 

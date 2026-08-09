@@ -87,12 +87,65 @@
         return { cols: cols, rows: rows };
     }
 
+    var SHEET_TZ = "America/New_York";  // the schedule sheet's own timezone
+
+    // Midnight of "today" AS THE SHEET SEES IT, in local-Date form so it compares with
+    // the local-midnight Dates cellDate builds. en-CA formats as yyyy-mm-dd.
+    function sheetToday(now) {
+        var p;
+        try {
+            p = new Intl.DateTimeFormat("en-CA", { timeZone: SHEET_TZ, year: "numeric",
+                                                   month: "2-digit", day: "2-digit" }).format(now).split("-");
+        } catch (e) { return new Date(now.getFullYear(), now.getMonth(), now.getDate()); }
+        return new Date(+p[0], +p[1] - 1, +p[2]);
+    }
+
+    var MONTHS = ["january","february","march","april","may","june","july",
+                  "august","september","october","november","december"];
+    var DOW_FULL = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
+
     // Date cells arrive as {"v":"Date(2026,8,14)","f":"14 September"} — month is ALREADY 0-based.
     var DATE_RE = /^Date\((\d+),(\d+),(\d+)/;
-    function cellDate(cell) {
+    function cellDate(cell, dowCell) {
         if (!cell) { return null; }
         var m = DATE_RE.exec(String(cell.v));
-        return m ? new Date(+m[1], +m[2], +m[3]) : null;
+        if (m) { return new Date(+m[1], +m[2], +m[3]); }
+
+        // TEXT FALLBACK. Retyping one Date cell makes Sheets store a string, and this
+        // function used to return null for it — so a BOOKED talk silently disappeared
+        // from the card and the week after it was promoted to "Next", with no error
+        // anywhere. Apps Script has had a text branch for exactly this case since day
+        // one (coerceDate_); mirror it, including the trick of disambiguating a
+        // year-less "14 September" with the row's own Day of Week cell, and REFUSE
+        // rather than guess when that hint is unusable.
+        var s = String(cell.f != null ? cell.f : (cell.v == null ? "" : cell.v)).trim();
+        if (!s) { return null; }
+        var iso = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (iso) {
+            var d = new Date(+iso[1], +iso[2] - 1, +iso[3]);
+            return (d.getFullYear() === +iso[1] && d.getMonth() === +iso[2] - 1 &&
+                    d.getDate() === +iso[3]) ? d : null;   // reject 2026-02-29 &c.
+        }
+        var t = s.match(/^(\d{1,2})\s+([A-Za-z]+)\.?(?:\s+(\d{4}))?$/);
+        if (!t) { return null; }
+        var day = +t[1], mon = -1, name = t[2].toLowerCase();
+        for (var i = 0; i < MONTHS.length; i++) {
+            if (MONTHS[i] === name || MONTHS[i].slice(0, 3) === name.slice(0, 3)) { mon = i; break; }
+        }
+        if (mon < 0 || !(day >= 1 && day <= 31)) { return null; }
+        function mk(y) {
+            var d = new Date(y, mon, day);
+            return (d.getFullYear() === y && d.getMonth() === mon && d.getDate() === day) ? d : null;
+        }
+        if (t[3]) { return mk(+t[3]); }
+        var want = String(cellText(dowCell)).trim().toLowerCase();
+        if (!want) { return null; }
+        var yr = new Date().getFullYear();
+        for (var c = yr - 1; c <= yr + 1; c++) {
+            var cand = mk(c);
+            if (cand && DOW_FULL[cand.getDay()].slice(0, 3) === want.slice(0, 3)) { return cand; }
+        }
+        return null;
     }
 
     // Prefer the formatted string ("14 September") so the card renders exactly what the sheet shows.
@@ -106,18 +159,26 @@
 
     // Map columns by header label so added/reordered columns don't break us.
     function resolveCols(cols) {
-        var idx = { date: -1, time: -1, speaker: -1, affiliation: -1, topic: -1 };
+        var idx = { date: -1, dow: -1, time: -1, speaker: -1, affiliation: -1, topic: -1 };
         for (var i = 0; i < cols.length; i++) {
             var h = norm(cols[i]);
             if (h === "date" && idx.date < 0) { idx.date = i; }
+            else if (h === "day of week" && idx.dow < 0) { idx.dow = i; } // year hint for text dates
             else if (h === "time" && idx.time < 0) { idx.time = i; } // sheet header is "TIme"
             else if (h === "speaker" && idx.speaker < 0) { idx.speaker = i; }
             else if (h === "affiliation" && idx.affiliation < 0) { idx.affiliation = i; }
             else if (h === "topic" && idx.topic < 0) { idx.topic = i; }
         }
-        if (idx.date < 0) { idx.date = 0; }
+        // NO POSITIONAL FALLBACK FOR date OR speaker. These two decide WHICH rows are
+        // talks and WHEN they are; a wrong guess is not a cosmetic miss. Index 2 in this
+        // sheet is "TIme", so the old `idx.speaker = 2` meant that renaming the Speaker
+        // header to "Presenter" made the card announce that every future week was booked
+        // by a speaker named "4:30pm - 6:00pm" — break weeks and all 26 genuinely free
+        // slots included — while the sign-up form went on offering six of those dates.
+        // Apps Script refuses to run on the same edit (resolveScheduleCols_ throws); the
+        // widget now takes the same fail-closed posture and leaves the build-time static
+        // fallback markup in place. time/topic keep their fallbacks: they are decoration.
         if (idx.time < 0) { idx.time = 1; }
-        if (idx.speaker < 0) { idx.speaker = 2; }
         if (idx.topic < 0) { idx.topic = cols.length - 1; } // topic is normally the last column
         return idx;
     }
@@ -151,15 +212,22 @@
         if (!parsed) { return []; }
         var cols = parsed.cols;
         var col = resolveCols(cols);
+        // Fail closed on a renamed Date/Speaker header (see resolveCols): render nothing
+        // rather than something confidently wrong, so the static fallback survives.
+        if (col.date < 0 || col.speaker < 0) { return []; }
         var handled = handledCols(col);
-        var today0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        // "Today" is the SEMINAR's day in State College, not the reader's. Deriving it
+        // from the visitor's clock dropped the next talk from the card up to a full
+        // calendar day early for anyone east of Eastern time (a visitor in Tokyo at
+        // 21:00 ET on the 16th is already on the 17th and lost that evening's talk).
+        var today0 = sheetToday(now);
         var out = [];
         for (var r = 0; r < parsed.rows.length; r++) {
             var cells = parsed.rows[r];
             if (!cells) { continue; }
             var speaker = cellText(cell(cells, col.speaker));
             if (!speaker || speaker.toUpperCase() === "N/A") { continue; } // break week, not a talk
-            var d = cellDate(cell(cells, col.date));
+            var d = cellDate(cell(cells, col.date), cell(cells, col.dow));
             if (!d || d <= today0) { continue; }
             out.push({ date: d, dateStr: cellText(cell(cells, col.date)), time: cellText(cell(cells, col.time)),
                        speaker: speaker, affiliation: cellText(cell(cells, col.affiliation)), topic: cellText(cell(cells, col.topic)),
