@@ -135,7 +135,11 @@ function siteVerdict(parsed, col, cells, now) {
   const d = W.cellDate(at(col.date));
   if (!d) return { verdict: 'skip', why: 'date unparseable', speaker: speaker };
   const today0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  if (d <= today0) return { verdict: 'skip', why: 'not future', speaker: speaker, date: d };
+  // today-or-later, matching the widget: a talk stays on the card through its own
+  // day. So a row dated exactly today is site-UPCOMING while the script — which
+  // answers the different question "can this slot still be signed up for?" — calls
+  // it past. That one row is an expected divergence, not a bug.
+  if (d < today0) return { verdict: 'skip', why: 'not future', speaker: speaker, date: d };
   return { verdict: 'upcoming', why: '', speaker: speaker, date: d };
 }
 

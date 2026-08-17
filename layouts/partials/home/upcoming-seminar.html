@@ -43,11 +43,29 @@
     <div class="us-list" id="us-list">
         <div class="us-item us-next">
             <div class="us-date"><span class="us-day">17 August</span><span class="us-dow">Mon</span><span class="us-tag">Next</span></div>
-            <div class="us-time">4:30pm &ndash; 6:00pm</div>
+            <div class="us-time">5:00pm &ndash; 6:00pm</div>
             <div class="us-speaker">You-Chiuan Chen <span class="us-affil">&middot; PSU</span></div>
             <div class="us-extra"><span class="us-label">Day of Week:</span> Monday</div>
             <div class="us-extra"><span class="us-label">Room:</span> Davey 339</div>
             <div class="us-extra"><span class="us-label">Advisor:</span> Ribhu Kaul</div>
+            <div class="us-topic">More is Universal</div>
+        </div>
+        <div class="us-item">
+            <div class="us-date"><span class="us-day">24 August</span><span class="us-dow">Mon</span></div>
+            <div class="us-time">4:30pm &ndash; 6:00pm</div>
+            <div class="us-speaker">Yuting Bai <span class="us-affil">&middot; UIUC</span></div>
+            <div class="us-extra"><span class="us-label">Day of Week:</span> Monday</div>
+            <div class="us-extra"><span class="us-label">Room:</span> Davey 339</div>
+            <div class="us-extra"><span class="us-label">Advisor:</span> Philip W. Phillips</div>
+            <div class="us-topic">Application of Current Algebra Method in Strong Correlation Problem</div>
+        </div>
+        <div class="us-item">
+            <div class="us-date"><span class="us-day">31 August</span><span class="us-dow">Mon</span></div>
+            <div class="us-time">4:30pm &ndash; 6:00pm</div>
+            <div class="us-speaker">Jinfei Zhou <span class="us-affil">&middot; PSU</span></div>
+            <div class="us-extra"><span class="us-label">Day of Week:</span> Monday</div>
+            <div class="us-extra"><span class="us-label">Room:</span> Davey 339</div>
+            <div class="us-extra"><span class="us-label">Advisor:</span> Zhen Bi</div>
             <div class="us-topic us-tba">Topic to be announced</div>
         </div>
     </div>
@@ -228,7 +246,9 @@
             var speaker = cellText(cell(cells, col.speaker));
             if (!speaker || speaker.toUpperCase() === "N/A") { continue; } // break week, not a talk
             var d = cellDate(cell(cells, col.date), cell(cells, col.dow));
-            if (!d || d <= today0) { continue; }
+            // today-or-later: a talk stays on the card through its own day (both d and
+            // today0 are local midnights, so `<=` would drop the talk the morning of).
+            if (!d || d < today0) { continue; }
             out.push({ date: d, dateStr: cellText(cell(cells, col.date)), time: cellText(cell(cells, col.time)),
                        speaker: speaker, affiliation: cellText(cell(cells, col.affiliation)), topic: cellText(cell(cells, col.topic)),
                        extras: extraFields(cols, cells, handled) });
