@@ -349,3 +349,179 @@
     // NOT $global-font-secondary-color-dark (#5d5d5f) — near-invisible on #292a2d.
     .signup-note { color: darken($global-font-color-dark, 18%); }
 }
+
+// ==============================
+// Slide-deck viewer ({{< deck >}} shortcode)
+// Page images + JS controls: works without a browser PDF plugin, so unlike the
+// inline <object> PDF viewer it also renders on iOS/Android.
+// ==============================
+
+.deck {
+    margin: 1.2rem 0;
+    outline: none;
+
+    &:focus-visible .deck-frame {
+        border-color: #d23f31;
+    }
+}
+
+.deck-stage {
+    position: relative;
+}
+
+.deck-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    // Slides are white artwork; keep the stage white in both themes so they read
+    // the same way they did in the room.
+    background-color: #fff;
+    border: 1px solid #e4e4e4;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+[theme="dark"] .deck-frame {
+    border-color: #2b2b2b;
+}
+
+.deck-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    object-fit: contain;
+    display: none;
+
+    &.is-active {
+        display: block;
+    }
+}
+
+.deck-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+    // Always visible rather than hover-revealed: on touch there is no hover, and
+    // media-query sniffing for that is exactly the kind of thing that silently
+    // leaves phone users without controls.
+    opacity: 0.6;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+
+    &:hover {
+        opacity: 1;
+        background-color: rgba(0, 0, 0, 0.62);
+    }
+
+    &:focus-visible {
+        opacity: 1;
+        outline: 2px solid #d23f31;
+    }
+}
+
+.deck-prev { left: 0.6rem; }
+.deck-next { right: 0.6rem; }
+
+.deck-stage:hover .deck-nav,
+.deck:focus-within .deck-nav {
+    opacity: 1;
+}
+
+.deck-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.deck-counter {
+    color: #808080;
+    font-variant-numeric: tabular-nums;
+}
+
+.deck-full {
+    padding: 0.2rem 0.55rem;
+    border: 1px solid #e4e4e4;
+    border-radius: 4px;
+    color: #808080;
+    background: none;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+        color: #d23f31;
+        border-color: #d23f31;
+    }
+}
+
+[theme="dark"] .deck-full {
+    border-color: #2b2b2b;
+}
+
+.deck-thumbs {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    padding-bottom: 0.3rem;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.deck-thumb {
+    flex: 0 0 auto;
+    padding: 0;
+    line-height: 0;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    background: none;
+    cursor: pointer;
+    opacity: 0.55;
+    transition: opacity 0.2s ease, border-color 0.2s ease;
+
+    img {
+        display: block;
+        width: 5.4rem;
+        height: auto;
+        margin: 0;
+        border-radius: 2px;
+        background-color: #fff;
+    }
+
+    &:hover {
+        opacity: 1;
+    }
+
+    &.is-active {
+        border-color: #d23f31;
+        opacity: 1;
+    }
+}
+
+// Fullscreen: the stage becomes the whole screen, so let the slide fill it.
+.deck-stage:fullscreen {
+    display: flex;
+    align-items: center;
+    background-color: #111;
+
+    .deck-frame {
+        border: none;
+        border-radius: 0;
+        background-color: #111;
+    }
+}

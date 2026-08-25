@@ -32,7 +32,9 @@ non-local variables.
 
 <!--more-->
 
-{{< pdf src="current-algebra-hk-model.pdf" title="Download slides (PDF)" >}}
+{{< deck src="current-algebra-hk-model" label="Current Algebra of the HK Model — slides" >}}
+
+{{< pdf src="current-algebra-hk-model.pdf" title="Download slides (PDF)" embed="false" >}}
 
 {{< slides src="current-algebra-hk-model.pptx" title="Download slides (PPTX)" >}}
 

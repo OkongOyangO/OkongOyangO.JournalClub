@@ -1,0 +1,136 @@
+{{- /*
+  Slide-deck viewer: an inline, plugin-free preview of a talk.
+
+  Renders page images (generated from the PDF) as a one-slide-at-a-time viewer with
+  prev/next buttons, a thumbnail rail, a counter, keyboard arrows, touch swipe and
+  fullscreen. Unlike an <object data="...pdf">, this needs no browser PDF plugin, so it
+  also works on iOS/Android where the inline PDF viewer renders nothing.
+
+  Usage:
+    {{< deck src="current-algebra-hk-model" >}}
+    {{< deck src="current-algebra-hk-model" label="Slides" >}}
+
+  Expects, under assets/:
+    decks/<src>/slide-01.png, slide-02.png, …          (full size, ~1400px wide)
+    decks/<src>/thumbs/slide-01.png, …                 (rail thumbnails, ~260px wide)
+
+  Generate both from the deck's PDF with:
+    pdftoppm -png -scale-to-x 1400 -scale-to-y -1 talk.pdf dk
+    magick dk-NN.png -strip -colors 128 PNG8:assets/decks/<src>/slide-NN.png
+    magick dk-NN.png -resize 260x -strip -colors 96 PNG8:assets/decks/<src>/thumbs/slide-NN.png
+
+  Pair it with {{< pdf src="…" embed="false" >}} for the download button.
+*/ -}}
+{{- $src := .Get "src" | default (.Get 0) -}}
+{{- if not $src -}}
+  {{- errorf "deck shortcode: missing 'src' (page %q)" .Page.Path -}}
+{{- end -}}
+{{- $slides := sort (resources.Match (printf "decks/%s/slide-*.png" $src)) "Name" -}}
+{{- $thumbs := sort (resources.Match (printf "decks/%s/thumbs/slide-*.png" $src)) "Name" -}}
+{{- if not $slides -}}
+  {{- errorf "deck shortcode: no images at assets/decks/%s/slide-*.png (page %q)" $src .Page.Path -}}
+{{- end -}}
+{{- $n := len $slides -}}
+{{- $id := printf "deck-%s-%d" (anchorize $src) .Ordinal -}}
+{{- $label := .Get "label" | default "Slides" -}}
+<figure class="deck" id="{{ $id }}" tabindex="0" aria-roledescription="carousel" aria-label="{{ $label }}">
+    <div class="deck-stage">
+        <div class="deck-frame">
+            {{- range $i, $img := $slides }}
+            <img class="deck-slide{{ if eq $i 0 }} is-active{{ end }}"
+                 src="{{ $img.RelPermalink }}"
+                 width="{{ $img.Width }}" height="{{ $img.Height }}"
+                 alt="{{ $label }} — page {{ add $i 1 }} of {{ $n }}"
+                 {{ if gt $i 0 }}loading="lazy" {{ end }}decoding="async">
+            {{- end }}
+        </div>
+        <button class="deck-nav deck-prev" type="button" aria-label="Previous slide">
+            <i class="fas fa-chevron-left fa-fw" aria-hidden="true"></i>
+        </button>
+        <button class="deck-nav deck-next" type="button" aria-label="Next slide">
+            <i class="fas fa-chevron-right fa-fw" aria-hidden="true"></i>
+        </button>
+    </div>
+    <figcaption class="deck-bar">
+        <span class="deck-counter" aria-live="polite">1 / {{ $n }}</span>
+        <button class="deck-full" type="button" aria-label="Toggle fullscreen">
+            <i class="fas fa-expand fa-fw" aria-hidden="true"></i>&nbsp;Fullscreen
+        </button>
+    </figcaption>
+    {{- if eq (len $thumbs) $n }}
+    <div class="deck-thumbs" role="tablist" aria-label="{{ $label }} thumbnails">
+        {{- range $i, $t := $thumbs }}
+        <button class="deck-thumb{{ if eq $i 0 }} is-active{{ end }}" type="button"
+                role="tab" aria-label="Go to page {{ add $i 1 }}"{{ if eq $i 0 }} aria-selected="true"{{ end }}>
+            <img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}"
+                 alt="" {{ if gt $i 4 }}loading="lazy" {{ end }}decoding="async">
+        </button>
+        {{- end }}
+    </div>
+    {{- end }}
+</figure>
+<script>
+(function () {
+    var root = document.getElementById('{{ $id }}');
+    if (!root) { return; }
+    var slides = root.querySelectorAll('.deck-slide');
+    var thumbs = root.querySelectorAll('.deck-thumb');
+    var counter = root.querySelector('.deck-counter');
+    var stage = root.querySelector('.deck-stage');
+    var n = slides.length, cur = 0;
+
+    // Warm the neighbours so a click swaps instantly instead of waiting on a lazy fetch.
+    function warm(i) {
+        [i - 1, i + 1].forEach(function (j) {
+            if (j >= 0 && j < n) { var im = new Image(); im.src = slides[j].currentSrc || slides[j].src; }
+        });
+    }
+    function show(i) {
+        i = (i + n) % n;
+        slides[cur].classList.remove('is-active');
+        slides[i].classList.add('is-active');
+        if (thumbs.length === n) {
+            thumbs[cur].classList.remove('is-active');
+            thumbs[cur].removeAttribute('aria-selected');
+            thumbs[i].classList.add('is-active');
+            thumbs[i].setAttribute('aria-selected', 'true');
+            thumbs[i].scrollIntoView({block: 'nearest', inline: 'nearest'});
+        }
+        cur = i;
+        counter.textContent = (i + 1) + ' / ' + n;
+        warm(i);
+    }
+    root.querySelector('.deck-prev').addEventListener('click', function () { show(cur - 1); });
+    root.querySelector('.deck-next').addEventListener('click', function () { show(cur + 1); });
+    Array.prototype.forEach.call(thumbs, function (t, i) {
+        t.addEventListener('click', function () { show(i); });
+    });
+
+    root.addEventListener('keydown', function (e) {
+        var k = e.key;
+        if (k === 'ArrowLeft' || k === 'PageUp') { show(cur - 1); }
+        else if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { show(cur + 1); }
+        else if (k === 'Home') { show(0); }
+        else if (k === 'End') { show(n - 1); }
+        else { return; }
+        e.preventDefault();
+    });
+
+    var x0 = null;
+    stage.addEventListener('touchstart', function (e) { x0 = e.changedTouches[0].clientX; }, {passive: true});
+    stage.addEventListener('touchend', function (e) {
+        if (x0 === null) { return; }
+        var dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 40) { show(dx < 0 ? cur + 1 : cur - 1); }
+        x0 = null;
+    }, {passive: true});
+
+    var full = root.querySelector('.deck-full');
+    full.addEventListener('click', function () {
+        if (document.fullscreenElement) { document.exitFullscreen(); }
+        else if (stage.requestFullscreen) { stage.requestFullscreen().then(function () { root.focus(); }, function () {}); }
+    });
+
+    warm(0);
+})();
+</script>

@@ -83,6 +83,41 @@ This is a static site, so "uploading" a PDF means **adding the file to the repo*
 A bare filename (no `/`) resolves under `static/pdfs/`. You can also link the PDF from the
 session table's **Link** row if you want it visible above the fold.
 
+## Inline slide preview (`deck` shortcode)
+
+An `<object data="...pdf">` viewer depends on the browser's PDF plugin — it renders
+nothing on iOS/Android and can come up blank on desktop too. For talks where the slides
+should actually be *readable in the page*, use the `deck` shortcode instead: it shows
+pre-rendered page images with prev/next buttons, a thumbnail rail, a counter, keyboard
+arrows, touch swipe and fullscreen — no plugin involved.
+
+1. Render the deck's PDF to page images (needs `poppler` and `imagemagick`):
+
+   ```bash
+   SLUG=my-talk
+   mkdir -p assets/decks/$SLUG/thumbs
+   pdftoppm -png -scale-to-x 1400 -scale-to-y -1 talk.pdf /tmp/dk
+   for f in /tmp/dk-*.png; do
+     n=$(basename "$f" .png); n=${n#dk-}
+     magick "$f" -strip -colors 128 "PNG8:assets/decks/$SLUG/slide-$n.png"
+     magick "$f" -resize 260x -strip -colors 96 "PNG8:assets/decks/$SLUG/thumbs/slide-$n.png"
+   done
+   ```
+
+   PNG8 with a 128-colour palette keeps slide text crisp and lands around 30–40 kB a
+   page — smaller than WebP for this kind of artwork.
+
+2. In the note body:
+
+   ```markdown
+   {{< deck src="my-talk" label="My Talk — slides" >}}
+
+   {{< pdf src="my-talk.pdf" title="Download slides (PDF)" embed="false" >}}
+   ```
+
+   Note the `embed="false"`: the deck viewer *is* the preview, so the `pdf` shortcode
+   is reduced to a download button.
+
 ## Conventions
 
 - **Unique `date`** per post — LoveIt orders posts by date; duplicates make ordering unstable.

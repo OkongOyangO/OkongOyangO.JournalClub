@@ -30,6 +30,11 @@ same subdirectory-deployment layout overrides, but is a **separate site / separa
     references `extend_head.html`, so its MathJax block does not load — math works via LoveIt's
     native KaTeX). Do NOT add CSS/JS here expecting it to load; use the hooks below.
   - `shortcodes/pdf.html` — the `{{< pdf >}}` shortcode (download button + inline PDF viewer)
+  - `shortcodes/deck.html` — the `{{< deck >}}` shortcode: a plugin-free slide viewer built
+    from page images under `assets/decks/<slug>/` (prev/next, thumbnail rail, counter,
+    keyboard, swipe, fullscreen). Use it instead of the `pdf` shortcode's `<object>` viewer
+    whenever slides should be readable in the page — the `<object>` PDF viewer renders
+    nothing on mobile. Pair with `{{< pdf ... embed="false" >}}` for the download button.
   - `assets/css/_custom.scss` — custom CSS hook the theme actually compiles (`style.scss`
     does `@import "_custom"`). PDF-button/viewer styling and the Upcoming Seminar card styling
     (theme SCSS vars for light/dark) live here.
