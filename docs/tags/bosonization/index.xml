@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bosonization on Condensed Matter🍩 + AI🤖 Journal Club🎓</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/tags/bosonization/</link><description>Recent content in Bosonization on Condensed Matter🍩 + AI🤖 Journal Club🎓</description><generator>Hugo</generator><language>en</language><managingEditor>yzj5306@psu.edu (Yiyang Jiang)</managingEditor><webMaster>yzj5306@psu.edu (Yiyang Jiang)</webMaster><lastBuildDate>Mon, 24 Aug 2026 16:30:00 -0400</lastBuildDate><atom:link href="https://OkongOyangO.github.io/OkongOyangO.JournalClub/tags/bosonization/index.xml" rel="self" type="application/rss+xml"/><item><title>Current Algebra of the HK Model</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-current-algebra-hk-model/</link><pubDate>Mon, 24 Aug 2026 16:30:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-current-algebra-hk-model/</guid><description>&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;&lt;/th&gt;
+ &lt;th&gt;&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Presenter&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;Yuting Bai (Prof. Philip W. Phillips&amp;rsquo;s group, UIUC)&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Date&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;August 24, 2026 · 4:30–6:00 PM&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Location&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;Davey 339&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Topic&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;Application of the current-algebra method to a strongly correlated problem&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Current algebra asks a deceptively simple question: instead of building a many-body theory out
+of particles $c_{\mathbf k}, c^\dagger_{\mathbf k}$, can we build it out of the &lt;em&gt;fluid&lt;/em&gt;
+variables — the densities and currents that experiments actually measure? For free fermions in
+one dimension the answer is the familiar $U(1)$ Kac–Moody algebra, but the standard derivation
+leans hard on a filled Fermi sea, a linearized dispersion and a momentum cutoff. This talk
+replaces that derivation with the &lt;strong&gt;Bjorken–Johnson–Low prescription&lt;/strong&gt;, which extracts the
+equal-time commutator from the &lt;em&gt;high-frequency&lt;/em&gt; tail of a correlation function and therefore
+never has to assume what the ground state looks like. Applied to the &lt;strong&gt;Hatsugai–Kohmoto (HK)
+model&lt;/strong&gt; — an exactly solvable non-Fermi liquid that violates Luttinger&amp;rsquo;s theorem — the method
+shows that the natural low-energy objects are not bare currents but &lt;strong&gt;parton (holon/doublon)
+currents&lt;/strong&gt;, that they close into an &lt;strong&gt;affine $\mathfrak{su}(2)$ algebra&lt;/strong&gt;, and that a
+manifestly &lt;strong&gt;local&lt;/strong&gt; Sugawara-type Hamiltonian built from them reproduces the HK equations of
+motion and two-body correlators in the infrared. The suggested moral: the notorious
+non-locality of the HK model may be an artifact of writing local degrees of freedom in
+non-local variables.&lt;/p&gt;</description></item></channel></rss>

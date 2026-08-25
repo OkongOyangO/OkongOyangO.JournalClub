@@ -1,4 +1,44 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Condensed Matter🍩 + AI🤖 Journal Club🎓</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/</link><description>Lecture notes from the condensed matter theory journal club organized by Yiyang Jiang at Penn State.</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>yzj5306@psu.edu (Yiyang Jiang)</managingEditor><webMaster>yzj5306@psu.edu (Yiyang Jiang)</webMaster><lastBuildDate>Mon, 17 Aug 2026 15:30:00 -0400</lastBuildDate><atom:link href="https://OkongOyangO.github.io/OkongOyangO.JournalClub/index.xml" rel="self" type="application/rss+xml"/><item><title>More is Universal: An Introduction to Conformal Field Theory</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-conformal-field-theory-introduction/</link><pubDate>Mon, 17 Aug 2026 15:30:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-conformal-field-theory-introduction/</guid><description><![CDATA[<table>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Condensed Matter🍩 + AI🤖 Journal Club🎓</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/</link><description>Lecture notes from the condensed matter theory journal club organized by Yiyang Jiang at Penn State.</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>yzj5306@psu.edu (Yiyang Jiang)</managingEditor><webMaster>yzj5306@psu.edu (Yiyang Jiang)</webMaster><lastBuildDate>Mon, 24 Aug 2026 16:30:00 -0400</lastBuildDate><atom:link href="https://OkongOyangO.github.io/OkongOyangO.JournalClub/index.xml" rel="self" type="application/rss+xml"/><item><title>Current Algebra of the HK Model</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-current-algebra-hk-model/</link><pubDate>Mon, 24 Aug 2026 16:30:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-current-algebra-hk-model/</guid><description><![CDATA[<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Presenter</strong></td>
+          <td>Yuting Bai (Prof. Philip W. Phillips&rsquo;s group, UIUC)</td>
+      </tr>
+      <tr>
+          <td><strong>Date</strong></td>
+          <td>August 24, 2026 · 4:30–6:00 PM</td>
+      </tr>
+      <tr>
+          <td><strong>Location</strong></td>
+          <td>Davey 339</td>
+      </tr>
+      <tr>
+          <td><strong>Topic</strong></td>
+          <td>Application of the current-algebra method to a strongly correlated problem</td>
+      </tr>
+  </tbody>
+</table>
+<p>Current algebra asks a deceptively simple question: instead of building a many-body theory out
+of particles $c_{\mathbf k}, c^\dagger_{\mathbf k}$, can we build it out of the <em>fluid</em>
+variables — the densities and currents that experiments actually measure? For free fermions in
+one dimension the answer is the familiar $U(1)$ Kac–Moody algebra, but the standard derivation
+leans hard on a filled Fermi sea, a linearized dispersion and a momentum cutoff. This talk
+replaces that derivation with the <strong>Bjorken–Johnson–Low prescription</strong>, which extracts the
+equal-time commutator from the <em>high-frequency</em> tail of a correlation function and therefore
+never has to assume what the ground state looks like. Applied to the <strong>Hatsugai–Kohmoto (HK)
+model</strong> — an exactly solvable non-Fermi liquid that violates Luttinger&rsquo;s theorem — the method
+shows that the natural low-energy objects are not bare currents but <strong>parton (holon/doublon)
+currents</strong>, that they close into an <strong>affine $\mathfrak{su}(2)$ algebra</strong>, and that a
+manifestly <strong>local</strong> Sugawara-type Hamiltonian built from them reproduces the HK equations of
+motion and two-body correlators in the infrared. The suggested moral: the notorious
+non-locality of the HK model may be an artifact of writing local degrees of freedom in
+non-local variables.</p>]]></description></item><item><title>More is Universal: An Introduction to Conformal Field Theory</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-conformal-field-theory-introduction/</link><pubDate>Mon, 17 Aug 2026 15:30:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-conformal-field-theory-introduction/</guid><description><![CDATA[<table>
   <thead>
       <tr>
           <th></th>
