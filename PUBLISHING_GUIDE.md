@@ -128,6 +128,15 @@ arrows, touch swipe and fullscreen — no plugin involved.
 - The text before `<!--more-->` becomes the list-view summary.
 - **Figures**: put images under `assets/posts/<slug>/` and reference them with the LoveIt
   `figure` shortcode or standard Markdown.
+- **No `|` inside math in a Markdown table cell** — the pipe is the column separator, so
+  `$e^{-m|x|}$` silently splits the row and leaves raw `$...$` on the page. Write
+  `\lvert x\rvert` (or `\vert`) instead.
+- **No leading apostrophe in a tag.** LoveIt's post footer resolves each tag by
+  `urlize`-ing the label and calling `Site.GetPage`, and that slug does not match Hugo's own
+  taxonomy slug for `'t Hooft Anomaly` — the lookup returns nil and the tag renders as an
+  empty `<a href=""></a>`. (Hugo also title-cases it to the ugly `'T Hooft Anomaly`.) Use
+  `Anomalies` or similar. Everything else — accents included — is fine: `Poincaré Duality`
+  resolves correctly as a percent-encoded URL.
 
 ## Build & deploy
 
