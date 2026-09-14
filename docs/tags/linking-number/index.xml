@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linking Number on Condensed Matter🍩 + AI🤖 Journal Club🎓</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/tags/linking-number/</link><description>Recent content in Linking Number on Condensed Matter🍩 + AI🤖 Journal Club🎓</description><generator>Hugo</generator><language>en</language><managingEditor>yzj5306@psu.edu (Yiyang Jiang)</managingEditor><webMaster>yzj5306@psu.edu (Yiyang Jiang)</webMaster><lastBuildDate>Mon, 31 Aug 2026 17:00:00 -0400</lastBuildDate><atom:link href="https://OkongOyangO.github.io/OkongOyangO.JournalClub/tags/linking-number/index.xml" rel="self" type="application/rss+xml"/><item><title>Higher-Form Symmetry in a Nutshell</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-higher-form-symmetry-nutshell/</link><pubDate>Mon, 31 Aug 2026 17:00:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-higher-form-symmetry-nutshell/</guid><description>&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;&lt;/th&gt;
+ &lt;th&gt;&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Presenter&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;Jinfei Zhou (Prof. Zhen Bi&amp;rsquo;s group, Penn State)&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Date&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;August 31, 2026 · 5:00–6:00 PM — continued September 7, 2026 · 4:30–6:00 PM&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Location&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;Davey 339&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Topic&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;Higher-form symmetry — from differential forms to the generalized Landau paradigm&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Landau&amp;rsquo;s paradigm says a phase is labelled by a symmetry and how it breaks, and that the
+critical modes are order-parameter fluctuations. Three familiar things appear to escape it:
+topological order, confinement/deconfinement, and the exact masslessness of the photon — none
+of them has a local order parameter. The claim of this talk is that all three &lt;em&gt;are&lt;/em&gt;
+symmetry-breaking phenomena, once you allow the symmetry to act on &lt;strong&gt;loops and surfaces&lt;/strong&gt;
+rather than on points. The route there is a single conceptual pivot: a symmetry is not a
+transformation of the fields but a &lt;strong&gt;topological operator supported on a submanifold&lt;/strong&gt;, and
+the only thing being generalized is the dimension of that support. Two sessions took the
+argument from differential forms and linking numbers, through the recasting of ordinary
+Noether symmetry as a codimension-1 defect, to the definition of $p$-form symmetry and its
+realizations in Maxwell theory, the toric code, $\mathbb{Z}_N$ gauge theory, Chern–Simons
+theory and the $\mathbb{Z}_N$ center of Yang–Mills — ending with generalized order parameters,
+the photon as a Goldstone boson, a higher-form Mermin–Wagner theorem, and &amp;rsquo;t Hooft anomalies.&lt;/p&gt;</description></item></channel></rss>

@@ -385,7 +385,12 @@
     border-color: #2b2b2b;
 }
 
-.deck-slide {
+// NOTE the selector: the theme ships `.single .content figure img { display: block }`
+// (specificity 0-2-2), which beats a bare `.deck-slide` (0-1-0) and forces EVERY page
+// image visible at once — the deck then always shows its last slide, whatever the
+// counter says. `figure.deck .deck-frame img.deck-slide` is 0-3-2, so it wins on
+// specificity rather than on `@import` order. Don't simplify it back.
+figure.deck .deck-frame img.deck-slide {
     position: absolute;
     top: 0;
     left: 0;

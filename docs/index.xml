@@ -1,4 +1,42 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Condensed Matter🍩 + AI🤖 Journal Club🎓</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/</link><description>Lecture notes from the condensed matter theory journal club organized by Yiyang Jiang at Penn State.</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>yzj5306@psu.edu (Yiyang Jiang)</managingEditor><webMaster>yzj5306@psu.edu (Yiyang Jiang)</webMaster><lastBuildDate>Mon, 24 Aug 2026 16:30:00 -0400</lastBuildDate><atom:link href="https://OkongOyangO.github.io/OkongOyangO.JournalClub/index.xml" rel="self" type="application/rss+xml"/><item><title>Current Algebra of the HK Model</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-current-algebra-hk-model/</link><pubDate>Mon, 24 Aug 2026 16:30:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-current-algebra-hk-model/</guid><description><![CDATA[<table>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Condensed Matter🍩 + AI🤖 Journal Club🎓</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/</link><description>Lecture notes from the condensed matter theory journal club organized by Yiyang Jiang at Penn State.</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>yzj5306@psu.edu (Yiyang Jiang)</managingEditor><webMaster>yzj5306@psu.edu (Yiyang Jiang)</webMaster><lastBuildDate>Mon, 31 Aug 2026 17:00:00 -0400</lastBuildDate><atom:link href="https://OkongOyangO.github.io/OkongOyangO.JournalClub/index.xml" rel="self" type="application/rss+xml"/><item><title>Higher-Form Symmetry in a Nutshell</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-higher-form-symmetry-nutshell/</link><pubDate>Mon, 31 Aug 2026 17:00:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-higher-form-symmetry-nutshell/</guid><description><![CDATA[<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Presenter</strong></td>
+          <td>Jinfei Zhou (Prof. Zhen Bi&rsquo;s group, Penn State)</td>
+      </tr>
+      <tr>
+          <td><strong>Date</strong></td>
+          <td>August 31, 2026 · 5:00–6:00 PM — continued September 7, 2026 · 4:30–6:00 PM</td>
+      </tr>
+      <tr>
+          <td><strong>Location</strong></td>
+          <td>Davey 339</td>
+      </tr>
+      <tr>
+          <td><strong>Topic</strong></td>
+          <td>Higher-form symmetry — from differential forms to the generalized Landau paradigm</td>
+      </tr>
+  </tbody>
+</table>
+<p>Landau&rsquo;s paradigm says a phase is labelled by a symmetry and how it breaks, and that the
+critical modes are order-parameter fluctuations. Three familiar things appear to escape it:
+topological order, confinement/deconfinement, and the exact masslessness of the photon — none
+of them has a local order parameter. The claim of this talk is that all three <em>are</em>
+symmetry-breaking phenomena, once you allow the symmetry to act on <strong>loops and surfaces</strong>
+rather than on points. The route there is a single conceptual pivot: a symmetry is not a
+transformation of the fields but a <strong>topological operator supported on a submanifold</strong>, and
+the only thing being generalized is the dimension of that support. Two sessions took the
+argument from differential forms and linking numbers, through the recasting of ordinary
+Noether symmetry as a codimension-1 defect, to the definition of $p$-form symmetry and its
+realizations in Maxwell theory, the toric code, $\mathbb{Z}_N$ gauge theory, Chern–Simons
+theory and the $\mathbb{Z}_N$ center of Yang–Mills — ending with generalized order parameters,
+the photon as a Goldstone boson, a higher-form Mermin–Wagner theorem, and &rsquo;t Hooft anomalies.</p>]]></description></item><item><title>Current Algebra of the HK Model</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-current-algebra-hk-model/</link><pubDate>Mon, 24 Aug 2026 16:30:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-current-algebra-hk-model/</guid><description><![CDATA[<table>
   <thead>
       <tr>
           <th></th>
