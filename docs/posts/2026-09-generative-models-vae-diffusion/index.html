@@ -1,0 +1,251 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>Generative Models: Variational Autoencoders and Diffusion Models - Condensed Matter🍩 + AI🤖 Journal Club🎓</title><meta name=Description content="Lecture notes from the condensed matter theory journal club organized by Yiyang Jiang at Penn State."><meta property="og:url" content="https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-generative-models-vae-diffusion/"><meta property="og:site_name" content="Condensed Matter🍩 + AI🤖 Journal Club🎓"><meta property="og:title" content="Generative Models: Variational Autoencoders and Diffusion Models"><meta property="og:description" content="Presenter Mengyao Zhang (Prof. Binghai Yan’s group, Penn State) Date September 21, 2026 · 4:30–6:00 PM Location Davey 339 Topic Stat Mech in Machine Learning — generative models: VAEs and denoising diffusion Notes Handwritten, 6 pages (viewer and download below) How do you draw a fresh sample from the distribution of natural images, when the only distributions you can sample directly are the uniform and the Gaussian? Both answers in this session start the same way. Draw a latent variable $z$ from a simple distribution, then learn a map that sends it to data. Training by maximum likelihood then runs into one obstacle: the posterior over the latent variable is intractable. The variational autoencoder handles it with one learned Gaussian posterior and a single decoding step, trained on the evidence lower bound (ELBO) with the reparameterization trick. The denoising diffusion probabilistic model (DDPM) has $T$ latent layers, and it fixes the approximate posterior to be a known noising process, so no encoder is learned at all. Its ELBO then collapses to a remarkably simple objective: predict the noise that was added. The handwritten notes carry every derivation, from the Gaussian-mixture M-step, through the closed-form Gaussian KL, to the DDPM posterior mean and sampling loop."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2026-09-21T16:30:00-04:00"><meta property="article:modified_time" content="2026-09-21T16:30:00-04:00"><meta property="article:tag" content="Machine Learning"><meta property="article:tag" content="Generative Models"><meta property="article:tag" content="Latent Variable Models"><meta property="article:tag" content="Expectation-Maximization"><meta property="article:tag" content="Gaussian Mixture Model"><meta property="article:tag" content="Variational Inference"><meta name=twitter:card content="summary"><meta name=twitter:title content="Generative Models: Variational Autoencoders and Diffusion Models"><meta name=twitter:description content="Presenter Mengyao Zhang (Prof. Binghai Yan’s group, Penn State) Date September 21, 2026 · 4:30–6:00 PM Location Davey 339 Topic Stat Mech in Machine Learning — generative models: VAEs and denoising diffusion Notes Handwritten, 6 pages (viewer and download below) How do you draw a fresh sample from the distribution of natural images, when the only distributions you can sample directly are the uniform and the Gaussian? Both answers in this session start the same way. Draw a latent variable $z$ from a simple distribution, then learn a map that sends it to data. Training by maximum likelihood then runs into one obstacle: the posterior over the latent variable is intractable. The variational autoencoder handles it with one learned Gaussian posterior and a single decoding step, trained on the evidence lower bound (ELBO) with the reparameterization trick. The denoising diffusion probabilistic model (DDPM) has $T$ latent layers, and it fixes the approximate posterior to be a known noising process, so no encoder is learned at all. Its ELBO then collapses to a remarkably simple objective: predict the noise that was added. The handwritten notes carry every derivation, from the Gaussian-mixture M-step, through the closed-form Gaussian KL, to the DDPM posterior mean and sampling loop."><meta name=application-name content="My cool site"><meta name=apple-mobile-web-app-title content="My cool site"><meta name=referrer content="no-referrer"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/OkongOyangO.JournalClub/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/OkongOyangO.JournalClub/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/OkongOyangO.JournalClub/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/OkongOyangO.JournalClub/apple-touch-icon.png><link rel=mask-icon href=/OkongOyangO.JournalClub/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/OkongOyangO.JournalClub/site.webmanifest><link rel=canonical href=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-generative-models-vae-diffusion/><link rel=prev href=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-higher-form-symmetry-nutshell/><link rel=stylesheet href=/OkongOyangO.JournalClub/css/style.min.css><link rel=preload href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css></noscript><link rel=preload href=https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Generative Models: Variational Autoencoders and Diffusion Models","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/OkongOyangO.github.io\/OkongOyangO.JournalClub\/posts\/2026-09-generative-models-vae-diffusion\/"},"genre":"posts","keywords":"Machine Learning, Generative Models, Latent Variable Models, Expectation-Maximization, Gaussian Mixture Model, Variational Inference, ELBO, KL Divergence, Variational Autoencoder, Reparameterization Trick, Diffusion Models, DDPM, Statistical Mechanics","wordcount":2207,"url":"https:\/\/OkongOyangO.github.io\/OkongOyangO.JournalClub\/posts\/2026-09-generative-models-vae-diffusion\/","datePublished":"2026-09-21T16:30:00-04:00","dateModified":"2026-09-21T16:30:00-04:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"Yiyang Jiang"},"description":""}</script></head><body data-header-desktop=fixed data-header-mobile=auto><script>const query=window.matchMedia("(prefers-color-scheme: dark)");function applyTheme(){let e=window.localStorage?.getItem("theme")||"auto",t=e==="dark"||e==="auto"&&query.matches;document.body.setAttribute("theme",t?"dark":"light"),document.body.setAttribute("cfg-theme",e)}applyTheme(),query.addEventListener("change",applyTheme)</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/OkongOyangO.JournalClub/ title="Condensed Matter🍩 + AI🤖 Journal Club🎓">Condensed Matter🍩 + AI🤖 Journal Club🎓</a></div><div class=menu><div class=menu-inner><a class="menu-item active" href=/OkongOyangO.JournalClub/posts/ title=Lectures><i class='fas fa-chalkboard-teacher fa-fw'></i> Lectures </a><a class=menu-item href=/OkongOyangO.JournalClub/tags/ title=Tags><i class='fas fa-tags fa-fw'></i> Tags </a><a class=menu-item href=/OkongOyangO.JournalClub/signup/ title="Sign Up to Present"><i class='fas fa-user-plus fa-fw'></i> Sign Up </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search lectures..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i>
+</span></span><a href=javascript:void(0); class="menu-item theme-switch" title=Theme><i class="fas fa-adjust fa-fw" aria-hidden=true></i> Theme</a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/OkongOyangO.JournalClub/ title="Condensed Matter🍩 + AI🤖 Journal Club🎓">Condensed Matter🍩 + AI🤖 Journal Club🎓</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search lectures..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=/OkongOyangO.JournalClub/posts/ title=Lectures><i class='fas fa-chalkboard-teacher fa-fw'></i>Lectures</a><a class=menu-item href=/OkongOyangO.JournalClub/tags/ title=Tags><i class='fas fa-tags fa-fw'></i>Tags</a><a class=menu-item href=/OkongOyangO.JournalClub/signup/ title="Sign Up to Present"><i class='fas fa-user-plus fa-fw'></i>Sign Up</a><a href=javascript:void(0); class="menu-item theme-switch" title=Theme>
+<i class="fas fa-adjust fa-fw" aria-hidden=true></i>Theme</a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Generative Models: Variational Autoencoders and Diffusion Models</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/OkongOyangO.JournalClub/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw" aria-hidden=true></i>Yiyang Jiang</a></span>&nbsp;<span class=post-category>included in <a href=/OkongOyangO.JournalClub/categories/journal-club/><i class="far fa-folder fa-fw" aria-hidden=true></i>Journal Club</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw" aria-hidden=true></i>&nbsp;<time datetime=2026-09-21>2026-09-21</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden=true></i>&nbsp;2207 words&nbsp;
+<i class="far fa-clock fa-fw" aria-hidden=true></i>&nbsp;11 minutes&nbsp;</div></div><div class="details toc" id=toc-static data-kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right" aria-hidden=true></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#part-0--where-we-left-off-em-for-a-gaussian-mixture>Part 0 — Where we left off: EM for a Gaussian mixture</a></li><li><a href=#part-1--why-generative-modelling-is-hard>Part 1 — Why generative modelling is hard</a></li><li><a href=#part-2--the-elbo>Part 2 — The ELBO</a></li><li><a href=#part-3--the-variational-autoencoder>Part 3 — The variational autoencoder</a><ul><li><a href=#the-reparameterization-trick>The reparameterization trick</a></li><li><a href=#closed-form-kl-to-a-standard-normal>Closed-form KL to a standard normal</a></li></ul></li><li><a href=#part-4--denoising-diffusion-probabilistic-models>Part 4 — Denoising diffusion probabilistic models</a><ul><li><a href=#which--the-forward-diffusion-process>Which ? The forward diffusion process</a></li><li><a href=#the-reverse-generation-process-and-the-elbo>The reverse (generation) process and the ELBO</a></li><li><a href=#from-kl-to-predict-the-noise>From KL to &ldquo;predict the noise&rdquo;</a></li><li><a href=#sampling>Sampling</a></li></ul></li><li><a href=#side-remarks>Side remarks</a></li><li><a href=#references>References</a></li></ul></nav></div></div><div class=content id=content><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Presenter</strong></td><td>Mengyao Zhang (Prof. Binghai Yan&rsquo;s group, Penn State)</td></tr><tr><td><strong>Date</strong></td><td>September 21, 2026 · 4:30–6:00 PM</td></tr><tr><td><strong>Location</strong></td><td>Davey 339</td></tr><tr><td><strong>Topic</strong></td><td>Stat Mech in Machine Learning — generative models: VAEs and denoising diffusion</td></tr><tr><td><strong>Notes</strong></td><td>Handwritten, 6 pages (viewer and download below)</td></tr></tbody></table><p>How do you draw a fresh sample from the distribution of natural images, when the only
+distributions you can sample directly are the uniform and the Gaussian? Both answers in this
+session start the same way. Draw a latent variable $z$ from a simple distribution, then learn
+a map that sends it to data. Training by maximum likelihood then runs into one obstacle: the
+posterior over the latent variable is intractable. The <strong>variational autoencoder</strong> handles
+it with one learned Gaussian posterior and a single decoding step, trained on the evidence
+lower bound (ELBO) with the reparameterization trick. The <strong>denoising diffusion
+probabilistic model</strong> (DDPM) has $T$ latent layers, and it fixes the approximate posterior
+to be a known noising process, so no encoder is learned at all. Its ELBO then collapses to a
+remarkably simple objective: predict the noise that was added. The handwritten notes carry
+every derivation, from the Gaussian-mixture M-step, through the closed-form Gaussian KL, to
+the DDPM posterior mean and sampling loop.</p><figure class=deck id=deck-generative-models-vae-diffusion-0 tabindex=0 aria-roledescription=carousel aria-label="Generative Models: VAEs and Diffusion Models — handwritten notes"><div class=deck-stage><div class=deck-frame style=aspect-ratio:1600/2100><img class="deck-slide is-active" src=/OkongOyangO.JournalClub/decks/generative-models-vae-diffusion/slide-1.png width=1600 height=2100 alt="Generative Models: VAEs and Diffusion Models — handwritten notes — page 1 of 6" decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/generative-models-vae-diffusion/slide-2.png width=1600 height=2100 alt="Generative Models: VAEs and Diffusion Models — handwritten notes — page 2 of 6" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/generative-models-vae-diffusion/slide-3.png width=1600 height=2100 alt="Generative Models: VAEs and Diffusion Models — handwritten notes — page 3 of 6" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/generative-models-vae-diffusion/slide-4.png width=1600 height=2100 alt="Generative Models: VAEs and Diffusion Models — handwritten notes — page 4 of 6" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/generative-models-vae-diffusion/slide-5.png width=1600 height=2100 alt="Generative Models: VAEs and Diffusion Models — handwritten notes — page 5 of 6" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/generative-models-vae-diffusion/slide-6.png width=1600 height=2100 alt="Generative Models: VAEs and Diffusion Models — handwritten notes — page 6 of 6" loading=lazy decoding=async></div><button class="deck-nav deck-prev" type=button aria-label="Previous slide">
+<i class="fas fa-chevron-left fa-fw" aria-hidden=true></i>
+</button>
+<button class="deck-nav deck-next" type=button aria-label="Next slide">
+<i class="fas fa-chevron-right fa-fw" aria-hidden=true></i></button></div><figcaption class=deck-bar><span class=deck-counter aria-live=polite>1 / 6</span>
+<button class=deck-full type=button aria-label="Toggle fullscreen">
+<i class="fas fa-expand fa-fw" aria-hidden=true></i>&nbsp;Fullscreen</button></figcaption><div class=deck-thumbs role=tablist aria-label="Generative Models: VAEs and Diffusion Models — handwritten notes thumbnails"><button class="deck-thumb is-active" type=button role=tab aria-label="Go to page 1" aria-selected=true>
+<img src=/OkongOyangO.JournalClub/decks/generative-models-vae-diffusion/thumbs/slide-1.png width=260 height=341 alt decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 2">
+<img src=/OkongOyangO.JournalClub/decks/generative-models-vae-diffusion/thumbs/slide-2.png width=260 height=341 alt decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 3">
+<img src=/OkongOyangO.JournalClub/decks/generative-models-vae-diffusion/thumbs/slide-3.png width=260 height=341 alt decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 4">
+<img src=/OkongOyangO.JournalClub/decks/generative-models-vae-diffusion/thumbs/slide-4.png width=260 height=341 alt decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 5">
+<img src=/OkongOyangO.JournalClub/decks/generative-models-vae-diffusion/thumbs/slide-5.png width=260 height=341 alt decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 6">
+<img src=/OkongOyangO.JournalClub/decks/generative-models-vae-diffusion/thumbs/slide-6.png width=260 height=341 alt loading=lazy decoding=async></button></div></figure><script>(function(){if(e=document.getElementById("deck-generative-models-vae-diffusion-0"),!e)return;var e,a,l,i=e.querySelectorAll(".deck-slide"),s=e.querySelectorAll(".deck-thumb"),d=e.querySelector(".deck-counter"),r=e.querySelector(".deck-stage"),o=i.length,t=0;function c(e){[e-1,e+1].forEach(function(e){if(e>=0&&e<o){var t=new Image;t.src=i[e].currentSrc||i[e].src}})}function n(e){e=(e+o)%o,i[t].classList.remove("is-active"),i[e].classList.add("is-active"),s.length===o&&(s[t].classList.remove("is-active"),s[t].removeAttribute("aria-selected"),s[e].classList.add("is-active"),s[e].setAttribute("aria-selected","true"),s[e].scrollIntoView({block:"nearest",inline:"nearest"})),t=e,d.textContent=e+1+" / "+o,c(e)}e.querySelector(".deck-prev").addEventListener("click",function(){n(t-1)}),e.querySelector(".deck-next").addEventListener("click",function(){n(t+1)}),Array.prototype.forEach.call(s,function(e,t){e.addEventListener("click",function(){n(t)})}),e.addEventListener("keydown",function(e){var s=e.key;if(s==="ArrowLeft"||s==="PageUp")n(t-1);else if(s==="ArrowRight"||s==="PageDown"||s===" ")n(t+1);else if(s==="Home")n(0);else if(s==="End")n(o-1);else return;e.preventDefault()}),a=null,r.addEventListener("touchstart",function(e){a=e.changedTouches[0].clientX},{passive:!0}),r.addEventListener("touchend",function(e){if(a===null)return;var s=e.changedTouches[0].clientX-a;(s<0?-s:s)>40&&n(s<0?t+1:t-1),a=null},{passive:!0}),l=e.querySelector(".deck-full"),l.addEventListener("click",function(){document.fullscreenElement?document.exitFullscreen():r.requestFullscreen&&r.requestFullscreen().then(function(){e.focus()},function(){})}),c(0)})()</script><div class=pdf-note><a class=pdf-download href=/OkongOyangO.JournalClub/pdfs/generative-models-vae-diffusion.pdf download target=_blank rel="noopener noreferrer"><i class="fas fa-file-pdf fa-fw" aria-hidden=true></i>&nbsp;Download handwritten notes (PDF)</a></div><h2 id=part-0--where-we-left-off-em-for-a-gaussian-mixture>Part 0 — Where we left off: EM for a Gaussian mixture</h2><p>The notes open by finishing the previous session&rsquo;s example. The Gaussian mixture model
+(MoG) has a discrete latent label $z\in[K]$, with
+$p(x) = \sum_k \pi_k\,\mathcal N(x\mid\mu_k,\Sigma_k)$. Let
+$\gamma_{ik} = p(z_i = k\mid x_i)$ be the responsibilities from the E-step. The M-step then
+maximizes the expected complete-data log-likelihood under the constraint
+$\sum_k\pi_k = 1$:</p>$$
+\mathcal L(\mu,\Sigma,\pi,\lambda) = \sum_{i\in[n]}\sum_{k\in[K]} \gamma_{ik}
+\log\!\big(\pi_k\,\mathcal N(x_i\mid\mu_k,\Sigma_k)\big) + \lambda\Big(1-\sum_k\pi_k\Big).
+$$<p>Setting the derivatives to zero gives three closed-form updates:</p>$$
+\pi_k = \frac{1}{n}\sum_{i}\gamma_{ik},\qquad
+\mu_k = \frac{\sum_i \gamma_{ik}\,x_i}{\sum_i\gamma_{ik}},\qquad
+\Sigma_k = \frac{\sum_i \gamma_{ik}\,(x_i-\mu_k)(x_i-\mu_k)^{\mathsf T}}{\sum_i\gamma_{ik}}.
+$$<p>For $\pi_k$, the multiplier comes out as $\lambda = \sum_{i,k}\gamma_{ik} = n$. For
+$\Sigma_k$, it is easiest to differentiate with respect to $\Sigma_k^{-1}$, using
+$\partial_X\,a^{\mathsf T}Xb = ab^{\mathsf T}$ and
+$\partial_X \lvert X^{-1}\rvert = -\lvert X^{-1}\rvert\,(X^{-1})^{\mathsf T}$. Each update
+is an empirical estimate (weight, mean, covariance) weighted by the responsibilities. In the
+limit $\Sigma_k = \sigma^2 I$ with $\sigma\to 0$, the responsibilities become hard
+assignments, and MoG reduces to <strong>$K$-means</strong>.</p><h2 id=part-1--why-generative-modelling-is-hard>Part 1 — Why generative modelling is hard</h2><p>A mixture $p(x) = \sum_z p(x\mid z)p(z)$ is not expressive enough once the dimension grows
+and the data stop forming clusters. Images are the standard example. In general, drawing
+$x\sim p(x)$ is hard. The distributions we <em>can</em> sample directly are the uniform
+$U[a,b]$, the Gaussian, and a few other simple ones.</p><p><strong>Idea.</strong> First sample $z$ from a simple distribution such as a Gaussian. Then apply a
+learned function $f(z;\theta)$ that maps $z$ to $x$, for example an image:</p>$$
+\begin{aligned}
+p(x) &= \int p(x\mid z;\theta)\,p(z)\,\mathrm dz, \\
+p(z) &= \mathcal N(z\mid 0, I),\qquad
+p(x\mid z;\theta) = \mathcal N\!\big(x\mid f(z;\theta),\,\sigma^2 I\big).
+\end{aligned}
+$$<p>The Gaussian around $f(z;\theta)$ models noise in real data. The graphical model is simply
+$z\to x$, with $p(x,z) = p(x\mid z)\,p(z)$. Training is maximum likelihood on the data,
+$\max_\theta \sum_{i\in[n]}\log p(x_i)$.</p><p><strong>How do we optimize $\theta$?</strong></p><ul><li><em>Plain SGD</em> would need a Monte Carlo estimate of the marginal,
+$p(x)\approx \frac1N\sum_{z\sim p(z)} p(x\mid z;\theta)$. Two things go wrong. Because $z$
+is high-dimensional, $N$ has to be enormous before the estimate is accurate. And the
+number of data points $n$ is also large. So this fails.</li><li><em>EM</em> would alternate an E-step, computing $p(z\mid x_i;\theta^{\text{old}})$, with an
+M-step,
+$\max_\theta\int p(z\mid x_i;\theta^{\text{old}})\log p(x_i,z;\theta)\,\mathrm dz$. For MoG
+the E-step is tractable. Here it is not, because the posterior
+$$
+p(z\mid x_i) = \frac{p(x_i\mid z)\,p(z)}{\int p(x_i\mid z)\,p(z)\,\mathrm dz}
+$$
+has an evidence integral in the denominator that we cannot compute.</li></ul><p>So EM and gradient descent both fail, and for the same reason: <strong>the posterior
+$p(z\mid x;\theta)$ over the latent variable is intractable</strong>. The way out is to find a
+<em>tractable</em> variational distribution $q(z\mid x;\theta')$ that approximates it.</p><h2 id=part-2--the-elbo>Part 2 — The ELBO</h2><p>For any $q$, the log-evidence splits into two parts:</p>$$
+\log p(x;\theta) =
+\underbrace{\int q(z\mid x)\log\frac{p(x,z;\theta)}{q(z\mid x)}\,\mathrm dz}_{\text{ELBO}}
+\;+\; \mathrm{KL}\big(q(z\mid x)\,\big\Vert\, p(z\mid x;\theta)\big).
+$$<p>Read the other way round, the ELBO is the log-evidence minus the approximation error:</p>$$
+\begin{aligned}
+\mathrm{ELBO} &= \log p(x;\theta) - \mathrm{KL}\big(q(z\mid x;\theta')\,\Vert\,p(z\mid x;\theta)\big) \\
+&= \int q(z\mid x;\theta')\,\log\frac{p(x,z;\theta)}{q(z\mid x;\theta')}\,\mathrm dz .
+\end{aligned}
+$$<p>Since $\mathrm{KL}\ge0$, the ELBO is a lower bound on $\log p(x;\theta)$. Two algorithms
+maximize it in different ways:</p><ul><li><strong>EM</strong> maximizes the ELBO by optimizing $\theta$ and $q$ <em>alternately</em>. The E-step sets
+$q$ to the exact posterior $p(z\mid x;\theta)$, so the KL term is exactly zero.</li><li><strong>The VAE</strong> maximizes the ELBO by optimizing $\theta$ and the variational parameters
+$\theta'$ <em>jointly</em>. Here the KL term need not vanish, so the result is an
+approximation.</li></ul><h2 id=part-3--the-variational-autoencoder>Part 3 — The variational autoencoder</h2><p><strong>Intuition first.</strong> A plain autoencoder has two networks. An encoder (NN$_1$) maps $x$ to
+a code $z$, and a decoder (NN$_2$) maps $z$ back to $\tilde x$. Both are trained on the
+reconstruction loss $\min\lVert x-\tilde x\rVert^2$. A VAE minimizes the same reconstruction
+loss plus a KL term that pulls the encoder&rsquo;s distribution towards the prior $\mathcal N(0,I)$.</p><p><strong>Derivation.</strong> Splitting $p(x,z) = p(x\mid z)\,p(z)$ inside the ELBO gives</p>$$
+\mathrm{ELBO} = \underbrace{\int q(z\mid x;\theta')\log p(x\mid z;\theta)\,\mathrm dz}_{\text{reconstruction quality}}
+\;-\; \underbrace{\mathrm{KL}\big(q(z\mid x;\theta')\,\Vert\,p(z)\big)}_{\text{encoder vs. prior}} .
+$$<p>With the Gaussian decoder,
+$\log p(x\mid z;\theta) = C - \frac{1}{2\sigma^2}\lVert f(z;\theta)-x\rVert^2$, which is a
+reconstruction loss. For one data point, the ELBO is therefore
+$-(\text{recon. loss}) - \beta\,\mathrm{KL}\big(q(z\mid x_i;\theta')\,\Vert\,p(z)\big)$.
+The weight $\beta$ absorbs the $2\sigma^2$. In practice one samples a <strong>single</strong> $z_i$ for
+each $x_i$. The extra noise in the gradient acts like SGD noise and helps against
+overfitting.</p><p><strong>The whole pipeline.</strong> An input $x_i$ (say a $256\times256$ image) goes into the encoder
+$q(z\mid x_i;\theta')$. One $z_i$ is sampled from it and passed to the decoder
+$p(x\mid z_i;\theta)$, which outputs $\tilde x_i = f(z_i;\theta)$. The loss is</p>$$
+\frac1n\sum_{i\in[n]}\Big[\lVert\tilde x_i - x_i\rVert^2 + \beta\,
+\mathrm{KL}\big(q(z\mid x_i;\theta')\,\Vert\,p(z)\big)\Big],
+$$<p>with encoder $q(z\mid x;\theta') = \mathcal N\big(z\mid \mu(x;\theta'),\,\Sigma(x;\theta')\big)$,
+where $\Sigma$ is usually diagonal. $\beta$ matters. If it is small, the KL term contributes
+little, and the model devolves into an ordinary autoencoder. If it is large, the model
+focuses too much on matching the prior, at the expense of reconstruction.</p><h3 id=the-reparameterization-trick>The reparameterization trick</h3><p>Backpropagation cannot pass through a sampling operation. The fix is to move the randomness
+into an auxiliary variable. Draw $\varepsilon\sim\mathcal N(0,I)$ with
+$z,\varepsilon\in\mathbb R^d$, and set</p>$$
+z = \Sigma(x)^{1/2}\,\varepsilon + \mu(x) \;\sim\; \mathcal N\big(\mu(x),\Sigma(x)\big).
+$$<p>It is easy to check that this has the right mean and covariance:
+$\mathbb E[z] = \mu(x)$, and
+$\operatorname{cov}[z] = \Sigma^{1/2}\,\mathbb E[\varepsilon\varepsilon^{\mathsf T}]\,\Sigma^{1/2} = \Sigma(x)$.
+Now the sampling happens at a leaf of the computational graph. Gradients reach the encoder
+through $\mu(x)$ and $\Sigma(x)$, and nothing ever differentiates through the draw of
+$\varepsilon$. The same idea works for other distributions. For example, $z\sim U[a,b]$
+becomes $\varepsilon\sim U[0,1]$ with $z = \varepsilon(b-a)+a$.</p><h3 id=closed-form-kl-to-a-standard-normal>Closed-form KL to a standard normal</h3><p>With $q = \mathcal N(\mu,\Sigma)$ and $p(z) = \mathcal N(0,I)$ (dropping the $x$ and
+$\theta'$ labels), the log-ratio of densities is</p>$$
+\log\frac{\mathcal N(z\mid\mu,\Sigma)}{\mathcal N(z\mid0,I)}
+= -\tfrac12\log\lvert\Sigma\rvert - \tfrac12(z-\mu)^{\mathsf T}\Sigma^{-1}(z-\mu) + \tfrac12 z^{\mathsf T}z .
+$$<p>Both quadratic terms can be averaged over $z\sim q$ with the <strong>trace trick</strong>,
+$\operatorname{tr}(ABC)=\operatorname{tr}(BCA)$:</p>$$
+\begin{aligned}
+\mathbb E_z\big[(z-\mu)^{\mathsf T}\Sigma^{-1}(z-\mu)\big]
+&= \operatorname{tr}\!\big(\mathbb E_z[(z-\mu)(z-\mu)^{\mathsf T}]\,\Sigma^{-1}\big)
+= \operatorname{tr} I = d, \\
+\mathbb E_z[z^{\mathsf T}z] &= \operatorname{tr}\Sigma + \mu^{\mathsf T}\mu .
+\end{aligned}
+$$<p>Putting these together,</p>$$
+\mathrm{KL}\big(\mathcal N(\mu,\Sigma)\,\Vert\,\mathcal N(0,I)\big)
+= -\tfrac12\log\lvert\Sigma\rvert - \tfrac d2 + \tfrac12\operatorname{tr}\Sigma + \tfrac12\mu^{\mathsf T}\mu .
+$$<p>For a diagonal covariance $\Sigma(x) = \operatorname{diag}\sigma(x)^2$, where $\sigma(x)^2$
+is a $d$-dimensional vector, this becomes</p>$$
+\mathrm{KL} = \frac12\sum_{j\in[d]}\Big(\sigma_j(x)^2 + \mu_j(x)^2 - \log\sigma_j(x)^2 - 1\Big).
+$$<p>In practice, the network outputs $\log\sigma(x)^2$ and exponentiates it. That keeps the
+variance positive without any constraint.</p><h2 id=part-4--denoising-diffusion-probabilistic-models>Part 4 — Denoising diffusion probabilistic models</h2><p><strong>Principle.</strong> Use $T$ steps to gradually transform Gaussian noise into a real image. A VAE
+decodes $z$ to an image in <em>one</em> step. A DDPM runs a chain
+$x_T\to x_{T-1}\to\cdots\to x_1\to x_0$ in which every intermediate $x_t$ has the size of
+the image (e.g. $224\times224$). All of $x_T,\dots,x_1$ are hidden variables. The
+generative model is the learned reverse chain, with a fixed starting point:</p>$$
+p(x_T) = \mathcal N(x_T\mid0,I),\qquad
+p_\theta(x_{t-1}\mid x_t) = \mathcal N\big(x_{t-1}\mid\mu_\theta(x_t,t),\,\Sigma_\theta(x_t,t)\big).
+$$<p><strong>Goal.</strong> Maximize $\log p_\theta(x_0)$, where</p>$$
+p_\theta(x_0) = \int p(x_T)\prod_{t\in[T]}p_\theta(x_{t-1}\mid x_t)\,\mathrm dx_1\cdots\mathrm dx_T .
+$$<p>This integral runs over all the hidden variables, so it is intractable. EM does not help
+either, since the E-step posterior
+$p_\theta(x_{1:T}\mid x_0) = p_\theta(x_{0:T})/p_\theta(x_0)$ contains the same intractable
+denominator. So, as before, introduce a variational distribution $q(x_{1:T}\mid x_0)$:</p>$$
+\mathrm{ELBO} = \log p_\theta(x_0) - \mathrm{KL}\big(q(x_{1:T}\mid x_0)\,\Vert\,p_\theta(x_{1:T}\mid x_0)\big).
+$$<p>Up to this point, everything is identical to the VAE, except that there are $T$ hidden
+variables instead of one.</p><h3 id=which--the-forward-diffusion-process>Which $q$? The forward diffusion process</h3><p>Here DDPM departs from the VAE. The posterior $q$ is <em>not learned</em>. It is fixed to a Markov
+chain that adds noise, called the <strong>forward diffusion process</strong>:</p>$$
+q(x_{1:T}\mid x_0) = \prod_{t=1}^T q(x_t\mid x_{t-1}),\qquad
+q(x_t\mid x_{t-1}) = \mathcal N\big(x_t\mid\sqrt{\alpha_t}\,x_{t-1},\,(1-\alpha_t)I\big).
+$$<p>The hyperparameters $\alpha_t\in(0,1)$ form the <strong>noise schedule</strong>. Usually $\alpha_t$ is
+close to 1 for small $t$ and decreases as $t$ grows. Writing each step with the
+reparameterization trick,
+$x_t = \sqrt{\alpha_t}\,x_{t-1} + \sqrt{1-\alpha_t}\,\varepsilon_{t-1}$, and unrolling one
+step gives</p>$$
+x_t = \sqrt{\alpha_t\alpha_{t-1}}\,x_{t-2} + \sqrt{\alpha_t-\alpha_t\alpha_{t-1}}\,\varepsilon_{t-2} + \sqrt{1-\alpha_t}\,\varepsilon_{t-1}.
+$$<p>The last two terms are independent zero-mean Gaussians, with variances
+$\alpha_t-\alpha_t\alpha_{t-1}$ and $1-\alpha_t$. Their sum is therefore a single Gaussian
+with variance $1-\alpha_t\alpha_{t-1}$. Repeating this all the way down to $x_0$ gives a
+closed form:</p>$$
+\begin{aligned}
+x_t &= \sqrt{\bar\alpha_t}\,x_0 + \sqrt{1-\bar\alpha_t}\,\varepsilon,\qquad
+\bar\alpha_t = \prod_{i\le t}\alpha_i, \\
+q(x_t\mid x_0) &= \mathcal N\big(x_t\mid\sqrt{\bar\alpha_t}\,x_0,\,(1-\bar\alpha_t)I\big).
+\end{aligned}
+$$<p>This closed form does two jobs. (1) As $t\to T$ we have $\bar\alpha_T\to0$, so
+$q(x_T\mid x_0)\to\mathcal N(0,I)$ and $x_T$ becomes independent of $x_0$. The forward
+process ends at the same distribution the generative model starts from. (2) Training never
+has to run the chain step by step. You take $x_0$, pick a random $t$, jump straight to
+$x_t$, and train the reverse step there.</p><h3 id=the-reverse-generation-process-and-the-elbo>The reverse (generation) process and the ELBO</h3><p>Substituting the factorized $q$ and $p_\theta$ into the ELBO gives</p>$$
+\mathrm{ELBO} = \mathbb E_{x_{1:T}\sim q(x_{1:T}\mid x_0)}\Big[\log p(x_T) + \sum_{t\in[T]}\log\frac{p_\theta(x_{t-1}\mid x_t)}{q(x_t\mid x_{t-1})}\Big].
+$$<p>Each term <em>looks</em> like a KL divergence, but it is not one. The numerator is a distribution
+over $x_{t-1}$ given $x_t$. The denominator runs the other way, over $x_t$ given $x_{t-1}$.
+Bayes&rsquo; rule would reverse the denominator,
+$q(x_{t-1}\mid x_t) = q(x_t\mid x_{t-1})\,q(x_{t-1})/q(x_t)$, but the marginals $q(x_{t-1})$
+and $q(x_t)$ are intractable.</p><p><strong>DDPM&rsquo;s key observation.</strong> $q(x_{t-1}\mid x_t)$ is intractable, but
+$q(x_{t-1}\mid x_t, x_0)$ <em>is</em> tractable. By Bayes&rsquo; rule,</p>$$
+q(x_{t-1}\mid x_t,x_0) = \frac{q(x_t\mid x_{t-1},x_0)\,q(x_{t-1}\mid x_0)}{q(x_t\mid x_0)},
+$$<p>and $q(x_t\mid x_{t-1},x_0) = q(x_t\mid x_{t-1})$ because $x_t\perp x_0\mid x_{t-1}$ (the forward chain is
+Markov). All three factors are Gaussians that we already know. Collecting the terms
+quadratic and linear in $x_{t-1}$ in the exponent, and completing the square, gives</p>$$
+\begin{aligned}
+q(x_{t-1}\mid x_t,x_0) &= \mathcal N\big(x_{t-1}\mid \tilde\mu_t(x_t,x_0),\,\tilde\beta_t I\big), \\
+\tilde\mu_t(x_t,x_0) &= \frac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})}{1-\bar\alpha_t}\,x_t + \frac{\sqrt{\bar\alpha_{t-1}}(1-\alpha_t)}{1-\bar\alpha_t}\,x_0, \\
+\tilde\beta_t &= \frac{(1-\alpha_t)(1-\bar\alpha_{t-1})}{1-\bar\alpha_t}.
+\end{aligned}
+$$<p>Next, eliminate $x_0$ from $\tilde\mu_t$ using $x_0 = (x_t-\sqrt{1-\bar\alpha_t}\,\varepsilon_t)/\sqrt{\bar\alpha_t}$.
+The mean then depends only on $x_t$ and the noise:</p>$$
+\tilde\mu_t = \frac{1}{\sqrt{\alpha_t}}\Big(x_t - \frac{1-\alpha_t}{\sqrt{1-\bar\alpha_t}}\,\varepsilon_t\Big).
+$$<p><strong>Back to the ELBO.</strong> Rewrite each forward factor for $t\ge2$ with Bayes&rsquo; rule,
+conditioning on $x_0$:
+$q(x_t\mid x_{t-1}) = q(x_{t-1}\mid x_t,x_0)\,q(x_t\mid x_0)/q(x_{t-1}\mid x_0)$. The ratios
+$q(x_{t-1}\mid x_0)/q(x_t\mid x_0)$ telescope to $q(x_1\mid x_0)/q(x_T\mid x_0)$, which
+leaves</p>$$
+\mathrm{ELBO} = \mathbb E_{q}\Big[\underbrace{\log\frac{p(x_T)}{q(x_T\mid x_0)}}_{\approx\,0} +
+\log p_\theta(x_0\mid x_1) +
+\sum_{t=2}^T\log\frac{p_\theta(x_{t-1}\mid x_t)}{q(x_{t-1}\mid x_t,x_0)}\Big].
+$$<p>The first term has no parameters, and it vanishes as $q(x_T\mid x_0)\to\mathcal N(0,I)$.
+Each term in the sum is now a genuine KL divergence between two distributions over
+$x_{t-1}$:</p>$$
+-\,\mathbb E_{x_t\sim q(x_t\mid x_0)}\,\mathrm{KL}\big(q(x_{t-1}\mid x_t,x_0)\,\Vert\,p_\theta(x_{t-1}\mid x_t)\big).
+$$<h3 id=from-kl-to-predict-the-noise>From KL to &ldquo;predict the noise&rdquo;</h3><p>The KL between two Gaussians is</p>$$
+\begin{aligned}
+\mathrm{KL}\big(\mathcal N(\mu_1,\Sigma_1)\,\Vert\,\mathcal N(\mu_2,\Sigma_2)\big)
+&= \tfrac12\log\frac{\lvert\Sigma_2\rvert}{\lvert\Sigma_1\rvert} - \tfrac d2 + \tfrac12\operatorname{tr}(\Sigma_2^{-1}\Sigma_1) \\
+&\quad + \tfrac12(\mu_1-\mu_2)^{\mathsf T}\Sigma_2^{-1}(\mu_1-\mu_2).
+\end{aligned}
+$$<p>Now parameterize the reverse step to mirror $\tilde\mu_t$. The network
+$\varepsilon_\theta(x_t,t)$ predicts the noise, and the variance is left unlearned
+(in practice $\sigma_t^2 = 1-\alpha_t$):</p>$$
+p_\theta(x_{t-1}\mid x_t) = \mathcal N\Big(x_{t-1}\;\Big|\;\underbrace{\frac{1}{\sqrt{\alpha_t}}\Big(x_t-\frac{1-\alpha_t}{\sqrt{1-\bar\alpha_t}}\,\varepsilon_\theta(x_t,t)\Big)}_{\mu_\theta(x_t,t)},\;\sigma_t^2I\Big).
+$$<p>Only the mean term of the KL depends on $\theta$. It reduces to a weighted noise-regression
+loss:</p>$$
+L_t = \mathbb E_{\varepsilon_t\sim\mathcal N(0,I)}\Big[\frac{(1-\alpha_t)^2}{2\sigma_t^2\,\alpha_t(1-\bar\alpha_t)}\,\big\lVert\varepsilon_t-\varepsilon_\theta(x_t,t)\big\rVert^2\Big].
+$$<p>In practice the weights are <strong>omitted</strong>, which gives the DDPM loss:</p>$$
+\mathcal L_{\text{DDPM}} = \mathbb E_{x_0,\;\varepsilon\sim\mathcal N(0,I),\;t\sim U[1,T]}
+\Big\lVert\varepsilon - \varepsilon_\theta\big(\sqrt{\bar\alpha_t}\,x_0+\sqrt{1-\bar\alpha_t}\,\varepsilon,\;t\big)\Big\rVert^2 .
+$$<h3 id=sampling>Sampling</h3><p>Generation runs the learned reverse chain from pure noise:</p><ol><li>Draw $x_T\sim\mathcal N(0,I)$.</li><li>For $t = T,\dots,1$: set $z = 0$ if $t = 1$, otherwise draw $z\sim\mathcal N(0,I)$, and
+update
+$$
+x_{t-1} = \frac{1}{\sqrt{\alpha_t}}\Big(x_t-\frac{1-\alpha_t}{\sqrt{1-\bar\alpha_t}}\,\varepsilon_\theta(x_t,t)\Big) + \sigma_t\,z .
+$$</li><li>Return $x_0$.</li></ol><h2 id=side-remarks>Side remarks</h2><ol><li>The denoising network $\varepsilon_\theta$ is usually a <strong>U-Net</strong>.</li><li><strong>Latent diffusion</strong> speeds things up. A VAE maps $x_0$ to a latent space, and the
+diffusion model runs in that smaller space instead of in pixel space.</li><li><strong>Denoising diffusion implicit models</strong> (DDIM) and <strong>consistency models</strong> are the natural
+next steps. Both aim to generate with far fewer reverse steps.</li></ol><h2 id=references>References</h2><ol><li>D. P. Kingma and M. Welling, &ldquo;Auto-Encoding Variational Bayes,&rdquo; <em>ICLR</em> (2014),
+<a href=https://arxiv.org/abs/1312.6114 target=_blank rel="noopener noreffer">arXiv:1312.6114</a>.</li><li>J. Ho, A. Jain, and P. Abbeel, &ldquo;Denoising Diffusion Probabilistic Models,&rdquo; <em>NeurIPS</em> (2020),
+<a href=https://arxiv.org/abs/2006.11239 target=_blank rel="noopener noreffer">arXiv:2006.11239</a>.</li><li>J. Song, C. Meng, and S. Ermon, &ldquo;Denoising Diffusion Implicit Models,&rdquo; <em>ICLR</em> (2021),
+<a href=https://arxiv.org/abs/2010.02502 target=_blank rel="noopener noreffer">arXiv:2010.02502</a>.</li><li>R. Rombach <em>et al.</em>, &ldquo;High-Resolution Image Synthesis with Latent Diffusion Models,&rdquo;
+<em>CVPR</em> (2022), <a href=https://arxiv.org/abs/2112.10752 target=_blank rel="noopener noreffer">arXiv:2112.10752</a>.</li><li>Y. Song, P. Dhariwal, M. Chen, and I. Sutskever, &ldquo;Consistency Models,&rdquo; <em>ICML</em> (2023),
+<a href=https://arxiv.org/abs/2303.01469 target=_blank rel="noopener noreffer">arXiv:2303.01469</a>.</li></ol></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2026-09-21</span></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on X" data-sharer=x data-url=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-generative-models-vae-diffusion/ data-title="Generative Models: Variational Autoencoders and Diffusion Models" data-via=OkongOyangO data-hashtags="Machine Learning,Generative Models,Latent Variable Models,Expectation-Maximization,Gaussian Mixture Model,Variational Inference,ELBO,KL Divergence,Variational Autoencoder,Reparameterization Trick,Diffusion Models,DDPM,Statistical Mechanics"><i class="fab fa-x-twitter fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Threads" data-sharer=threads data-url=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-generative-models-vae-diffusion/ data-title="Generative Models: Variational Autoencoders and Diffusion Models"><i class="fab fa-threads fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Facebook" data-sharer=facebook data-url=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-generative-models-vae-diffusion/ data-hashtag="Machine Learning"><i class="fab fa-facebook-square fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-generative-models-vae-diffusion/ data-title="Generative Models: Variational Autoencoders and Diffusion Models"><i class="fab fa-hacker-news fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Line" data-sharer=line data-url=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-generative-models-vae-diffusion/ data-title="Generative Models: Variational Autoencoders and Diffusion Models"><i data-svg-src=https://cdn.jsdelivr.net/npm/simple-icons@15.14.0/icons/line.svg aria-hidden=true></i></a><a href=javascript:void(0); title="Share on 微博" data-sharer=weibo data-url=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-generative-models-vae-diffusion/ data-title="Generative Models: Variational Autoencoders and Diffusion Models"><i class="fab fa-weibo fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Diaspora" data-sharer=diaspora data-url=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-generative-models-vae-diffusion/ data-title="Generative Models: Variational Autoencoders and Diffusion Models" data-description><i class="fab fa-diaspora fa-fw" aria-hidden=true></i></a><a href="https://t.me/share/url?url=https%3a%2f%2fOkongOyangO.github.io%2fOkongOyangO.JournalClub%2fposts%2f2026-09-generative-models-vae-diffusion%2f&amp;text=Generative%20Models%3a%20Variational%20Autoencoders%20and%20Diffusion%20Models" target=_blank title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden=true></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw" aria-hidden=true></i>&nbsp;<a href=/OkongOyangO.JournalClub/tags/machine-learning/>Machine Learning</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/generative-models/>Generative Models</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/latent-variable-models/>Latent Variable Models</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/expectation-maximization/>Expectation-Maximization</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/gaussian-mixture-model/>Gaussian Mixture Model</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/variational-inference/>Variational Inference</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/elbo/>ELBO</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/kl-divergence/>KL Divergence</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/variational-autoencoder/>Variational Autoencoder</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/reparameterization-trick/>Reparameterization Trick</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/diffusion-models/>Diffusion Models</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/ddpm/>DDPM</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/statistical-mechanics/>Statistical Mechanics</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/OkongOyangO.JournalClub/>Home</a></span></section></div><div class=post-nav><a href=/OkongOyangO.JournalClub/posts/2026-08-higher-form-symmetry-nutshell/ class=prev rel=prev title="Higher-Form Symmetry in a Nutshell"><i class="fas fa-angle-left fa-fw" aria-hidden=true></i>Higher-Form Symmetry in a Nutshell</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.154.3">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden=true></i> LoveIt</a></div><div class=footer-line itemscope itemtype=http://schema.org/CreativeWork><i class="far fa-copyright fa-fw" aria-hidden=true></i><span itemprop=copyrightYear>2026</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/OkongOyangO.JournalClub/ target=_blank>Yiyang Jiang</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw" aria-hidden=true></i></a></div><div id=fixed-buttons-hidden><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw" aria-hidden=true></i></a></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css><script src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js></script><script src=https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js></script><script src=https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js></script><script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js></script><script src=https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js></script><script src=https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js></script><script src=https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js></script><script src=https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/copy-tex.min.js></script><script src=https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/mhchem.min.js></script><script>window.config={comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!0,left:"\\begin{equation}",right:"\\end{equation}"},{display:!0,left:"\\begin{equation*}",right:"\\end{equation*}"},{display:!0,left:"\\begin{align}",right:"\\end{align}"},{display:!0,left:"\\begin{align*}",right:"\\end{align*}"},{display:!0,left:"\\begin{alignat}",right:"\\end{alignat}"},{display:!0,left:"\\begin{alignat*}",right:"\\end{alignat*}"},{display:!0,left:"\\begin{gather}",right:"\\end{gather}"},{display:!0,left:"\\begin{CD}",right:"\\end{CD}"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/OkongOyangO.JournalClub/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script src=/OkongOyangO.JournalClub/js/theme.min.js></script></body></html>

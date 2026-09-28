@@ -1,4 +1,45 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Lectures - Condensed Matter🍩 + AI🤖 Journal Club🎓</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/</link><description>All Lectures | Condensed Matter🍩 + AI🤖 Journal Club🎓</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>yzj5306@psu.edu (Yiyang Jiang)</managingEditor><webMaster>yzj5306@psu.edu (Yiyang Jiang)</webMaster><lastBuildDate>Mon, 31 Aug 2026 17:00:00 -0400</lastBuildDate><atom:link href="https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/" rel="self" type="application/rss+xml"/><item><title>Higher-Form Symmetry in a Nutshell</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-higher-form-symmetry-nutshell/</link><pubDate>Mon, 31 Aug 2026 17:00:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-higher-form-symmetry-nutshell/</guid><description><![CDATA[<table>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Lectures - Condensed Matter🍩 + AI🤖 Journal Club🎓</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/</link><description>All Lectures | Condensed Matter🍩 + AI🤖 Journal Club🎓</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>yzj5306@psu.edu (Yiyang Jiang)</managingEditor><webMaster>yzj5306@psu.edu (Yiyang Jiang)</webMaster><lastBuildDate>Mon, 21 Sep 2026 16:30:00 -0400</lastBuildDate><atom:link href="https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/" rel="self" type="application/rss+xml"/><item><title>Generative Models: Variational Autoencoders and Diffusion Models</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-generative-models-vae-diffusion/</link><pubDate>Mon, 21 Sep 2026 16:30:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-generative-models-vae-diffusion/</guid><description><![CDATA[<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Presenter</strong></td>
+          <td>Mengyao Zhang (Prof. Binghai Yan&rsquo;s group, Penn State)</td>
+      </tr>
+      <tr>
+          <td><strong>Date</strong></td>
+          <td>September 21, 2026 · 4:30–6:00 PM</td>
+      </tr>
+      <tr>
+          <td><strong>Location</strong></td>
+          <td>Davey 339</td>
+      </tr>
+      <tr>
+          <td><strong>Topic</strong></td>
+          <td>Stat Mech in Machine Learning — generative models: VAEs and denoising diffusion</td>
+      </tr>
+      <tr>
+          <td><strong>Notes</strong></td>
+          <td>Handwritten, 6 pages (viewer and download below)</td>
+      </tr>
+  </tbody>
+</table>
+<p>How do you draw a fresh sample from the distribution of natural images, when the only
+distributions you can sample directly are the uniform and the Gaussian? Both answers in this
+session start the same way. Draw a latent variable $z$ from a simple distribution, then learn
+a map that sends it to data. Training by maximum likelihood then runs into one obstacle: the
+posterior over the latent variable is intractable. The <strong>variational autoencoder</strong> handles
+it with one learned Gaussian posterior and a single decoding step, trained on the evidence
+lower bound (ELBO) with the reparameterization trick. The <strong>denoising diffusion
+probabilistic model</strong> (DDPM) has $T$ latent layers, and it fixes the approximate posterior
+to be a known noising process, so no encoder is learned at all. Its ELBO then collapses to a
+remarkably simple objective: predict the noise that was added. The handwritten notes carry
+every derivation, from the Gaussian-mixture M-step, through the closed-form Gaussian KL, to
+the DDPM posterior mean and sampling loop.</p>]]></description></item><item><title>Higher-Form Symmetry in a Nutshell</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-higher-form-symmetry-nutshell/</link><pubDate>Mon, 31 Aug 2026 17:00:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-08-higher-form-symmetry-nutshell/</guid><description><![CDATA[<table>
   <thead>
       <tr>
           <th></th>

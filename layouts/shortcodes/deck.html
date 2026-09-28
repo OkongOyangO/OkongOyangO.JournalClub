@@ -20,6 +20,9 @@
     magick dk-NN.png -resize 260x -strip -colors 96 PNG8:assets/decks/<src>/thumbs/slide-NN.png
 
   Pair it with {{< pdf src="…" embed="false" >}} for the download button.
+
+  The frame takes its aspect ratio from the first page image, so portrait pages
+  (scanned or handwritten notes) fill the width instead of shrinking into a 16:9 box.
 */ -}}
 {{- $src := .Get "src" | default (.Get 0) -}}
 {{- if not $src -}}
@@ -35,7 +38,8 @@
 {{- $label := .Get "label" | default "Slides" -}}
 <figure class="deck" id="{{ $id }}" tabindex="0" aria-roledescription="carousel" aria-label="{{ $label }}">
     <div class="deck-stage">
-        <div class="deck-frame">
+        {{- $first := index $slides 0 }}
+        <div class="deck-frame" style="aspect-ratio: {{ $first.Width }} / {{ $first.Height }}">
             {{- range $i, $img := $slides }}
             <img class="deck-slide{{ if eq $i 0 }} is-active{{ end }}"
                  src="{{ $img.RelPermalink }}"

@@ -107,6 +107,10 @@ arrows, touch swipe and fullscreen — no plugin involved.
    PNG8 with a 128-colour palette keeps slide text crisp and lands around 30–40 kB a
    page — smaller than WebP for this kind of artwork.
 
+   The viewer takes its aspect ratio from the first page image, so portrait pages
+   (scanned or handwritten notes) work too. For dense handwriting, render wider
+   (`-scale-to-x 1600`) so it stays legible.
+
 2. In the note body:
 
    ```markdown
