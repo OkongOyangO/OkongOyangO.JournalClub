@@ -1,0 +1,485 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>Density Matrix Geometry and Response Functions - Condensed Matter🍩 + AI🤖 Journal Club🎓</title><meta name=Description content="Lecture notes from the condensed matter theory journal club organized by Yiyang Jiang at Penn State."><meta property="og:url" content="https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-density-matrix-geometry-response/"><meta property="og:site_name" content="Condensed Matter🍩 + AI🤖 Journal Club🎓"><meta property="og:title" content="Density Matrix Geometry and Response Functions"><meta property="og:description" content="Presenter Yuntao Guan (Prof. Barry Bradlyn’s group, UIUC) Date September 28, 2026 · 4:30–6:00 PM Location Davey 339 Topic Density matrix geometry and response functions Papers Y. Guan and B. Bradlyn, Phys. Rev. Research 8, 013291 (2026); B. Bradlyn, arXiv:2608.06326 (2026) The quantum geometric tensor packs the Berry curvature and the quantum metric into one object, and it has become a standard tool for Hall responses, Wannier localization, flat-band superconductivity and optical sum rules. But the usual version has four limitations. It is a linear-order object. It lives at zero temperature. And it is tied either to Bloch bands of noninteracting electrons or to twist angles of an interacting ground state. The talk replaces the pure state by the density matrix, and the quantum distance by the Bures distance between the thermal state and the state driven by an arbitrary time-dependent field. Expanding that distance in the field strength defines a Bures metric at second order and a Bures connection at third order, and both come out as explicit spectral functions. Specific limits of the metric recover earlier results: a finite-temperature Souza–Wilkens–Martin (SWM) sum rule, the quantum Fisher information, and Fermi’s golden rule recast as geometry. At zero temperature, the connection reduces to the band-theory Christoffel symbol. The second half follows the connection into nonlinear optics. The sum rule for the shift current contains a genuinely multi-state term, built from transitions between two excited states. That term is the non-metricity of the mixture/exponential connections of quantum information geometry."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2026-09-28T16:30:00-04:00"><meta property="article:modified_time" content="2026-09-28T16:30:00-04:00"><meta property="article:tag" content="Quantum Geometry"><meta property="article:tag" content="Quantum Geometric Tensor"><meta property="article:tag" content="Fubini-Study Metric"><meta property="article:tag" content="Berry Curvature"><meta property="article:tag" content="Bures Metric"><meta property="article:tag" content="Quantum Fisher Information"><meta name=twitter:card content="summary"><meta name=twitter:title content="Density Matrix Geometry and Response Functions"><meta name=twitter:description content="Presenter Yuntao Guan (Prof. Barry Bradlyn’s group, UIUC) Date September 28, 2026 · 4:30–6:00 PM Location Davey 339 Topic Density matrix geometry and response functions Papers Y. Guan and B. Bradlyn, Phys. Rev. Research 8, 013291 (2026); B. Bradlyn, arXiv:2608.06326 (2026) The quantum geometric tensor packs the Berry curvature and the quantum metric into one object, and it has become a standard tool for Hall responses, Wannier localization, flat-band superconductivity and optical sum rules. But the usual version has four limitations. It is a linear-order object. It lives at zero temperature. And it is tied either to Bloch bands of noninteracting electrons or to twist angles of an interacting ground state. The talk replaces the pure state by the density matrix, and the quantum distance by the Bures distance between the thermal state and the state driven by an arbitrary time-dependent field. Expanding that distance in the field strength defines a Bures metric at second order and a Bures connection at third order, and both come out as explicit spectral functions. Specific limits of the metric recover earlier results: a finite-temperature Souza–Wilkens–Martin (SWM) sum rule, the quantum Fisher information, and Fermi’s golden rule recast as geometry. At zero temperature, the connection reduces to the band-theory Christoffel symbol. The second half follows the connection into nonlinear optics. The sum rule for the shift current contains a genuinely multi-state term, built from transitions between two excited states. That term is the non-metricity of the mixture/exponential connections of quantum information geometry."><meta name=application-name content="My cool site"><meta name=apple-mobile-web-app-title content="My cool site"><meta name=referrer content="no-referrer"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/OkongOyangO.JournalClub/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/OkongOyangO.JournalClub/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/OkongOyangO.JournalClub/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/OkongOyangO.JournalClub/apple-touch-icon.png><link rel=mask-icon href=/OkongOyangO.JournalClub/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/OkongOyangO.JournalClub/site.webmanifest><link rel=canonical href=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-density-matrix-geometry-response/><link rel=prev href=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-generative-models-vae-diffusion/><link rel=stylesheet href=/OkongOyangO.JournalClub/css/style.min.css><link rel=preload href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css></noscript><link rel=preload href=https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Density Matrix Geometry and Response Functions","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/OkongOyangO.github.io\/OkongOyangO.JournalClub\/posts\/2026-09-density-matrix-geometry-response\/"},"genre":"posts","keywords":"Quantum Geometry, Quantum Geometric Tensor, Fubini-Study Metric, Berry Curvature, Bures Metric, Quantum Fisher Information, Density Matrix, Finite Temperature, Linear Response, Nonlinear Response, Sum Rules, Shift Current, Information Geometry, Christoffel Symbol, Fermi Golden Rule","wordcount":3053,"url":"https:\/\/OkongOyangO.github.io\/OkongOyangO.JournalClub\/posts\/2026-09-density-matrix-geometry-response\/","datePublished":"2026-09-28T16:30:00-04:00","dateModified":"2026-09-28T16:30:00-04:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"Yiyang Jiang"},"description":""}</script></head><body data-header-desktop=fixed data-header-mobile=auto><script>const query=window.matchMedia("(prefers-color-scheme: dark)");function applyTheme(){let e=window.localStorage?.getItem("theme")||"auto",t=e==="dark"||e==="auto"&&query.matches;document.body.setAttribute("theme",t?"dark":"light"),document.body.setAttribute("cfg-theme",e)}applyTheme(),query.addEventListener("change",applyTheme)</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/OkongOyangO.JournalClub/ title="Condensed Matter🍩 + AI🤖 Journal Club🎓">Condensed Matter🍩 + AI🤖 Journal Club🎓</a></div><div class=menu><div class=menu-inner><a class="menu-item active" href=/OkongOyangO.JournalClub/posts/ title=Lectures><i class='fas fa-chalkboard-teacher fa-fw'></i> Lectures </a><a class=menu-item href=/OkongOyangO.JournalClub/tags/ title=Tags><i class='fas fa-tags fa-fw'></i> Tags </a><a class=menu-item href=/OkongOyangO.JournalClub/signup/ title="Sign Up to Present"><i class='fas fa-user-plus fa-fw'></i> Sign Up </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search lectures..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i>
+</span></span><a href=javascript:void(0); class="menu-item theme-switch" title=Theme><i class="fas fa-adjust fa-fw" aria-hidden=true></i> Theme</a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/OkongOyangO.JournalClub/ title="Condensed Matter🍩 + AI🤖 Journal Club🎓">Condensed Matter🍩 + AI🤖 Journal Club🎓</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search lectures..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=/OkongOyangO.JournalClub/posts/ title=Lectures><i class='fas fa-chalkboard-teacher fa-fw'></i>Lectures</a><a class=menu-item href=/OkongOyangO.JournalClub/tags/ title=Tags><i class='fas fa-tags fa-fw'></i>Tags</a><a class=menu-item href=/OkongOyangO.JournalClub/signup/ title="Sign Up to Present"><i class='fas fa-user-plus fa-fw'></i>Sign Up</a><a href=javascript:void(0); class="menu-item theme-switch" title=Theme>
+<i class="fas fa-adjust fa-fw" aria-hidden=true></i>Theme</a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Density Matrix Geometry and Response Functions</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/OkongOyangO.JournalClub/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw" aria-hidden=true></i>Yiyang Jiang</a></span>&nbsp;<span class=post-category>included in <a href=/OkongOyangO.JournalClub/categories/journal-club/><i class="far fa-folder fa-fw" aria-hidden=true></i>Journal Club</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw" aria-hidden=true></i>&nbsp;<time datetime=2026-09-28>2026-09-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden=true></i>&nbsp;3053 words&nbsp;
+<i class="far fa-clock fa-fw" aria-hidden=true></i>&nbsp;15 minutes&nbsp;</div></div><div class="details toc" id=toc-static data-kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right" aria-hidden=true></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#part-1--background-the-quantum-geometric-tensor>Part 1 — Background: the quantum geometric tensor</a></li><li><a href=#part-2--motivation-four-limitations>Part 2 — Motivation: four limitations</a></li><li><a href=#part-3--bures-distance>Part 3 — Bures distance</a></li><li><a href=#part-4--expanding-the-bures-distance>Part 4 — Expanding the Bures distance</a><ul><li><a href=#order--the-bures-metric>Order : the Bures metric</a></li><li><a href=#order--the-bures-connection>Order : the Bures connection</a></li></ul></li><li><a href=#part-5--three-limits-of-the-bures-metric>Part 5 — Three limits of the Bures metric</a></li><li><a href=#part-6--the-bures-connection-as-a-many-body-christoffel-symbol>Part 6 — The Bures connection as a many-body Christoffel symbol</a></li><li><a href=#part-7--multi-state-geometry-and-rectification-sum-rules>Part 7 — Multi-state geometry and rectification sum rules</a><ul><li><a href=#nonlinear-optics-and-the-shift-current>Nonlinear optics and the shift current</a></li><li><a href=#the-many-body-rectification-sum-rule>The many-body rectification sum rule</a></li><li><a href=#where-the-distortion-comes-from-non-metricity>Where the distortion comes from: non-metricity</a></li></ul></li><li><a href=#summary>Summary</a></li><li><a href=#references>References</a></li></ul></nav></div></div><div class=content id=content><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Presenter</strong></td><td>Yuntao Guan (Prof. Barry Bradlyn&rsquo;s group, UIUC)</td></tr><tr><td><strong>Date</strong></td><td>September 28, 2026 · 4:30–6:00 PM</td></tr><tr><td><strong>Location</strong></td><td>Davey 339</td></tr><tr><td><strong>Topic</strong></td><td>Density matrix geometry and response functions</td></tr><tr><td><strong>Papers</strong></td><td>Y. Guan and B. Bradlyn, <em>Phys. Rev. Research</em> <strong>8</strong>, 013291 (2026); B. Bradlyn, <a href=https://arxiv.org/abs/2608.06326 target=_blank rel="noopener noreffer">arXiv:2608.06326</a> (2026)</td></tr></tbody></table><p>The quantum geometric tensor packs the Berry curvature and the quantum metric into one
+object, and it has become a standard tool for Hall responses, Wannier localization, flat-band
+superconductivity and optical sum rules. But the usual version has four limitations. It is a
+linear-order object. It lives at zero temperature. And it is tied either to Bloch bands of
+noninteracting electrons or to twist angles of an interacting ground state. The talk
+replaces the pure state by the <strong>density matrix</strong>, and the quantum distance by the <strong>Bures
+distance</strong> between the thermal state and the state driven by an arbitrary time-dependent
+field. Expanding that distance in the field strength defines a <strong>Bures metric</strong> at second
+order and a <strong>Bures connection</strong> at third order, and both come out as explicit spectral
+functions. Specific limits of the metric recover earlier results: a finite-temperature
+Souza–Wilkens–Martin (SWM) sum rule, the quantum Fisher information, and Fermi&rsquo;s golden rule
+recast as geometry. At zero temperature, the connection reduces to the band-theory
+Christoffel symbol. The second half follows the connection into nonlinear optics. The sum
+rule for the <strong>shift current</strong> contains a genuinely <strong>multi-state</strong> term, built from
+transitions between two excited states. That term is the non-metricity of the
+mixture/exponential connections of quantum information geometry.</p><figure class=deck id=deck-density-matrix-geometry-response-0 tabindex=0 aria-roledescription=carousel aria-label="Density Matrix Geometry and Response Functions — slides"><div class=deck-stage><div class=deck-frame style=aspect-ratio:1400/788><img class="deck-slide is-active" src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-01.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 1 of 48" decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-02.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 2 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-03.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 3 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-04.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 4 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-05.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 5 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-06.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 6 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-07.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 7 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-08.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 8 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-09.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 9 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-10.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 10 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-11.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 11 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-12.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 12 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-13.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 13 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-14.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 14 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-15.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 15 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-16.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 16 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-17.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 17 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-18.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 18 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-19.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 19 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-20.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 20 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-21.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 21 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-22.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 22 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-23.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 23 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-24.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 24 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-25.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 25 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-26.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 26 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-27.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 27 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-28.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 28 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-29.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 29 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-30.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 30 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-31.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 31 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-32.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 32 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-33.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 33 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-34.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 34 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-35.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 35 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-36.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 36 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-37.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 37 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-38.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 38 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-39.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 39 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-40.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 40 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-41.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 41 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-42.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 42 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-43.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 43 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-44.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 44 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-45.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 45 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-46.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 46 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-47.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 47 of 48" loading=lazy decoding=async>
+<img class=deck-slide src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/slide-48.png width=1400 height=788 alt="Density Matrix Geometry and Response Functions — slides — page 48 of 48" loading=lazy decoding=async></div><button class="deck-nav deck-prev" type=button aria-label="Previous slide">
+<i class="fas fa-chevron-left fa-fw" aria-hidden=true></i>
+</button>
+<button class="deck-nav deck-next" type=button aria-label="Next slide">
+<i class="fas fa-chevron-right fa-fw" aria-hidden=true></i></button></div><figcaption class=deck-bar><span class=deck-counter aria-live=polite>1 / 48</span>
+<button class=deck-full type=button aria-label="Toggle fullscreen">
+<i class="fas fa-expand fa-fw" aria-hidden=true></i>&nbsp;Fullscreen</button></figcaption><div class=deck-thumbs role=tablist aria-label="Density Matrix Geometry and Response Functions — slides thumbnails"><button class="deck-thumb is-active" type=button role=tab aria-label="Go to page 1" aria-selected=true>
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-01.png width=260 height=146 alt decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 2">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-02.png width=260 height=146 alt decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 3">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-03.png width=260 height=146 alt decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 4">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-04.png width=260 height=146 alt decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 5">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-05.png width=260 height=146 alt decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 6">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-06.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 7">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-07.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 8">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-08.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 9">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-09.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 10">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-10.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 11">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-11.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 12">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-12.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 13">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-13.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 14">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-14.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 15">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-15.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 16">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-16.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 17">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-17.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 18">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-18.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 19">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-19.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 20">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-20.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 21">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-21.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 22">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-22.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 23">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-23.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 24">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-24.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 25">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-25.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 26">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-26.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 27">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-27.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 28">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-28.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 29">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-29.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 30">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-30.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 31">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-31.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 32">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-32.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 33">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-33.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 34">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-34.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 35">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-35.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 36">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-36.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 37">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-37.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 38">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-38.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 39">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-39.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 40">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-40.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 41">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-41.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 42">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-42.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 43">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-43.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 44">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-44.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 45">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-45.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 46">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-46.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 47">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-47.png width=260 height=146 alt loading=lazy decoding=async>
+</button>
+<button class=deck-thumb type=button role=tab aria-label="Go to page 48">
+<img src=/OkongOyangO.JournalClub/decks/density-matrix-geometry-response/thumbs/slide-48.png width=260 height=146 alt loading=lazy decoding=async></button></div></figure><script>(function(){if(e=document.getElementById("deck-density-matrix-geometry-response-0"),!e)return;var e,a,l,i=e.querySelectorAll(".deck-slide"),s=e.querySelectorAll(".deck-thumb"),d=e.querySelector(".deck-counter"),r=e.querySelector(".deck-stage"),o=i.length,t=0;function c(e){[e-1,e+1].forEach(function(e){if(e>=0&&e<o){var t=new Image;t.src=i[e].currentSrc||i[e].src}})}function n(e){e=(e+o)%o,i[t].classList.remove("is-active"),i[e].classList.add("is-active"),s.length===o&&(s[t].classList.remove("is-active"),s[t].removeAttribute("aria-selected"),s[e].classList.add("is-active"),s[e].setAttribute("aria-selected","true"),s[e].scrollIntoView({block:"nearest",inline:"nearest"})),t=e,d.textContent=e+1+" / "+o,c(e)}e.querySelector(".deck-prev").addEventListener("click",function(){n(t-1)}),e.querySelector(".deck-next").addEventListener("click",function(){n(t+1)}),Array.prototype.forEach.call(s,function(e,t){e.addEventListener("click",function(){n(t)})}),e.addEventListener("keydown",function(e){var s=e.key;if(s==="ArrowLeft"||s==="PageUp")n(t-1);else if(s==="ArrowRight"||s==="PageDown"||s===" ")n(t+1);else if(s==="Home")n(0);else if(s==="End")n(o-1);else return;e.preventDefault()}),a=null,r.addEventListener("touchstart",function(e){a=e.changedTouches[0].clientX},{passive:!0}),r.addEventListener("touchend",function(e){if(a===null)return;var s=e.changedTouches[0].clientX-a;(s<0?-s:s)>40&&n(s<0?t+1:t-1),a=null},{passive:!0}),l=e.querySelector(".deck-full"),l.addEventListener("click",function(){document.fullscreenElement?document.exitFullscreen():r.requestFullscreen&&r.requestFullscreen().then(function(){e.focus()},function(){})}),c(0)})()</script><div class=pdf-note><a class=pdf-download href=/OkongOyangO.JournalClub/pdfs/density-matrix-geometry-response.pdf download target=_blank rel="noopener noreferrer"><i class="fas fa-file-pdf fa-fw" aria-hidden=true></i>&nbsp;Download slides (PDF)</a></div><h2 id=part-1--background-the-quantum-geometric-tensor>Part 1 — Background: the quantum geometric tensor</h2><p>Take a normalized state $\lvert\psi_0(\boldsymbol\lambda)\rangle$ that depends on parameters
+$\boldsymbol\lambda = (\lambda_1,\dots,\lambda_n)$. Its <strong>quantum geometric tensor</strong> (QGT) is</p>$$
+Q_{\mu\nu}(\boldsymbol\lambda) =
+\langle\partial_{\lambda_\mu}\psi_0\rvert\big(1-\lvert\psi_0\rangle\langle\psi_0\rvert\big)\lvert\partial_{\lambda_\nu}\psi_0\rangle
+= G_{\mu\nu} - \frac{i}{2}F_{\mu\nu}.
+$$<p>The projector makes $Q$ gauge-invariant, and $Q$ is Hermitian. Its real, symmetric part is
+the <strong>Fubini–Study metric</strong> $G_{\mu\nu}$. Its imaginary, antisymmetric part is the <strong>Berry
+curvature</strong> $F_{\mu\nu}$.</p><p><strong>Berry curvature.</strong> $F_{\mu\nu} = 2\,\mathrm{Im}\,\langle\partial_{\lambda_\nu}\psi_0\vert\partial_{\lambda_\mu}\psi_0\rangle$.
+For noninteracting electrons, the parameters are the crystal momenta and the state is a Bloch
+function, $\lvert u_n(\mathbf k)\rangle$. For interacting systems, they are the twist angles
+$\phi_\mu$ of the boundary conditions, and the state is the ground state
+$\lvert GS(\boldsymbol\phi)\rangle$. Take a non-degenerate gapped ground state of a
+$U(1)$-symmetric Hamiltonian with finite-range interactions. Its Hall conductance is the
+twist-angle Berry curvature, which reduces to the TKNN formula in the band limit:</p>$$
+\sigma_H = \frac{e^2}{\hbar}\,2\,\mathrm{Im}\,\langle\partial_{\phi_\nu}GS\vert\partial_{\phi_\mu}GS\rangle
+\;\Rightarrow\;
+\frac{e^2}{h}\sum_{n\in\text{occ}}\frac{1}{2\pi}\int_{BZ}\mathrm dk_\nu\,\mathrm dk_\mu\;
+2\,\mathrm{Im}\,\langle\partial_{k_\nu}u_n\vert\partial_{k_\mu}u_n\rangle .
+$$<p><strong>Fubini–Study metric.</strong> With the projector $P(\boldsymbol\lambda) = \lvert\psi_0\rangle\langle\psi_0\rvert$,
+the metric is $G_{\mu\nu} = \tfrac12\operatorname{Tr}\big[\partial_{\lambda_\mu}P\,\partial_{\lambda_\nu}P\big]$.
+It measures the quantum distance between neighbouring states,
+$\mathrm ds^2 = G_{\mu\nu}\,\mathrm d\lambda^\mu\mathrm d\lambda^\nu$. In other words, it is the
+pullback of the natural metric on state space $\mathbb{CP}^{N-1}$ to parameter space. It
+controls two physical quantities:</p><ul><li><em>Noninteracting:</em> the spread of Wannier functions (Marzari–Vanderbilt 1997),
+$$
+\langle w_R\rvert(\hat x - R)^2\lvert w_R\rangle
+= \frac{V_{\text{cell}}}{(2\pi)^d}\sum_{\mu=1}^d\int\mathrm d^dk\,\big[G_{\mu\mu}(\mathbf k) + (A^\mu(\mathbf k))^2\big].
+$$</li><li><em>Interacting:</em> the fluctuation of the polarization (Souza <em>et al.</em> 2000),
+$G_{\mu\nu}(\boldsymbol\phi) = \frac1V\big[\langle X_\mu X_\nu\rangle_0 - \langle X_\mu\rangle_0\langle X_\nu\rangle_0\big]$.</li></ul><p><strong>Some applications.</strong></p><ul><li>The <strong>SWM sum rule</strong> measures the QGT through the absorptive conductivity:
+$$
+Q_{\mu\nu} = \frac1\pi\int_{0^+}^\infty\mathrm d\omega\,\frac{\sigma^{\mu\nu}_{\text{abs}}(\omega)}{\omega},
+\qquad
+\sigma^{\mu\nu}_{\text{abs}}(\omega) = \tfrac12\big[\sigma^{\mu\nu}(\omega) + \sigma^{\nu\mu}(\omega)^*\big].
+$$</li><li>Positivity of $Q_{\mu\nu}$ gives a topological bound on the gap, the Chern bound
+$E_g \le 2\pi\hbar^2 n/(\lvert C\rvert m)$.</li><li>Also: criteria for ideal Chern bands (from an analogy with the GMP algebra), and the
+superfluid weight of flat-band superconductors.</li></ul><h2 id=part-2--motivation-four-limitations>Part 2 — Motivation: four limitations</h2><p>The standard QGT is restricted to (1) linear order, (2) zero temperature, and either
+(3) noninteracting fermions parameterized by crystal momentum or (4) interacting fermions
+parameterized by twist angles. Several existing frameworks each lift some of these limits,
+but none lifts all of them:</p><table><thead><tr><th>Framework</th><th style=text-align:center>Finite $T$</th><th style=text-align:center>Interaction / disorder</th><th style=text-align:center>Generic parameter</th><th style=text-align:center>Higher order</th></tr></thead><tbody><tr><td>SWM sum rule [Souza <em>et al.</em> 2000]</td><td style=text-align:center>✗</td><td style=text-align:center>✓</td><td style=text-align:center>✗</td><td style=text-align:center>✗</td></tr><tr><td>Quantum Fisher information [Hauke <em>et al.</em> 2016]</td><td style=text-align:center>✓</td><td style=text-align:center>✓</td><td style=text-align:center>✓</td><td style=text-align:center>✗</td></tr><tr><td>Nonlinear (optical) response [Ahn <em>et al.</em> 2021]</td><td style=text-align:center>✗</td><td style=text-align:center>✗</td><td style=text-align:center>✗</td><td style=text-align:center>✓</td></tr><tr><td>Time-dependent QGT [Verma <em>et al.</em> 2024; Ji <em>et al.</em> 2025]</td><td style=text-align:center>✓</td><td style=text-align:center>✓</td><td style=text-align:center>✗ → ✓</td><td style=text-align:center>✗</td></tr></tbody></table><p>The question of the talk: <strong>can one build a single geometric framework that goes beyond all
+four limits?</strong></p><h2 id=part-3--bures-distance>Part 3 — Bures distance</h2><p>At finite temperature, the pure state becomes a density matrix. The <strong>fidelity</strong> of two
+density matrices is the best overlap achievable by any pair of purifications
+$(\lvert\psi_1\rangle,\lvert\psi_2\rangle)$ of $(\rho_1,\rho_2)$:</p>$$
+F(\rho_1,\rho_2) = \Big(\operatorname{Tr}\sqrt{\sqrt{\rho_2}\,\rho_1\sqrt{\rho_2}}\Big)^2 \;\ge\; \lvert\langle\psi_1\vert\psi_2\rangle\rvert^2 .
+$$<p>The <strong>Bures distance</strong> is the corresponding minimized quantum distance:</p>$$
+d_B(\rho_1,\rho_2) = \sqrt{2-2\sqrt{F(\rho_1,\rho_2)}} \;\le\; \sqrt{2-2\lvert\langle\psi_1\vert\psi_2\rangle\rvert}.
+$$<p>It vanishes for $\rho_1 = \rho_2$ and reaches its maximum $\sqrt2$ for orthogonal states,
+where $F = 0$.</p><h2 id=part-4--expanding-the-bures-distance>Part 4 — Expanding the Bures distance</h2><p><strong>Setup.</strong> Start in thermal equilibrium, $\rho(t\to-\infty) = \rho_0 = e^{-\beta H_0}/Z_0$.
+Then switch on a weak perturbation along $N$ operator directions $B_\mu$,</p>$$
+H = H_0 + \lambda f^\mu(t)\,B_\mu\,\eta(t),\qquad \mu = 1,\dots,N,
+$$<p>where $\eta(t)$ switches the perturbation on adiabatically. The time-evolved density matrix
+has a Dyson expansion, $\rho(t) = \rho_0 + \lambda\rho_1(t) + \lambda^2\rho_2(t) + \dots$,
+with nested commutators</p>$$
+\begin{aligned}
+\rho_n(t) = (-i)^n&\int_{-\infty}^t\!\mathrm dt_1\cdots\int_{-\infty}^{t_{n-1}}\!\mathrm dt_n
+\prod_{i=1}^n f^{\mu_i}(t_i)\,\eta(t_i) \\
+&\times\big[B_{\mu_1}(t_1-t),\big[B_{\mu_2}(t_2-t),\big[\dots\big[B_{\mu_n}(t_n-t),\rho_0\big]\big]\big]\big].
+\end{aligned}
+$$<p>So $\rho(t)$ is a <em>functional</em> of the whole field history $\{\lambda f^\mu(\tau)\}_{\tau\in(-\infty,t]}$.
+The central object is</p>$$
+d_B\big(\rho_0,\rho(t)\big)^2 = 2 - 2\operatorname{Tr}\sqrt{\sqrt{\rho_0}\,\rho(t)\sqrt{\rho_0}} ,
+$$<p>which measures how far the driven state has moved from equilibrium. The idea is to compute
+it in two different ways and compare.</p><p><strong>From the right-hand side (perturbation theory).</strong> In the eigenbasis of
+$\rho_0 = \sum_n p_n\lvert n\rangle\langle n\rvert$,</p>$$
+\begin{aligned}
+d_B(\rho_0,\rho(t))^2 &= \frac{\lambda^2}{2}\sum_{nm}\frac{\lvert\langle n\rvert\rho_1\lvert m\rangle\rvert^2}{p_n+p_m} \\
+&\quad - \frac{\lambda^3}{2}\Bigg(\sum_{n\ell\ell'}\frac{\langle n\rvert\rho_1\lvert\ell'\rangle\langle\ell'\rvert\rho_1\lvert\ell\rangle\langle\ell\rvert\rho_1\lvert n\rangle}{(p_\ell+p_n)(p_n+p_{\ell'})} - {} \\
+&\qquad\quad \sum_{n\ell}\frac{\langle n\rvert\rho_2\lvert\ell\rangle\langle\ell\rvert\rho_1\lvert n\rangle + \langle n\rvert\rho_1\lvert\ell\rangle\langle\ell\rvert\rho_2\lvert n\rangle}{p_n+p_\ell}\Bigg) + \mathcal O(\lambda^4).
+\end{aligned}
+$$<p>The $\lambda^2$ term is the quantum Fisher information $F_Q[\rho_1]$ (up to normalization).</p><p><strong>From the left-hand side (geometry).</strong> Treat the field history itself as coordinates. The
+manifold is now an infinite-dimensional function space, with coordinates
+$\{f^\mu(\tau)\}_{\tau\in(-\infty,t]}$ and tangent vectors $\{\delta f^\mu(\tau)\}$. The
+density matrices are pulled back to it, just as band theory pulls $\mathbb{CP}^{N-1}$ back to
+the Brillouin-zone torus $T^d$. The line element becomes a double time integral,</p>$$
+\mathrm ds^2 = \int\mathrm dt_1\,\mathrm dt_2\; g_{(\mu,t_1)(\nu,t_2)}[\boldsymbol f(\tau)]\;\delta f^\mu(t_1)\,\delta f^\nu(t_2),
+$$<p>and the Bures distance is the length of the straight path from $0$ to $\lambda\boldsymbol f$:</p>$$
+d_B\big(\rho_0,\rho(t)\big) = \int_0^\lambda\mathrm d\lambda'\,
+\sqrt{\int\mathrm dt_1\,\mathrm dt_2\;g_{\mu\nu}(\lambda'\boldsymbol f,t,t_1,t_2)\,f^\mu(t_1)f^\nu(t_2)} .
+$$<p>Expanding the metric around $\lambda\boldsymbol f = 0$ gives</p>$$
+\begin{aligned}
+d_B(\rho_0,\rho(t))^2 &= \lambda^2\int\mathrm dt_1\mathrm dt_2\;g_{\mu\nu}(t,t_1,t_2)\,f^\mu(t_1)f^\nu(t_2) \\
+&\quad + \lambda^3\int\mathrm dt_1\mathrm dt_2\mathrm dt_3\;\Gamma_{\mu\lambda\nu}(0,t,t_1,t_3,t_2)\,f^\mu(t_1)f^\nu(t_2)f^\lambda(t_3) \\
+&\quad + \mathcal O(\lambda^4).
+\end{aligned}
+$$<p>The $\lambda^2$ coefficient is a metric, and the $\lambda^3$ coefficient is a connection.</p><h3 id=order--the-bures-metric>Order $\lambda^2$: the Bures metric</h3><p>Matching the two expansions at second order identifies the metric with the Fisher term:</p>$$
+g_{\mu\nu}(t,t_1,t_2) = -\frac{1}{2\pi}\prod_{i=1}^2 e^{\epsilon(t_i-t)}\,\Theta(t-t_i)\;
+\mathrm{Re}\Big[\int\mathrm d\omega\,e^{i\omega(t_1-t_2)}\tanh\frac{\beta\omega}{2}\,\chi''_{\nu\mu}(\omega)\Big],
+$$$$
+\chi''_{\nu\mu}(\omega) = -\frac12\int\mathrm dt\,e^{i\omega t}\,\big\langle[B_\nu(t),B_\mu(0)]\big\rangle_0 .
+$$<p>Each factor has a clear job. The step functions encode <strong>causality</strong>: only field values
+before $t$ matter. The factor $\tanh(\beta\omega/2)$ is the <strong>thermal weight</strong>. The
+<strong>spectral density</strong> $\chi''$ carries the dynamics of the system. Everything is expressed
+through a measurable response function, with no assumption about bands or ground states.</p><h3 id=order--the-bures-connection>Order $\lambda^3$: the Bures connection</h3><p>At third order the coefficient splits into two pieces,
+$\int\Gamma_{\lambda\mu\nu}\,f^\mu f^\nu f^\lambda \equiv \Gamma^{\text f}(t) + \Gamma^{\text{in}}(t)$.</p><ul><li><strong>Fisher term.</strong> This piece comes from expanding the quantum Fisher information of
+$\delta\rho = \lambda\rho_1 + \lambda^2\rho_2 + \dots$ to the next order:
+$$
+\Gamma^{\text f}(t) = \frac12\sum_{n\ell}\frac{\langle n\rvert\rho_2\lvert\ell\rangle\langle\ell\rvert\rho_1\lvert n\rangle + \langle n\rvert\rho_1\lvert\ell\rangle\langle\ell\rvert\rho_2\lvert n\rangle}{p_n+p_\ell}.
+$$
+In the time domain, it is a tanh-weighted transform of the <strong>second-order spectral
+density</strong> (Bradlyn & Abbamonte 2024),
+$$
+\begin{aligned}
+\chi''_{\mu_1\mu_3\mu_2}(\omega_1,\omega_2) &= \frac14\int\mathrm dt_1\mathrm dt_2\,e^{i\omega_1t_1}e^{i\omega_2t_2} \\
+&\quad\times\big\langle\big[[B_{\mu_1}(0),B_{\mu_3}(-t_1)],B_{\mu_2}(-t_1-t_2)\big]\big\rangle_0 ,
+\end{aligned}
+$$
+with weight $\tanh\frac{\beta(\omega_1-\omega_2)}{2}$.</li><li><strong>Intrinsic term.</strong> This piece has no Fisher-information counterpart, and it appears at
+every order of the expansion:
+$$
+\Gamma^{\text{in}}(t) = -\frac12\sum_{n\ell\ell'}\frac{\langle n\rvert\rho_1\lvert\ell'\rangle\langle\ell'\rvert\rho_1\lvert\ell\rangle\langle\ell\rvert\rho_1\lvert n\rangle}{(p_\ell+p_n)(p_n+p_{\ell'})}.
+$$
+In the time domain it carries a double weight
+$\tanh\frac{\beta\omega_1}{2}\tanh\frac{\beta(\omega_1-\omega_2)}{2}$, applied to a new
+three-point function,
+$$
+\begin{aligned}
+S_{\mu_1\mu_3\mu_2}(\omega_1,\omega_2) &= \frac{1}{4\pi^2}\int\mathrm dt_1\mathrm dt_2\,e^{i\omega_1t_1}e^{i\omega_2t_2} \\
+&\quad\times\big\langle\big[B_{\mu_3}(-t_1)B_{\mu_1}(0),\,B_{\mu_2}(-t_1-t_2)\big]\big\rangle_0 .
+\end{aligned}
+$$
+Only an antisymmetrized combination of $S$ is fixed by the second-order response,
+$\chi''_{\mu_1\mu_3\mu_2}(\omega_1,\omega_2) = -\pi^2\big[S_{\mu_1\mu_3\mu_2}(\omega_1,\omega_2) - S_{\mu_3\mu_1\mu_2}(\omega_2-\omega_1,\omega_2)\big]$.
+The intrinsic term is therefore <strong>independent of the second-order response</strong>. It is new
+information, and Part 7 returns to it.</li></ul><p>With both pieces in hand, the framework fills in the whole table: finite temperature,
+interactions and disorder, generic perturbing operators (through the metric), and higher
+order (through the connection).</p><h2 id=part-5--three-limits-of-the-bures-metric>Part 5 — Three limits of the Bures metric</h2><p>The same metric reduces to known quantities for three experimentally relevant field
+profiles.</p><table><thead><tr><th>Limit</th><th>Field profile</th><th>Example perturbation</th><th>The metric becomes</th></tr></thead><tbody><tr><td>Quasistatic</td><td>$f^\mu(t)\to f^\mu$</td><td>current, $-j^\mu A_\mu + \mathcal O(A^2)$</td><td>finite-$T$ SWM sum rule</td></tr><tr><td>Instantaneous</td><td>$f^\mu(t) = f^\mu\delta(t)$</td><td>density kick</td><td>quantum Fisher information</td></tr><tr><td>Infinite time</td><td>$f^\mu(\pm\infty)\to0$, $t\to+\infty$</td><td>any pulse</td><td>Fermi&rsquo;s golden rule</td></tr></tbody></table><p><strong>Quasistatic limit.</strong> The field ramps up and then stays constant. In general,</p>$$
+g^{\text{q.s.}}_{\mu\nu} = -\frac1{2\pi}\int\mathrm d\omega\,\frac1{\omega^2}\tanh\frac{\beta\omega}{2}\,\mathrm{Re}\,\chi''_{\nu\mu}(\omega),
+$$<p>which is the result of Ji <em>et al.</em> (2025). Now take a current perturbation,
+$H_A = H_0 - \sum_n\frac1{n!}j^{\mu_1\cdots\mu_n}A_{\mu_1}\cdots A_{\mu_n}$. The metric
+becomes a <strong>finite-temperature twist-angle metric</strong>, which is a thermal SWM sum rule:</p>$$
+g^{\text{q.s.}}_{\mu\nu} = \frac V\pi\int_{0^+}^\infty\mathrm d\omega\,\frac1\omega\tanh\frac{\beta\omega}{2}\,\mathrm{Re}\,\sigma^{\mu\nu}_{\text{abs}}(\omega).
+$$<p>The $1/\omega$ weight of the zero-temperature rule is dressed by $\tanh(\beta\omega/2)$. The
+dissipative conductivity is
+$\sigma^{\mu\nu}_{\text{abs}}(\omega) = \pi\delta(\omega)D^{\mu\nu} - \mathrm P\,\frac{1}{V\omega}[\chi'']^{\mu\nu}(\omega)$,
+where $D^{\mu\nu}$ is the Drude weight.</p><p><strong>Instantaneous limit.</strong> The field is a delta-function kick. In general,</p>$$
+g^{\text{inst}}_{\mu\nu}(t) = -\frac1{2\pi}\Theta(t)\int\mathrm d\omega\,\tanh\frac{\beta\omega}{2}\,\mathrm{Re}\,\chi''_{\nu\mu}(\omega),
+$$<p>which is the quantum Fisher information of Hauke <em>et al.</em> (2016). For a density kick,
+$\delta H = \frac1V\sum_{\mathbf q}\phi_{\mathbf q}\delta(t)\rho_{-\mathbf q}$, it is a thermally
+weighted integral of the dynamic structure factor
+$S(\mathbf q,\omega) = \frac1V\int\mathrm dt\,e^{i\omega t}\langle\rho_{\mathbf q}(t)\rho_{-\mathbf q}(0)\rangle_c$:</p>$$
+g_{\mathbf q}(t) = \frac{\Theta(t)}{4\pi}\int_0^\infty\mathrm d\omega\,\tanh\frac{\beta\omega}{2}\,\big(1-e^{-\beta\omega}\big)\big[S(\mathbf q,\omega)+S(-\mathbf q,\omega)\big].
+$$<p>The two limits are related to each other:</p><ul><li>At zero temperature and long wavelength,
+$g_{\mathbf q}(t) = \Theta(t)\,q_\mu q_\nu\,\frac1V\,g^{\mu\nu}_{\text{q.s.}}$.</li><li>More generally, take any pair of operators with $C_\mu = \partial_tB_\mu = i[H_0,B_\mu]$.
+Then $g^{\text{inst}}_{B_\mu B_\nu}(t) = \Theta(t)\,g^{\text{q.s.}}_{C_\mu C_\nu}$: a kick in
+$B$ is geometrically equivalent to a quasistatic ramp in its time derivative.</li></ul><p><strong>Infinite-time limit.</strong> Take a realistic pulse that vanishes in the far past and the far
+future, and look long after it has passed. The distance becomes</p>$$
+\begin{aligned}
+d_B^2\big(\rho_0,\rho(t\to\infty)\big) &= \lim_{t\to\infty}\int\mathrm dt_1\mathrm dt_2\;g_{\mu\nu}(t-t_1,t-t_2)\,f^\mu(t_1)f^\nu(t_2) \\
+&= -\frac{\kappa^2}{2\pi}\int\mathrm d\omega\,\tanh\frac{\beta\omega}{2}\;\bar f^\nu(-\omega)\,\chi''_{\nu\mu}(\omega)\,\bar f^\mu(\omega) + \mathcal O(\kappa^3),
+\end{aligned}
+$$<p>where $\kappa$ is the field amplitude. The integrand is exactly the absorption rate of
+Fermi&rsquo;s golden rule, so this gives a <strong>geometric interpretation of Fermi&rsquo;s golden rule</strong>: how
+far the pulse pushes the system away from equilibrium. Differentiating with respect to
+$\bar f^\mu(\omega)$ gives the frequency-space metric
+$\bar g_{\mu\nu}(\omega_1,\omega_2) = -\frac1{2\pi}\delta(\omega_1+\omega_2)\tanh\frac{\beta\omega_1}{2}\,\chi''_{\mu\nu}(\omega_1)$.</p><p>The three limits, previously separate results in the literature, are all special cases of
+one metric.</p><h2 id=part-6--the-bures-connection-as-a-many-body-christoffel-symbol>Part 6 — The Bures connection as a many-body Christoffel symbol</h2><p>For the connection, take the quasistatic limit with a current perturbation. One subtlety
+matters here: the <strong>diamagnetic</strong> term $j^{\mu\nu}A_\mu A_\nu$ lies outside the linear
+coupling $\lambda f^\mu B_\mu$ assumed above, and it must be kept. It adds a term to
+$\rho_2$:</p>$$
+\begin{aligned}
+\rho_2(t) &= -\int_{-\infty}^t\mathrm dt_1\int_{-\infty}^{t_1}\mathrm dt_2\;A_\mu(t_1)A_\nu(t_2)\,\big[j^\mu(t_1-t),[j^\nu(t_2-t),\rho_0]\big] \\
+&\quad + \frac i2\int_{-\infty}^t\mathrm dt_1\;A_\mu(t_1)A_\nu(t_1)\,[j^{\mu\nu}(t_1-t),\rho_0],
+\end{aligned}
+$$<p>with $\rho_1(t) = i\int_{-\infty}^t\mathrm dt_1\,A_\mu(t_1)[j^\mu(t_1-t),\rho_0]$.</p><p><strong>Free fermions at $T=0$.</strong> Define the band-theoretic interband Berry connection
+$r^\mu_{\alpha\beta\mathbf k} = \langle u_{\alpha\mathbf k}\rvert i\partial_{k_\mu}\lvert u_{\beta\mathbf k}\rangle$,
+the band quantum metric
+$g^{\mu\nu}(\mathbf k) = \sum_{\alpha\in\text{unocc},\,\beta\in\text{occ}}\mathrm{Re}\big(r^\mu_{\alpha\beta\mathbf k}r^\nu_{\beta\alpha\mathbf k}\big)$,
+and its Christoffel symbol</p>$$
+\Gamma^{\mu\nu\lambda}(\mathbf k) = \frac12\big(\partial^\nu g^{\mu\lambda}(\mathbf k) + \partial^\lambda g^{\mu\nu}(\mathbf k) - \partial^\mu g^{\nu\lambda}(\mathbf k)\big).
+$$<p>The quasistatic Bures connection then reduces to the Brillouin-zone average of the Christoffel
+symbol, totally symmetrized by the three factors of $A$:</p>$$
+\Gamma_{\text{q.s.}} = -V A_\mu A_\nu A_\lambda\int\frac{\mathrm d^d\mathbf k}{(2\pi)^d}\,\Gamma^{\mu\nu\lambda}(\mathbf k).
+$$<p>The quasistatic Bures connection is therefore a <strong>many-body generalization of the Christoffel
+symbol</strong>, and it remains valid for interacting systems at finite temperature.</p><h2 id=part-7--multi-state-geometry-and-rectification-sum-rules>Part 7 — Multi-state geometry and rectification sum rules</h2><p>The second paper (Bradlyn, arXiv:2608.06326) extends the formalism to the rest of quantum
+information geometry. In information geometry, the natural mixture and exponential
+connections are <em>not</em> compatible with the metric (Amari & Nagaoka 2000). The claim is that
+this <strong>non-metricity</strong> is exactly the <strong>multi-state geometric contribution</strong> to the sum rule
+for the shift-current conductivity.</p><h3 id=nonlinear-optics-and-the-shift-current>Nonlinear optics and the shift current</h3><p>A weak electric field $E_\nu(t) = \int\mathrm d\omega\,E_\nu(\omega)e^{-i\omega t}$ induces a
+second-order current</p>$$
+j^\mu_{(2)}(\omega) = \int\mathrm d\omega_1\mathrm d\omega_2\;\delta(\omega-\omega_1-\omega_2)\,\sigma^{\mu;\nu\lambda}(\omega_1,\omega_2)\,E_\nu(\omega_1)E_\lambda(\omega_2).
+$$<p>For monochromatic light at $\pm\omega$, two channels appear. With $\omega_1 = \omega_2 = \pm\omega$
+the output is at $\pm2\omega$, which is <strong>second-harmonic generation</strong>. With
+$\omega_1 = -\omega_2$ the output is a DC current, which is <strong>rectification</strong>. Rectification
+has several parts (Watanabe & Oshikawa 2020):</p><ul><li>the <em>nonlinear Drude</em> term, from low-frequency acceleration of mobile carriers;</li><li>the <em>injection current</em>, which grows during illumination until relaxation cuts it off;</li><li>the <em>shift current</em>, which comes from the change in polarization during an optical
+transition;</li><li>plus additional frequency-dependent terms.</li></ul><p>The goal is a sum rule for the shift part. At zero temperature, the linear SWM rule reads</p>$$
+G_{\mu\nu}(\phi) = \frac1\pi\int_{0^+}^\infty\mathrm d\omega\,\frac{\mathrm{Re}\,\sigma^{\mu\nu}_{\text{abs}}(\omega)}{\omega}
+= \frac1V\big[\langle X_\mu X_\nu\rangle_0 - \langle X_\mu\rangle_0\langle X_\nu\rangle_0\big].
+$$<p>In the band limit, the integrated shift response contains the <em>skewness</em> of $X_\mu$ plus a
+multi-state geometric contribution (Avdoshkin, Mitscherling & Moore 2025). <strong>What does that
+multi-state term become once interactions and disorder are present?</strong></p><h3 id=the-many-body-rectification-sum-rule>The many-body rectification sum rule</h3><p>Consider a large but finite system with open boundaries: $H_0\lvert a\rangle = E_a\lvert a\rangle$,
+$p_a = e^{-\beta E_a}/Z$, with total position operator $X^\mu$ and matrix elements
+$X^\mu_{ac} = \langle a\rvert X^\mu\lvert c\rangle$. With $H'(t) = E_\nu(t)X^\nu$ and
+$J^\mu = i[H_0,X^\mu]$,</p>$$
+\sigma^{\mu;\nu\lambda}_{\text{shift}}(\omega) = \frac{2\pi}{V}\sum_{E_a>E_c}(p_a-p_c)\,(X^\mu_{cc}-X^\mu_{aa})\,X^\nu_{ac}X^\lambda_{ca}\,\delta(\omega-E_a+E_c),
+$$<p>and the DC current is $\langle J^\mu\rangle_{\text{DC}}/V = \int_0^\infty\mathrm d\omega\,\sigma^{\mu;\nu\lambda}_{\text{shift}}(\omega)E_\nu(\omega)E^*_\lambda(\omega)$.
+The factor $X^\mu_{cc}-X^\mu_{aa}$ is the shift in position during the transition. Now let
+$\lvert0\rangle$ be the ground state, and define the position fluctuation and skewness,</p>$$
+\delta X^\mu = X^\mu - \langle X^\mu\rangle_0,\qquad
+c^{(3)}_{\lambda\mu\nu} = \langle\delta X^\lambda\,\delta X^\mu\,\delta X^\nu\rangle_0,
+$$<p>and the zero-temperature <strong>complex distortion</strong></p>$$
+S_{\lambda\mu\nu} \equiv \lim_{T\to0}S_{\lambda\mu\nu}(T) = {\sum_{a,b>0}}'\,X^\lambda_{0a}X^\mu_{ab}X^\nu_{b0},
+$$<p>where the prime excludes terms with $E_a = E_b$. The sum rule is</p>$$
+\lim_{T\to0}\frac1\pi\int_0^\infty\mathrm d\omega\;\sigma^{\mu;\nu\lambda}_{\text{shift}}(\omega) = \frac2V\big(c^{(3)}_{\lambda\mu\nu} - S_{\lambda\mu\nu}\big).
+$$<p>It makes <strong>no assumption of clean bands or noninteracting electrons</strong>.</p><p><strong>Why &ldquo;multi-state&rdquo;?</strong> $S_{\lambda\mu\nu}$ contains matrix elements between two <em>excited</em>
+states. The product traces a closed virtual path $0\to b\to a\to0$ that includes an
+excited-to-excited transition $b\to a$. So, unlike $c^{(3)}$, <strong>$S_{\lambda\mu\nu}$ cannot be
+written as a ground-state expectation value.</strong></p><p><strong>What an optical measurement sees.</strong> The position operators commute, so the skewness is real
+and totally symmetric. Splitting into real and imaginary parts gives</p>$$
+\begin{aligned}
+\frac1\pi\int_0^\infty\mathrm d\omega\,\mathrm{Re}\,\sigma^{\mu;\nu\lambda}_{\text{shift}}(\omega) &= \frac2V\big(c^{(3)}_{\lambda\mu\nu} - \mathrm{Re}\,S_{\lambda\mu\nu}\big), \\
+\frac1\pi\int_0^\infty\mathrm d\omega\,\mathrm{Im}\,\sigma^{\mu;\nu\lambda}_{\text{shift}}(\omega) &= -\frac2V\,\mathrm{Im}\,S_{\lambda\mu\nu}.
+\end{aligned}
+$$<p>Linearly polarized light probes the symmetric combination. Circularly polarized light isolates
+the antisymmetric part of $S$.</p><h3 id=where-the-distortion-comes-from-non-metricity>Where the distortion comes from: non-metricity</h3><p><strong>Notation.</strong> Use the external fields $\boldsymbol\lambda(t)$ as coordinates, with
+$\partial_\mu = \delta/\delta\lambda^\mu(t)$, and write
+$\rho(\boldsymbol\lambda) = U(\boldsymbol\lambda)\rho_0U^\dagger(\boldsymbol\lambda)$. The
+tangent vectors are $\rho_\mu \equiv \partial_\mu\rho = \{G_\mu,\rho\}$, where $G_\mu$ is half
+the symmetric logarithmic derivative (at $T>0$). From $G_\mu$ one builds three objects:</p><table><thead><tr><th>Object</th><th>Construction</th><th>Meaning</th></tr></thead><tbody><tr><td>$Q_{\mu\nu}$</td><td>$G_\mu\,\rho\,G_\nu$</td><td>QGT operator</td></tr><tr><td>$g_{\mu\nu}$</td><td>$\tfrac12\operatorname{Tr}(\rho\{G_\mu,G_\nu\})$</td><td>Bures metric</td></tr><tr><td>$\mathcal F_{\mu\nu}$</td><td>$-\tfrac i2\operatorname{Tr}(\rho[G_\mu,G_\nu])$</td><td>Uhlmann curvature</td></tr></tbody></table><p>The trace of the QGT operator gives $\operatorname{Tr}Q_{\mu\nu} = g_{\mu\nu} - i\mathcal F_{\mu\nu}$.</p><p><strong>Mixture and exponential connections.</strong> A connection tells you how to compare tangent vectors
+at nearby states, $\Gamma_{\mu\nu\sigma} \equiv g(\nabla_{\partial_\mu}\partial_\nu,\partial_\sigma)$.
+There are two natural choices, depending on which representation of the tangent vector you
+differentiate:</p>$$
+\Gamma^{(m)}_{\mu\nu\sigma} = \tfrac12\operatorname{Tr}(G_\sigma\,\rho_{\mu\nu}),\quad \rho_{\mu\nu}\equiv\partial_\mu\partial_\nu\rho
+\qquad\text{(mixture: differentiate } \rho_\nu\text{)},
+$$$$
+\Gamma^{(e)}_{\mu\nu\sigma} = \tfrac12\operatorname{Tr}(\rho_\sigma\,\partial_\mu G_\nu)
+\qquad\text{(exponential: differentiate } G_\nu\text{)}.
+$$<p>The two are dual with respect to the Bures metric,
+$\partial_\mu g_{\nu\sigma} = \Gamma^{(m)}_{\mu\nu\sigma} + \Gamma^{(e)}_{\mu\sigma\nu}$.</p><p><strong>Non-metricity.</strong> Metric compatibility means
+$(\nabla_\sigma g)_{\mu\nu} = \partial_\sigma g_{\mu\nu} - \Gamma_{\sigma\mu\nu} - \Gamma_{\sigma\nu\mu} = 0$.
+Neither connection satisfies it. The failure is measured by the <strong>quantum Amari–Chentsov
+(QAC) tensor</strong>,</p>$$
+\begin{aligned}
+T_{\sigma\mu\nu} &\equiv \Gamma^{(m)}_{\sigma\mu\nu} - \Gamma^{(e)}_{\sigma\mu\nu} = \tfrac12\operatorname{Tr}\big(\rho\{G_\sigma,\{G_\mu,G_\nu\}\}\big), \\
+(\nabla^{(m)}_\sigma g)_{\mu\nu} &= -T_{\sigma\mu\nu},\qquad (\nabla^{(e)}_\sigma g)_{\mu\nu} = +T_{\sigma\mu\nu}.
+\end{aligned}
+$$<p>Their average $\nabla^{(0)} = \frac12(\nabla^{(m)}+\nabla^{(e)})$ preserves the metric, as does
+Levi-Civita. The difference is that $\nabla^{(0)}$ generally has torsion, while Levi-Civita is
+torsion-free.</p><p><strong>Connection to the Bures expansion.</strong> The Levi-Civita connection is the mixture (&ldquo;Fisher&rdquo;)
+connection corrected by the QAC tensor:</p>$$
+\Gamma^{\text{LC}}_{\mu\nu\sigma} = \underbrace{\Gamma^{(m)}_{\mu\nu\sigma}}_{\text{Fisher term}} - \underbrace{\tfrac12\big(T_{\mu\nu\sigma} + T_{\nu\sigma\mu} - T_{\sigma\mu\nu}\big)}_{\text{intrinsic term (distortion)}} .
+$$<p>Both $\Gamma^{\text{LC}}$ and $\Gamma^{(m)}$ are torsion-free, so their difference is pure
+distortion. This is the same Fisher/intrinsic split found in the Bures expansion of Part 4:
+<strong>non-metricity = distortion.</strong></p><p><strong>The complex version.</strong> Differentiating the QGT operator gives
+$\partial_\sigma Q_{\mu\nu} = (\partial_\sigma G_\mu)\rho G_\nu + G_\mu\rho_\sigma G_\nu + G_\mu\rho(\partial_\sigma G_\nu)$.
+The trace of the middle term defines the <strong>complex QAC tensor</strong>:</p><table><thead><tr><th>Object</th><th>Definition</th><th>Meaning</th></tr></thead><tbody><tr><td>$T_{\sigma\mu\nu}$</td><td>$\tfrac12\operatorname{Tr}(\rho\{G_\sigma,\{G_\mu,G_\nu\}\})$</td><td>QAC tensor</td></tr><tr><td>$\Phi_{\sigma\mu\nu}$</td><td>$-\tfrac i2\operatorname{Tr}(\rho\{G_\sigma,[G_\mu,G_\nu]\})$</td><td>Uhlmann curvature dipole</td></tr><tr><td>$Z_{\sigma\mu\nu}$</td><td>$\operatorname{Tr}(G_\mu\rho_\sigma G_\nu) = T_{\sigma\mu\nu} - i\Phi_{\sigma\mu\nu}$</td><td>complex QAC tensor</td></tr></tbody></table><p>The complex QAC tensor is itself a non-metricity,
+$Z_{\sigma\mu\nu} = [\nabla^{(e)}_\sigma(g - i\mathcal F)]_{\mu\nu}$.</p><p><strong>The complex distortion.</strong> Work in the eigenbasis of $\rho$, with eigenvalues $p_m$. Define a
+map $J$ that rotates off-diagonal tangent directions, with $J^2 = -1$:
+$(G_{J\partial_\mu})_{mn} = -i\,\mathrm{sgn}(p_m-p_n)\,(G_\mu)_{mn}$ for $p_m\ne p_n$. With
+$Z(u,v,w) \equiv \operatorname{Tr}[G_v\,u(\rho)\,G_w]$ for tangent vectors $u,v,w$, define the
+$J$-rotated cQAC tensor and the complex distortion:</p>$$
+\tilde S_{\sigma\mu\nu} = Z(J\partial_\sigma,J\partial_\mu,J\partial_\nu),\qquad
+S_{\mu\sigma\nu} = \tfrac12\big(\tilde S_{\mu\nu\sigma} + \tilde S_{\nu\sigma\mu} - \tilde S_{\sigma\mu\nu}\big).
+$$<p>In the $T\to0$ limit, this is the $S_{\lambda\mu\nu}$ that enters the shift-current sum rule.</p><h2 id=summary>Summary</h2>$$
+\lim_{T\to0}\frac1\pi\int_0^\infty\mathrm d\omega\;\sigma^{\mu;\nu\lambda}_{\text{shift}}(\omega) = \frac2V\big(c^{(3)}_{\lambda\mu\nu} - S_{\lambda\mu\nu}\big),
+\qquad S_{\lambda\mu\nu} = {\sum_{a,b>0}}'\,X^\lambda_{0a}X^\mu_{ab}X^\nu_{b0}.
+$$<ul><li>The Bures distance between the equilibrium and driven density matrices gives a single
+geometric framework. At second order it defines a metric, which covers finite temperature,
+interactions and disorder, and arbitrary perturbing operators. At third order it defines a
+connection, which covers nonlinear response.</li><li>The metric unifies the finite-$T$ SWM sum rule, the quantum Fisher information, and Fermi&rsquo;s
+golden rule. At zero temperature the connection is the band-theory Christoffel symbol.</li><li>The multi-state term in the shift-current sum rule depends on virtual excited-to-excited
+transitions. In the band limit it separates into particle and hole contributions, and it
+originates in the non-metricity of the mixture/exponential connections.</li><li>Caveat: at nonzero temperature the exact split into skewness and distortion fails in
+general.</li></ul><h2 id=references>References</h2><ol><li>Y. Guan and B. Bradlyn, <em>Phys. Rev. Research</em> <strong>8</strong>, 013291 (2026).</li><li>B. Bradlyn, &ldquo;Multi-State Geometry of Density Matrices and Rectification Sum Rules,&rdquo;
+<a href=https://arxiv.org/abs/2608.06326 target=_blank rel="noopener noreffer">arXiv:2608.06326</a> (2026).</li><li>B. Bradlyn and P. Abbamonte, <em>Phys. Rev. B</em> <strong>110</strong>, 245132 (2024).</li><li>I. Souza, T. Wilkens, and R. M. Martin, <em>Phys. Rev. B</em> <strong>62</strong>, 1666 (2000).</li><li>N. Marzari and D. Vanderbilt, <em>Phys. Rev. B</em> <strong>56</strong>, 12847 (1997).</li><li>P. Hauke, M. Heyl, L. Tagliacozzo, and P. Zoller, <em>Nat. Phys.</em> <strong>12</strong>, 778 (2016).</li><li>J. Ahn, G.-Y. Guo, N. Nagaosa, and A. Vishwanath, <em>Nat. Phys.</em> <strong>18</strong>, 290 (2022).</li><li>H. Watanabe and M. Oshikawa, <em>Phys. Rev. B</em> <strong>102</strong>, 165137 (2020).</li><li>S. Amari and H. Nagaoka, <em>Methods of Information Geometry</em> (AMS / Oxford University Press, 2000).</li></ol></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2026-09-28</span></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span><a href=javascript:void(0); title="Share on X" data-sharer=x data-url=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-density-matrix-geometry-response/ data-title="Density Matrix Geometry and Response Functions" data-via=OkongOyangO data-hashtags="Quantum Geometry,Quantum Geometric Tensor,Fubini-Study Metric,Berry Curvature,Bures Metric,Quantum Fisher Information,Density Matrix,Finite Temperature,Linear Response,Nonlinear Response,Sum Rules,Shift Current,Information Geometry,Christoffel Symbol,Fermi Golden Rule"><i class="fab fa-x-twitter fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Threads" data-sharer=threads data-url=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-density-matrix-geometry-response/ data-title="Density Matrix Geometry and Response Functions"><i class="fab fa-threads fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Facebook" data-sharer=facebook data-url=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-density-matrix-geometry-response/ data-hashtag="Quantum Geometry"><i class="fab fa-facebook-square fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Hacker News" data-sharer=hackernews data-url=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-density-matrix-geometry-response/ data-title="Density Matrix Geometry and Response Functions"><i class="fab fa-hacker-news fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Line" data-sharer=line data-url=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-density-matrix-geometry-response/ data-title="Density Matrix Geometry and Response Functions"><i data-svg-src=https://cdn.jsdelivr.net/npm/simple-icons@15.14.0/icons/line.svg aria-hidden=true></i></a><a href=javascript:void(0); title="Share on 微博" data-sharer=weibo data-url=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-density-matrix-geometry-response/ data-title="Density Matrix Geometry and Response Functions"><i class="fab fa-weibo fa-fw" aria-hidden=true></i></a><a href=javascript:void(0); title="Share on Diaspora" data-sharer=diaspora data-url=https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-density-matrix-geometry-response/ data-title="Density Matrix Geometry and Response Functions" data-description><i class="fab fa-diaspora fa-fw" aria-hidden=true></i></a><a href="https://t.me/share/url?url=https%3a%2f%2fOkongOyangO.github.io%2fOkongOyangO.JournalClub%2fposts%2f2026-09-density-matrix-geometry-response%2f&amp;text=Density%20Matrix%20Geometry%20and%20Response%20Functions" target=_blank title="Share on Telegram"><i class="fab fa-telegram fa-fw" aria-hidden=true></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw" aria-hidden=true></i>&nbsp;<a href=/OkongOyangO.JournalClub/tags/quantum-geometry/>Quantum Geometry</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/quantum-geometric-tensor/>Quantum Geometric Tensor</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/fubini-study-metric/>Fubini-Study Metric</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/berry-curvature/>Berry Curvature</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/bures-metric/>Bures Metric</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/quantum-fisher-information/>Quantum Fisher Information</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/density-matrix/>Density Matrix</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/finite-temperature/>Finite Temperature</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/linear-response/>Linear Response</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/nonlinear-response/>Nonlinear Response</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/sum-rules/>Sum Rules</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/shift-current/>Shift Current</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/information-geometry/>Information Geometry</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/christoffel-symbol/>Christoffel Symbol</a>,&nbsp;<a href=/OkongOyangO.JournalClub/tags/fermi-golden-rule/>Fermi Golden Rule</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/OkongOyangO.JournalClub/>Home</a></span></section></div><div class=post-nav><a href=/OkongOyangO.JournalClub/posts/2026-09-generative-models-vae-diffusion/ class=prev rel=prev title="Generative Models: Variational Autoencoders and Diffusion Models"><i class="fas fa-angle-left fa-fw" aria-hidden=true></i>Generative Models: Variational Autoencoders and Diffusion Models</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.154.3">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden=true></i> LoveIt</a></div><div class=footer-line itemscope itemtype=http://schema.org/CreativeWork><i class="far fa-copyright fa-fw" aria-hidden=true></i><span itemprop=copyrightYear>2026</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/OkongOyangO.JournalClub/ target=_blank>Yiyang Jiang</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw" aria-hidden=true></i></a></div><div id=fixed-buttons-hidden><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw" aria-hidden=true></i></a></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css><script src=https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js></script><script src=https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js></script><script src=https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js></script><script src=https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js></script><script src=https://cdn.jsdelivr.net/npm/sharer.js@0.5.2/sharer.min.js></script><script src=https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js></script><script src=https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js></script><script src=https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/copy-tex.min.js></script><script src=https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/mhchem.min.js></script><script>window.config={comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!0,left:"\\begin{equation}",right:"\\end{equation}"},{display:!0,left:"\\begin{equation*}",right:"\\end{equation*}"},{display:!0,left:"\\begin{align}",right:"\\end{align}"},{display:!0,left:"\\begin{align*}",right:"\\end{align*}"},{display:!0,left:"\\begin{alignat}",right:"\\end{alignat}"},{display:!0,left:"\\begin{alignat*}",right:"\\end{alignat*}"},{display:!0,left:"\\begin{gather}",right:"\\end{gather}"},{display:!0,left:"\\begin{CD}",right:"\\end{CD}"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/OkongOyangO.JournalClub/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script src=/OkongOyangO.JournalClub/js/theme.min.js></script></body></html>

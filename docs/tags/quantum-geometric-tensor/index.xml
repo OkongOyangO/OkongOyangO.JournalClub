@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Quantum Geometric Tensor on Condensed Matter🍩 + AI🤖 Journal Club🎓</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/tags/quantum-geometric-tensor/</link><description>Recent content in Quantum Geometric Tensor on Condensed Matter🍩 + AI🤖 Journal Club🎓</description><generator>Hugo</generator><language>en</language><managingEditor>yzj5306@psu.edu (Yiyang Jiang)</managingEditor><webMaster>yzj5306@psu.edu (Yiyang Jiang)</webMaster><lastBuildDate>Mon, 28 Sep 2026 16:30:00 -0400</lastBuildDate><atom:link href="https://OkongOyangO.github.io/OkongOyangO.JournalClub/tags/quantum-geometric-tensor/index.xml" rel="self" type="application/rss+xml"/><item><title>Density Matrix Geometry and Response Functions</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-density-matrix-geometry-response/</link><pubDate>Mon, 28 Sep 2026 16:30:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-density-matrix-geometry-response/</guid><description>&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;&lt;/th&gt;
+ &lt;th&gt;&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Presenter&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;Yuntao Guan (Prof. Barry Bradlyn&amp;rsquo;s group, UIUC)&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Date&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;September 28, 2026 · 4:30–6:00 PM&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Location&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;Davey 339&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Topic&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;Density matrix geometry and response functions&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;Papers&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;Y. Guan and B. Bradlyn, &lt;em&gt;Phys. Rev. Research&lt;/em&gt; &lt;strong&gt;8&lt;/strong&gt;, 013291 (2026); B. Bradlyn, &lt;a href="https://arxiv.org/abs/2608.06326" target="_blank" rel="noopener noreffer "&gt;arXiv:2608.06326&lt;/a&gt; (2026)&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The quantum geometric tensor packs the Berry curvature and the quantum metric into one
+object, and it has become a standard tool for Hall responses, Wannier localization, flat-band
+superconductivity and optical sum rules. But the usual version has four limitations. It is a
+linear-order object. It lives at zero temperature. And it is tied either to Bloch bands of
+noninteracting electrons or to twist angles of an interacting ground state. The talk
+replaces the pure state by the &lt;strong&gt;density matrix&lt;/strong&gt;, and the quantum distance by the &lt;strong&gt;Bures
+distance&lt;/strong&gt; between the thermal state and the state driven by an arbitrary time-dependent
+field. Expanding that distance in the field strength defines a &lt;strong&gt;Bures metric&lt;/strong&gt; at second
+order and a &lt;strong&gt;Bures connection&lt;/strong&gt; at third order, and both come out as explicit spectral
+functions. Specific limits of the metric recover earlier results: a finite-temperature
+Souza–Wilkens–Martin (SWM) sum rule, the quantum Fisher information, and Fermi&amp;rsquo;s golden rule
+recast as geometry. At zero temperature, the connection reduces to the band-theory
+Christoffel symbol. The second half follows the connection into nonlinear optics. The sum
+rule for the &lt;strong&gt;shift current&lt;/strong&gt; contains a genuinely &lt;strong&gt;multi-state&lt;/strong&gt; term, built from
+transitions between two excited states. That term is the non-metricity of the
+mixture/exponential connections of quantum information geometry.&lt;/p&gt;</description></item></channel></rss>
