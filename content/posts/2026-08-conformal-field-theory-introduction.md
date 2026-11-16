@@ -410,6 +410,9 @@ energy spectrum of a quantum theory living on a sphere.
 Radial quantization in full, and two-dimensional CFT — where the local conformal algebra becomes
 infinite-dimensional.
 
+**Update:** Lecture II has been posted —
+[More is Universal II: State–Operator Correspondence and Two-Dimensional CFT]({{< relref "2026-11-conformal-field-theory-lecture-ii.md" >}}).
+
 ## Discussion points
 
 - The whole construction rests on scale invariance being *emergent* at the fixed point, and on

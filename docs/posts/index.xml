@@ -1,4 +1,38 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Lectures - Condensed Matter🍩 + AI🤖 Journal Club🎓</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/</link><description>All Lectures | Condensed Matter🍩 + AI🤖 Journal Club🎓</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>yzj5306@psu.edu (Yiyang Jiang)</managingEditor><webMaster>yzj5306@psu.edu (Yiyang Jiang)</webMaster><lastBuildDate>Mon, 28 Sep 2026 16:30:00 -0400</lastBuildDate><atom:link href="https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/" rel="self" type="application/rss+xml"/><item><title>Density Matrix Geometry and Response Functions</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-density-matrix-geometry-response/</link><pubDate>Mon, 28 Sep 2026 16:30:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-density-matrix-geometry-response/</guid><description><![CDATA[<table>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Lectures - Condensed Matter🍩 + AI🤖 Journal Club🎓</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/</link><description>All Lectures | Condensed Matter🍩 + AI🤖 Journal Club🎓</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>yzj5306@psu.edu (Yiyang Jiang)</managingEditor><webMaster>yzj5306@psu.edu (Yiyang Jiang)</webMaster><lastBuildDate>Mon, 16 Nov 2026 16:30:00 -0500</lastBuildDate><atom:link href="https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/" rel="self" type="application/rss+xml"/><item><title>More is Universal II: State–Operator Correspondence and Two-Dimensional CFT</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-11-conformal-field-theory-lecture-ii/</link><pubDate>Mon, 16 Nov 2026 16:30:00 -0500</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-11-conformal-field-theory-lecture-ii/</guid><description><![CDATA[<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Presenter</strong></td>
+          <td>You-Chiuan (Andy) Chen (Prof. Ribhu Kaul&rsquo;s group, Penn State)</td>
+      </tr>
+      <tr>
+          <td><strong>Date</strong></td>
+          <td>November 16, 2026 · 4:30–6:00 PM</td>
+      </tr>
+      <tr>
+          <td><strong>Location</strong></td>
+          <td>Davey 339</td>
+      </tr>
+      <tr>
+          <td><strong>Topic</strong></td>
+          <td>An introduction to conformal field theory — Lecture II</td>
+      </tr>
+  </tbody>
+</table>
+<p>Lecture II of the two-part introduction to conformal field theory (Lecture I:
+<a href="/OkongOyangO.JournalClub/posts/2026-08-conformal-field-theory-introduction/" rel="">More is Universal</a>). The punctured plane is
+conformally a cylinder, and on that cylinder the dilatation operator is the Hamiltonian:
+cutting a classical Euclidean path integral along circles produces a Hilbert space, local
+operators become states, and scaling dimensions become energy gaps. In two dimensions the
+conformal algebra becomes infinite-dimensional — two Virasoro algebras with a central charge
+$c$ — and the critical Ising model is the $m = 3$ minimal model with $c = \tfrac12$ and three
+primaries. The session closed by recovering all of this, to six digits, from the exact
+free-fermion spectrum of the periodic transverse-field Ising chain.</p>]]></description></item><item><title>Density Matrix Geometry and Response Functions</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-density-matrix-geometry-response/</link><pubDate>Mon, 28 Sep 2026 16:30:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-09-density-matrix-geometry-response/</guid><description><![CDATA[<table>
   <thead>
       <tr>
           <th></th>
@@ -309,33 +343,4 @@ LLM-based AI for workflow (planning, memory, tools, APIs, MCP, agent loops).</p>
 <p>These notes build the <strong>bulk–boundary correspondence</strong> of topological band insulators
 from the ground up — from the modern theory of polarization to the protected edge spectrum
 and the wider topological zoo. Both the typeset write-up and the original handwritten notes
-are attached below.</p>]]></description></item><item><title>Experimental Realization of Topological Insulator</title><link>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-06-experimental-realization-of-topological-insulator/</link><pubDate>Tue, 23 Jun 2026 16:00:00 -0400</pubDate><author>yzj5306@psu.edu (Yiyang Jiang)</author><guid>https://OkongOyangO.github.io/OkongOyangO.JournalClub/posts/2026-06-experimental-realization-of-topological-insulator/</guid><description><![CDATA[<table>
-  <thead>
-      <tr>
-          <th></th>
-          <th></th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><strong>Presenter</strong></td>
-          <td>Pu Xiao</td>
-      </tr>
-      <tr>
-          <td><strong>Date</strong></td>
-          <td>June 23, 2026</td>
-      </tr>
-      <tr>
-          <td><strong>Topic</strong></td>
-          <td>Experimental Realization of Topological Insulator</td>
-      </tr>
-      <tr>
-          <td><strong>Notes</strong></td>
-          <td>Slides &amp; PDF below</td>
-      </tr>
-  </tbody>
-</table>
-<p>A survey of how topological insulators are actually made and measured: from the
-band-inversion picture and the 2D/3D material platforms that realize it, to the
-experimental probes — ARPES, molecular beam epitaxy, and STM/STS — that reveal and
-characterize the protected surface states.</p>]]></description></item></channel></rss>
+are attached below.</p>]]></description></item></channel></rss>
